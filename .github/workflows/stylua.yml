@@ -32,7 +32,7 @@ jobs:
         run: curl https://sh.rustup.rs -sSf | sh -s -- -y
 
       - name: Install stylua
-        run: cargo install stylua --features lua51
+        run: cargo install stylua --features lua52
 
       - name: Run formatting
         run: stylua -v --verify .
