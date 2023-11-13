@@ -1,5 +1,20 @@
 {
   "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "runtime.version": "LuaJIT",
+  "runtime.path": [
+    "lua/?.lua",
+    "lua/?/init.lua",
+    "deps/?.lua",
+    "deps/?/init.lua"
+  ],
+  "diagnostics": {
+    "globals": [
+      "a",
+      "describe",
+      "it",
+      "vim"
+    ]
+  },
   "workspace.library": [
     "deps/neodev.nvim",
     "deps/neodev.nvim/types/stable"
