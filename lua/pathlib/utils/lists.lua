@@ -1,4 +1,4 @@
----@class PathlibStrList
+---@class PathlibStrList:string[]
 local str_list = {}
 str_list.__index = str_list
 setmetatable(str_list, {
