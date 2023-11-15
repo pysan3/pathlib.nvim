@@ -1,5 +1,3 @@
----@module 'busted'
-
 local _ = require("pathlib")
 
 describe("Absolute vs Relative Paths;", function()

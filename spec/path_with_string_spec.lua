@@ -1,5 +1,3 @@
----@module 'busted'
-
 local _ = require("pathlib")
 
 describe("Compatibility Between Path and String;", function()

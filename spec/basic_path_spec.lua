@@ -1,5 +1,3 @@
----@module 'busted'
-
 local _ = require("pathlib")
 
 describe("Simple PathlibPath test;", function()
