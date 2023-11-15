@@ -29,3 +29,4 @@ jobs:
           configpath: .github/workflows/.luarc.json
           directories: |
             lua
+            spec
