@@ -2,11 +2,9 @@ name: luarocks-tag-release
 
 on:
   push:
-    release:
-      types:
-        - created
     tags:
       - '*'
+  pull_request:
   workflow_dispatch:
 
 jobs:
