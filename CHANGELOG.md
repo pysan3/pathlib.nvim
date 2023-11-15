@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/pysan3/pathlib.nvim/compare/v0.1.5...v0.1.6) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** use personal token for release-please ([3f7dc80](https://github.com/pysan3/pathlib.nvim/commit/3f7dc80c77b7e12917d6d296782fa9ce034cadc5))
+
 ## [0.1.5](https://github.com/pysan3/pathlib.nvim/compare/v0.1.4...v0.1.5) (2023-11-15)
 
 
