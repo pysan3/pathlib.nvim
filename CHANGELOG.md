@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/pysan3/pathlib.nvim/compare/v0.1.1...v0.1.2) (2023-11-15)
+
+
+### Bug Fixes
+
+* **base:** no need to panic ([359122c](https://github.com/pysan3/pathlib.nvim/commit/359122c63e7573697050e4e82648eac3ca1e646c))
+
 ## [0.1.1](https://github.com/pysan3/pathlib.nvim/compare/v0.1.0...v0.1.1) (2023-11-15)
 
 
