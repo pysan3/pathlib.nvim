@@ -5,6 +5,8 @@ on:
     tags:
       - "*"
   pull_request:
+  release:
+    types: [published]
 
 jobs:
   luarocks-upload:
