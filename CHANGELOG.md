@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/pysan3/pathlib.nvim/compare/v0.1.3...v0.1.4) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** fix typo ([296aa23](https://github.com/pysan3/pathlib.nvim/commit/296aa238066b1bae34241cd7d800f2d07bffac83))
+
 ## [0.1.3](https://github.com/pysan3/pathlib.nvim/compare/v0.1.2...v0.1.3) (2023-11-15)
 
 
