@@ -72,10 +72,9 @@ function Path:__clean_paths_list()
 end
 
 ---Compare equality of path objects
----@param self PathlibPath
 ---@param other PathlibPath
 ---@return boolean
-Path.__eq = function(self, other)
+function Path:__eq(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
     err.value_error("__eq", other)
   end
@@ -94,10 +93,9 @@ Path.__eq = function(self, other)
 end
 
 ---Compare less than of path objects
----@param self PathlibPath
 ---@param other PathlibPath
 ---@return boolean
-Path.__lt = function(self, other)
+function Path:__lt(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
     err.value_error("__lt", other)
   end
@@ -116,10 +114,9 @@ Path.__lt = function(self, other)
 end
 
 ---Compare less than or equal of path objects
----@param self PathlibPath
 ---@param other PathlibPath
 ---@return boolean
-Path.__le = function(self, other)
+function Path:__le(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
     err.value_error("__le", other)
   end
@@ -127,10 +124,9 @@ Path.__le = function(self, other)
 end
 
 ---Concat paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param self PathlibPath
 ---@param other PathlibPath
 ---@return PathlibPath
-Path.__div = function(self, other)
+function Path:__div(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
     -- one of objects must be a path object
     err.value_error("__div", other)
@@ -139,27 +135,15 @@ Path.__div = function(self, other)
 end
 
 ---Concat paths with the parent of lhs. `Path("./foo/foo.txt") .. "bar.txt" == "./foo/bar.txt"`
----@param self PathlibPath
 ---@param other PathlibPath
 ---@return PathlibPath
-Path.__concat = function(self, other)
+-- Path.__concat = function(self, other)
+function Path:__concat(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
     -- one of objects must be a path object
     err.value_error("__concat", other)
   end
   return self.new(self:parent(), other)
-end
-
----Returns length of parents
----@param self PathlibPath
----@return integer
-Path.__len = function(self)
-  if not utils.tables.is_path_module(self) then
-    -- one of objects must be a path object
-    err.value_error("__len", self)
-  end
-  self:__clean_paths_list()
-  return #self._raw_paths
 end
 
 function Path:_panic_maybe_windows()
