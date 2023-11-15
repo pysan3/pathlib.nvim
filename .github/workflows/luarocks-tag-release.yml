@@ -32,7 +32,7 @@ jobs:
             nvim
             pathlib
             os
-          test_interpreters:
+          test_interpreters: |
             neovim-stable
             neovim-nightly
           copy_directories: |
