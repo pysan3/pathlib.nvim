@@ -1,0 +1,42 @@
+name: luarocks-tag-release
+
+on:
+  push:
+    release:
+      types:
+        - created
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  luarocks-upload:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required to count the commits
+      - name: Get Version
+        run: echo "LUAROCKS_VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
+      - name: LuaRocks Upload
+        uses: nvim-neorocks/luarocks-tag-release@v5
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+        with:
+          summary: "OS Independent, ultimate solution to path handling in neovim."
+          detailed_description: |
+            This plugin aims to decrease the difficulties of path management across mutliple OSs in neovim.
+            The plugin API is heavily inspired by Python's `pathlib.Path` with tweaks to fit neovim usage.
+            It is mainly used in neo-tree.nvim but it is so simple that you can use it in your own configs!
+          version: ${{ env.LUAROCKS_VERSION }}
+          labels: |
+            neovim
+            nvim
+            pathlib
+            os
+          test_interpreters:
+            neovim-stable
+            neovim-nightly
+          copy_directories: |
+            {{ neovim.plugin.dirs }}
+            doc

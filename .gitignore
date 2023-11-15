@@ -49,3 +49,10 @@ luac.out
 *.x86_64
 *.hex
 
+# Luarocks testing files
+/luarocks
+/lua_modules
+/.luarocks
+/lua
+
+!/lua
