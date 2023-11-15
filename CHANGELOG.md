@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/pysan3/pathlib.nvim/compare/v0.1.4...v0.1.5) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** luarocks-tag-release is not running ([14868f5](https://github.com/pysan3/pathlib.nvim/commit/14868f5205ee7f1ad22f1bcc0d921b7da63f7efb))
+
 ## [0.1.4](https://github.com/pysan3/pathlib.nvim/compare/v0.1.3...v0.1.4) (2023-11-15)
 
 
