@@ -147,13 +147,13 @@ function Path:__concat(other)
 end
 
 function Path:_panic_maybe_windows()
-  if self.__windows_panic then
-    vim.api.nvim_err_writeln(table.concat({
-      "Possible Windows path detected with PathlibPath module.",
-      "You may want to use PathlibWindows instead.",
-      "`local WindowsPath = require('pathlib.windows')`",
-    }, "\n"))
-  end
+  -- if self.__windows_panic then
+  --   vim.api.nvim_err_writeln(table.concat({
+  --     "Possible Windows path detected with PathlibPath module.",
+  --     "You may want to use PathlibWindows instead.",
+  --     "`local WindowsPath = require('pathlib.windows')`",
+  --   }, "\n"))
+  -- end
 end
 
 ---Convert path object to string
