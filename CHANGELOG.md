@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/pysan3/pathlib.nvim/compare/v0.1.2...v0.1.3) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** no dispatch ([01de854](https://github.com/pysan3/pathlib.nvim/commit/01de854704eabc57cad1b8ed4c112777f4d8ebfb))
+
 ## [0.1.2](https://github.com/pysan3/pathlib.nvim/compare/v0.1.1...v0.1.2) (2023-11-15)
 
 
