@@ -2,29 +2,35 @@ local luv = vim.loop
 local fs = vim.fs
 local utils = require("pathlib.utils")
 local const = require("pathlib.const")
+local err = require("pathlib.utils.errors")
 
 ---@class PathlibPath
 ---@field _raw_paths PathlibStrList
----@field __windows_panic boolean
 ---@field _drive_name string # Drive name for Windows path. ("C:", "D:")
+---@field __windows_panic boolean # Windows paths shouldn't be passed to this type, but when it is.
 local Path = {
-  mytype = const.PathlibPath,
+  mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
 }
 Path.__index = Path
 setmetatable(Path, {
+  ---@return PathlibPath
   __call = function(cls, ...)
     return cls.new(...)
   end,
 })
 
+---Create a new Path object
+---@param ... string | PathlibPath # List of string and Path objects
+---@return PathlibPath
 function Path.new(...)
   local self = setmetatable({}, Path)
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
   self.__windows_panic = false
   for i, s in ipairs({ ... }) do
-    if utils.tables.is_type_of(s, const.PathlibPath) then
+    if utils.tables.is_type_of(s, const.path_module_enum.PathlibPath) then
+      ---@cast s PathlibPath
       if i == 1 then
         self:copy_all_from(s)
       else
@@ -32,22 +38,128 @@ function Path.new(...)
         self._raw_paths:extend(s._raw_paths)
       end
     elseif type(s) == "string" then
-      local path = fs.normalize(s, { expand_env = true })
+      local path = fs.normalize(s, { expand_env = true }):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
       if path:sub(2, 2) == ":" then
         self.__windows_panic = true
         self:_panic_maybe_windows()
       end
-      self._raw_paths:extend(vim.split(path, "/", { plain = true, trimempty = false }))
+      local splits = vim.split(path, "/", { plain = true, trimempty = false })
+      if #splits == 0 then
+        goto continue
+      end
+      -- elseif -- TODO: deal with `../`
+      self._raw_paths:extend(splits)
+    else
+      error("PathlibPath(new): ValueError: Invalid type as argument: " .. ("%s (%s: %s)"):format(type(s), i, s))
     end
+    ::continue::
   end
-  if #self._raw_paths == 0 then
-    return Path.cwd()
-  end
+  self:__clean_paths_list()
   return self
 end
 
+---Return `vim.fn.getcwd` in Path object
+---@return PathlibPath
 function Path.cwd()
-  return Path.new(vim.fn.getcwd())
+  return Path(vim.fn.getcwd())
+end
+
+function Path:__clean_paths_list()
+  self._raw_paths:filter_internal(nil, 2)
+  if #self._raw_paths > 1 and self._raw_paths[1] == "." then
+    self._raw_paths:shift()
+  end
+end
+
+---Compare equality of path objects
+---@param self PathlibPath
+---@param other PathlibPath
+---@return boolean
+Path.__eq = function(self, other)
+  if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
+    err.value_error("__eq", other)
+  end
+  if self._drive_name ~= other._drive_name then
+    return false
+  end
+  if #self._raw_paths ~= #other._raw_paths then
+    return false
+  end
+  for i = 1, #self._raw_paths do
+    if self._raw_paths[i] ~= other._raw_paths[i] then
+      return false
+    end
+  end
+  return true
+end
+
+---Compare less than of path objects
+---@param self PathlibPath
+---@param other PathlibPath
+---@return boolean
+Path.__lt = function(self, other)
+  if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
+    err.value_error("__lt", other)
+  end
+  if self._drive_name ~= other._drive_name then
+    error(
+      "PathlibPath: ValueError: drive_name is different. Uncomparable. "
+        .. ("%s, %s"):format(self._drive_name, other._drive_name)
+    )
+  end
+  for i = 1, #self._raw_paths do
+    if self._raw_paths[i] ~= other._raw_paths[i] then
+      return self._raw_paths[i] < other._raw_paths[i]
+    end
+  end
+  return #self._raw_paths < #other._raw_paths
+end
+
+---Compare less than or equal of path objects
+---@param self PathlibPath
+---@param other PathlibPath
+---@return boolean
+Path.__le = function(self, other)
+  if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
+    err.value_error("__le", other)
+  end
+  return (self < other) or (self == other)
+end
+
+---Concat paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
+---@param self PathlibPath
+---@param other PathlibPath
+---@return PathlibPath
+Path.__div = function(self, other)
+  if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
+    -- one of objects must be a path object
+    err.value_error("__div", other)
+  end
+  return self.new(self, other)
+end
+
+---Concat paths with the parent of lhs. `Path("./foo/foo.txt") .. "bar.txt" == "./foo/bar.txt"`
+---@param self PathlibPath
+---@param other PathlibPath
+---@return PathlibPath
+Path.__concat = function(self, other)
+  if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
+    -- one of objects must be a path object
+    err.value_error("__concat", other)
+  end
+  return self.new(self:parent(), other)
+end
+
+---Returns length of parents
+---@param self PathlibPath
+---@return integer
+Path.__len = function(self)
+  if not utils.tables.is_path_module(self) then
+    -- one of objects must be a path object
+    err.value_error("__len", self)
+  end
+  self:__clean_paths_list()
+  return #self._raw_paths
 end
 
 function Path:_panic_maybe_windows()
@@ -63,7 +175,35 @@ end
 ---Convert path object to string
 ---@return string
 function Path:__tostring()
-  return self._drive_name .. table.concat(self._raw_paths, self.sep_str)
+  local path_str = table.concat(self._raw_paths, self.sep_str):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
+  if self:is_absolute() then
+    path_str = self._drive_name .. path_str
+  end
+  return path_str
+end
+
+---Return parent directory of itself. If parent does not exist, returns nil.
+---@return PathlibPath?
+function Path:parent()
+  if #self._raw_paths >= 2 then
+    return Path.new_from(self, 1)
+  else
+    return nil
+  end
+end
+
+---Return iterator of parents.
+function Path:parents()
+  local current = self
+  return function()
+    local result = current:parent()
+    if result == nil then
+      return nil
+    else
+      current = result
+      return result
+    end
+  end
 end
 
 function Path:as_uri()
@@ -78,15 +218,36 @@ function Path:copy_all_from(path)
   self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
+  self._raw_paths:filter_internal(nil, 2)
+end
+
+---Inherit from `path` and trim `_raw_paths` if specified.
+---@param path PathlibPath
+---@param trim_num number? # 1 will trim the last entry in `_raw_paths`, 2 will trim 2.
+function Path.new_from(path, trim_num)
+  local self = Path.new()
+  self:copy_all_from(path)
+  if not trim_num or trim_num < 1 then
+    return self
+  end
+  for _ = 1, trim_num do
+    self._raw_paths:pop()
+  end
+  return self
+end
+
+---Shorthand to `vim.fn.stdpath` returned in Path object
+---@param what string # See `:h stdpath` for information
+---@return PathlibPath
+function Path.stdpath(what)
+  return Path.new(vim.fn.stdpath(what))
 end
 
 ---Returns whether registered path is absolute
 ---@return boolean
 function Path:is_absolute()
   local starts_with_slash = #self._raw_paths >= 1 and self._raw_paths[1] == ""
-  vim.print(string.format([[self: %s]], vim.inspect(self)))
-  vim.print(string.format([[starts_with_slash: %s]], vim.inspect(starts_with_slash)))
-  if utils.tables.is_type_of(self, const.PathlibWindows) then
+  if utils.tables.is_type_of(self, const.path_module_enum.PathlibWindows) then
     return self._drive_name:len() == 2 and starts_with_slash
   else
     return starts_with_slash
