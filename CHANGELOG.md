@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/pysan3/pathlib.nvim/compare/v0.1.6...v0.1.7) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** delete unnecessary call to luarocks-tag-release ([3bde587](https://github.com/pysan3/pathlib.nvim/commit/3bde587e26726eec5363d84e702a3f27bf00e7bb))
+
 ## [0.1.6](https://github.com/pysan3/pathlib.nvim/compare/v0.1.5...v0.1.6) (2023-11-15)
 
 
