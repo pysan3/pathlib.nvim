@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/pysan3/pathlib.nvim/compare/v0.1.0...v0.1.1) (2023-11-15)
+
+
+### Bug Fixes
+
+* **action:** fix luarocks release action to invoke with new release ([1be7933](https://github.com/pysan3/pathlib.nvim/commit/1be79332f000ba44d9e9b0ed854d586f624b8537))
+* **action:** fix typo ([5fdd072](https://github.com/pysan3/pathlib.nvim/commit/5fdd0725ff3ccea3874b8e48200a8b4a30c4d2d4))
+
 ## 0.1.0 (2023-11-15)
 
 
