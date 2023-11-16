@@ -207,6 +207,25 @@ function Path:__tostring()
   return path_str
 end
 
+---Return the group name of the file GID.
+function Path:basename()
+  return fs.basename(tostring(self))
+end
+
+---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
+---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
+function Path:suffix()
+  local path_str = tostring(self)
+  local without_ext = vim.fn.fnamemodify(path_str, ":r")
+  return path_str:sub(without_ext:len() + 1) or ""
+end
+
+---Return the group name of the file GID. Same as `self:modify(":t:r")`.
+---@return string # stem of path. (src/version.c -> "version")
+function Path:stem()
+  return vim.fn.fnamemodify(tostring(self), ":t:r")
+end
+
 ---Return parent directory of itself. If parent does not exist, returns nil.
 ---@return PathlibPath?
 function Path:parent()
@@ -275,6 +294,15 @@ end
 ---@return PathlibPath
 function Path.stdpath(what)
   return Path.new(vim.fn.stdpath(what))
+end
+
+---Shorthand to `vim.fn.stdpath` and specify child path in later args.
+---Mason bin path: `Path.stdpath("data", "mason", "bin")` or `Path.stdpath("data", "mason/bin")`
+---@param what string # See `:h stdpath` for information
+---@param ... string|PathlibPath # child path after the result of stdpath
+---@return PathlibPath
+function Path.stdpath_child(what, ...)
+  return Path.new(vim.fn.stdpath(what), ...)
 end
 
 ---Returns whether registered path is absolute
@@ -437,30 +465,35 @@ end
 
 ---Create a simlink named `self` pointing to `target`
 ---@param target PathlibPath
+---@return boolean|nil success, string? err_name, string? err_msg
 function Path:symlink_to(target)
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  utils.tables.is_path_module(target)
+  return luv.fs_symlink(tostring(self), tostring(target))
 end
 
 ---Create a hardlink named `self` pointing to `target`
 ---@param target PathlibPath
+---@return boolean|nil success, string? err_name, string? err_msg
 function Path:hardlink_to(target)
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  utils.tables.is_path_module(target)
+  return luv.fs_link(tostring(self), tostring(target))
 end
 
 ---Rename `self` to `target`. If `target` exists, fails with false. Ref: `Path:move`
 ---@param target PathlibPath
+---@return boolean|nil success, string? err_name, string? err_msg
 function Path:rename(target)
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  utils.tables.is_path_module(target)
+  return luv.fs_rename(tostring(self), tostring(target))
 end
 
 ---Move `self` to `target`. Overwrites `target` if exists. Ref: `Path:rename`
 ---@param target PathlibPath
+---@return boolean|nil success, string? err_name, string? err_msg
 function Path:move(target)
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  utils.tables.is_path_module(target)
+  target:unlink()
+  return luv.fs_rename(tostring(self), tostring(target))
 end
 
 ---@deprecated Use `Path:move` instead.
@@ -523,28 +556,15 @@ function Path:chmod(mode, follow_symlinks)
 end
 
 ---Remove this file or link. If the path is a directory, use `Path:rmdir()` instead.
----@param missing_ok boolean
-function Path:unlink(missing_ok)
-  -- TODO: Not Implemented
-  error("Not Implemented")
+---@return boolean|nil success, string? err_name, string? err_msg
+function Path:unlink()
+  return luv.fs_unlink(tostring(self))
 end
 
 ---Remove this directory.  The directory must be empty.
+---@return boolean|nil success, string? err_name, string? err_msg
 function Path:rmdir()
-  -- TODO: Not Implemented
-  error("Not Implemented")
-end
-
----Return the login name of the file owner.
-function Path:owner()
-  -- TODO: Not Implemented
-  error("Not Implemented")
-end
-
----Return the group name of the file GID.
-function Path:group()
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  return luv.fs_rmdir(tostring(self))
 end
 
 ---Call `luv.fs_open`. Use `self:open_async` to use with callback.
@@ -627,7 +647,7 @@ end
 ---        "type" is one of the following:
 ---        "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
 function Path:iterdir(opts)
-  local generator = vim.fs.dir(tostring(self), opts)
+  local generator = fs.dir(tostring(self), opts)
   return function()
     local name, fs_type = generator()
     if name ~= nil then
@@ -666,9 +686,19 @@ function Path:iterdir_async(callback, on_error, on_exit)
   end)
 end
 
-function Path:glob(pattern, follow_symlinks)
-  -- TODO: Implement glob
-  error("Not Implemented")
+---Run `vim.fn.globpath` on this path.
+---@param pattern string # glob pattern expression
+---@return fun(): PathlibPath # iterator of results.
+function Path:glob(pattern)
+  local str = tostring(self)
+  err.assert_function("Path:glob", function()
+    return not (str:find([[,]]))
+  end, "Path:glob cannot work on path that contains `,` (comma).")
+  local result, i = vim.fn.globpath(str, pattern, false, true), 0
+  return function()
+    i = i + 1
+    return Path.new(result[i])
+  end
 end
 
 return Path
