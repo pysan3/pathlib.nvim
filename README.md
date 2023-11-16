@@ -34,16 +34,20 @@ Status](https://img.shields.io/github/actions/workflow/status/pysan3/pathlib.nvi
 ``` lua
 local Path = require("pathlib.base")
 
-local cwd = Path.cwd()
-local folder = cwd / "folder" -- use __div to chain file tree!
-local foo = folder / "foo.txt"
-assert(tostring(foo) == "folder/foo.txt")
-assert(foo == Path("./folder/foo.txt")) -- Path object can be created with arguments
-assert(foo == Path(folder, "foo.txt")) -- Unpack any of them if you want!
+-- Use __div to chain file tree!
+local cwd     = Path.cwd()
+local folder  =      cwd / "folder"
+local foo     =             folder / "foo.txt"
+assert(tostring(foo)          == "folder/foo.txt") -- $PWD/folder/foo.txt
 assert(tostring(foo:parent()) == "folder")
 
-local bar = foo .. "bar.txt" -- create siblings (just like `./<foo>/../bar.txt`)
-assert(tostring(bar) == "folder/bar.txt")
+-- Path object is comparable
+assert(foo                    == Path("./folder/foo.txt")) -- Path object can be created with arguments
+assert(foo                    == Path(folder, "foo.txt"))  -- Unpack any of them if you want!
+
+-- Create siblings (just like `./<foo>/../bar.txt`)
+local bar = foo .. "bar.txt"
+assert(tostring(bar)          == "folder/bar.txt")
 ```
 
 ## Create and Manipulate Files / Directories
@@ -52,20 +56,25 @@ assert(tostring(bar) == "folder/bar.txt")
 local luv = vim.loop
 local Path = require("pathlib.base")
 
+-- Create new folder
 local new_file = Path.new("./new/folder/foo.txt")
 new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
 
--- You don't need above line if you specify recursive = true in `open`; all parents will be created
-local fd, err_name, err_msg = new_file:open("w", Path.permission("rw-r--r--"), true)
+-- Create new file and write to it
+local fd, err_name, err_msg = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
 assert(fd ~= nil, "File creation failed. " .. err_name .. err_msg)
 luv.fs_write(fd, "File Content\n")
 luv.fs_close(fd)
 
-local content = new_file:read(0)
+-- SHORTHAND: read file content with `io.read`
+local content = new_file:io_read()
 assert(content == "File Content\n")
 
-new_file:copy(new_file .. "bar.txt")
-new_file:symlink_to(new_file .. "baz.txt")
+-- SHORTHAND: write to file
+new_file:io_write("File Content\n")
+
+new_file:copy(new_file .. "bar.txt") -- copy `foo.txt` to `bar.txt`
+new_file:symlink_to(new_file .. "baz.txt") -- create symlink of `foo.txt` named `baz.txt`
 ```
 
 ## Scan Directories
@@ -73,10 +82,10 @@ new_file:symlink_to(new_file .. "baz.txt")
 ``` lua
 -- Continue from above
 for path in new_file:parent():iterdir() do
-    -- path will be [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
+  -- loop: [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
 end
 
--- fs_scandir-like usage
+-- fs_scandir-like usage for async scan
 new_file:parent():iterdir_async(function(path, fs_type) -- callback on all files
     vim.print(tostring(path), fs_type)
 end, function(error) -- on error
