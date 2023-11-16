@@ -463,11 +463,23 @@ function Path:touch(mode, recursive)
   end
 end
 
+---Copy file to `target`
+---@param target PathlibPath # `self` will be copied to `target`
+---@return boolean|nil success, string? err_name, string? err_msg # true if successfully created.
+function Path:copy(target)
+  err.assert_function("Path:copy", function()
+    return utils.tables.is_path_module(target)
+  end, "target is not a Path object.")
+  return luv.fs_copyfile(tostring(self), tostring(target))
+end
+
 ---Create a simlink named `self` pointing to `target`
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:symlink_to(target)
-  utils.tables.is_path_module(target)
+  err.assert_function("Path:symlink_to", function()
+    return utils.tables.is_path_module(target)
+  end, "target is not a Path object.")
   return luv.fs_symlink(tostring(self), tostring(target))
 end
 
@@ -475,7 +487,9 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:hardlink_to(target)
-  utils.tables.is_path_module(target)
+  err.assert_function("Path:hardlink_to", function()
+    return utils.tables.is_path_module(target)
+  end, "target is not a Path object.")
   return luv.fs_link(tostring(self), tostring(target))
 end
 
@@ -483,7 +497,9 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:rename(target)
-  utils.tables.is_path_module(target)
+  err.assert_function("Path:rename", function()
+    return utils.tables.is_path_module(target)
+  end, "target is not a Path object.")
   return luv.fs_rename(tostring(self), tostring(target))
 end
 
@@ -491,7 +507,9 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:move(target)
-  utils.tables.is_path_module(target)
+  err.assert_function("Path:move", function()
+    return utils.tables.is_path_module(target)
+  end, "target is not a Path object.")
   target:unlink()
   return luv.fs_rename(tostring(self), tostring(target))
 end

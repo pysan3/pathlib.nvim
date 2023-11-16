@@ -27,7 +27,9 @@ earliest.**
 Status](https://img.shields.io/github/actions/workflow/status/pysan3/pathlib.nvim/lua_ls-typecheck.yml?style=for-the-badge)](https://github.com/pysan3/pathlib.nvim/actions/workflows/lua_ls-typecheck.yml)
 [![LuaRocks](https://img.shields.io/luarocks/v/pysan3/pathlib.nvim?logo=lua&color=purple&style=for-the-badge)](https://luarocks.org/modules/pysan3/pathlib.nvim)
 
-# TL;DR
+# Usage Example
+
+## Create Path Object
 
 ``` lua
 local Path = require("pathlib.base")
@@ -42,6 +44,46 @@ assert(tostring(foo:parent()) == "folder")
 
 local bar = foo .. "bar.txt" -- create siblings (just like `./<foo>/../bar.txt`)
 assert(tostring(bar) == "folder/bar.txt")
+```
+
+## Create and Manipulate Files / Directories
+
+``` lua
+local luv = vim.loop
+local Path = require("pathlib.base")
+
+local new_file = Path.new("./new/folder/foo.txt")
+new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
+
+-- You don't need above line if you specify recursive = true in `open`; all parents will be created
+local fd, err_name, err_msg = new_file:open("w", Path.permission("rw-r--r--"), true)
+assert(fd ~= nil, "File creation failed. " .. err_name .. err_msg)
+luv.fs_write(fd, "File Content\n")
+luv.fs_close(fd)
+
+local content = new_file:read(0)
+assert(content == "File Content\n")
+
+new_file:copy(new_file .. "bar.txt")
+new_file:symlink_to(new_file .. "baz.txt")
+```
+
+## Scan Directories
+
+``` lua
+-- Continue from above
+for path in new_file:parent():iterdir() do
+    -- path will be [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
+end
+
+-- fs_scandir-like usage
+new_file:parent():iterdir_async(function(path, fs_type) -- callback on all files
+    vim.print(tostring(path), fs_type)
+end, function(error) -- on error
+    vim.print("Error: " .. error)
+end, function(count) -- on exit
+    vim.print("Scan Finished. " .. count .. " files found.")
+end)
 ```
 
 # TODO
