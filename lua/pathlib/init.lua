@@ -20,9 +20,9 @@
 ---<
 ---@brief ]]
 
-IS_WINDOWS = vim.fn.has("win32") == 1 or vim.fn.has("win32unix") == 1
+local const = require("pathlib.const")
 
-if IS_WINDOWS then
+if const.IS_WINDOWS then
   return require("pathlib.windows")
 else
   return require("pathlib.posix")
