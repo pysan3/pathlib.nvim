@@ -387,7 +387,6 @@ end
 
 function Path:is_file(follow_symlinks)
   local stat = self:stat(follow_symlinks)
-  vim.print(string.format([[stat: %s]], vim.inspect(stat)))
   return stat and stat.type == "file"
 end
 
