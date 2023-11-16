@@ -26,6 +26,7 @@ function Path:_init(...)
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
   self.__windows_panic = false
+  local run_resolve = false
   for i, s in ipairs({ ... }) do
     if utils.tables.is_type_of(s, const.path_module_enum.PathlibPath) then
       ---@cast s PathlibPath
@@ -44,8 +45,9 @@ function Path:_init(...)
       local splits = vim.split(path, "/", { plain = true, trimempty = false })
       if #splits == 0 then
         goto continue
+      elseif vim.tbl_contains(splits, "..") then -- deal with '../' later in `self:resolve()`
+        run_resolve = true
       end
-      -- elseif -- TODO: deal with `../`
       self._raw_paths:extend(splits)
     else
       error("PathlibPath(new): ValueError: Invalid type as argument: " .. ("%s (%s: %s)"):format(type(s), i, s))
@@ -53,6 +55,9 @@ function Path:_init(...)
     ::continue::
   end
   self:__clean_paths_list()
+  if run_resolve then
+    self:resolve()
+  end
 end
 
 ---Create a new Path object
@@ -467,15 +472,42 @@ end
 ---Resolves path. Eliminates `../` representation.
 ---Changes internal. (See `Path:resolve_copy` to create new object)
 function Path:resolve()
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  local accum, length = 1, self:len()
+  for _, value in ipairs(self._raw_paths) do
+    if value == ".." and accum > 1 then
+      accum = accum - 1
+    else
+      self._raw_paths[accum] = value
+      accum = accum + 1
+    end
+  end
+  for i = accum, length do
+    self._raw_paths[i] = nil
+  end
 end
 
 ---Resolves path. Eliminates `../` representation and returns a new object. `self` is not changed.
 ---@return PathlibPath
 function Path:resolve_copy()
-  -- TODO: Not Implemented
-  error("Not Implemented")
+  local accum, length, new = 1, self:len(), self:new_all_from()
+  for _, value in ipairs(self._raw_paths) do
+    if value == ".." and accum > 1 then
+      accum = accum - 1
+    else
+      new._raw_paths[accum] = value
+      accum = accum + 1
+    end
+  end
+  for i = accum, length do
+    new._raw_paths[i] = nil
+  end
+  return new
+end
+
+---Get length of `self._raw_paths`. `/foo/bar.txt ==> 3: { "", "foo", "bar.txt" } (root dir counts as 1!!)`
+---@return integer
+function Path:len()
+  return #self._raw_paths
 end
 
 ---Change the permission of the path to `mode`.
