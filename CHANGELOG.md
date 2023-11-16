@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/pysan3/pathlib.nvim/compare/v0.1.7...v0.2.0) (2023-11-16)
+
+
+### Features
+
+* **base:** Implement posix methods ([#10](https://github.com/pysan3/pathlib.nvim/issues/10)) ([c32288e](https://github.com/pysan3/pathlib.nvim/commit/c32288e2d598e248d1dcb9f216be2b287ee52ab0))
+
 ## [0.1.7](https://github.com/pysan3/pathlib.nvim/compare/v0.1.6...v0.1.7) (2023-11-15)
 
 
