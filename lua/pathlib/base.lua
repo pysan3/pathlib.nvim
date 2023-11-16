@@ -735,7 +735,7 @@ function Path:glob(pattern)
   err.assert_function("Path:glob", function()
     return not (str:find([[,]]))
   end, "Path:glob cannot work on path that contains `,` (comma).")
-  local result, i = vim.fn.globpath(str, pattern, false, true), 0
+  local result, i = vim.fn.globpath(str, pattern, false, true), 0 ---@diagnostic disable-line
   return function()
     i = i + 1
     return Path.new(result[i])

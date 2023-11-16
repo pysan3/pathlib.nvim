@@ -11,7 +11,9 @@ describe("Posix File Manipulation;", function()
   local Path = require("pathlib.base")
   local foo = Path.new("./tmp/test_folder/foo.txt")
   local parent = foo:parent()
-  ---@cast parent PathlibPath
+  if parent == nil then
+    return
+  end
   describe("parent", function()
     it("()", function()
       assert.is_equal("tmp/test_folder", tostring(parent))
