@@ -23,9 +23,6 @@ setmetatable(Path, {
 ---Private init method to create a new Path object
 ---@param ... string | PathlibPath # List of string and Path objects
 function Path:_init(...)
-  self._raw_paths = utils.lists.str_list.new()
-  self._drive_name = ""
-  self.__windows_panic = false
   local run_resolve = false
   for i, s in ipairs({ ... }) do
     if utils.tables.is_type_of(s, const.path_module_enum.PathlibPath) then
@@ -64,8 +61,16 @@ end
 ---@param ... string | PathlibPath # List of string and Path objects
 ---@return PathlibPath
 function Path.new(...)
-  local self = setmetatable({}, Path)
+  local self = Path.new_empty()
   self:_init(...)
+  return self
+end
+
+function Path.new_empty()
+  local self = setmetatable({}, Path)
+  self._raw_paths = utils.lists.str_list.new()
+  self._drive_name = ""
+  self.__windows_panic = false
   return self
 end
 
@@ -268,7 +273,7 @@ end
 ---Copy all attributes from `path` to self
 ---@param path PathlibPath
 function Path.new_all_from(path)
-  local self = setmetatable({}, Path)
+  local self = Path.new_empty()
   self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
@@ -382,6 +387,7 @@ end
 
 function Path:is_file(follow_symlinks)
   local stat = self:stat(follow_symlinks)
+  vim.print(string.format([[stat: %s]], vim.inspect(stat)))
   return stat and stat.type == "file"
 end
 
@@ -454,7 +460,7 @@ end
 ---@param recursive boolean # if true, creates parent directories as well
 ---@return boolean success, string? err_name, string? err_msg # true if successfully created.
 function Path:touch(mode, recursive)
-  local fd, err_name, err_msg = self:open("w", mode, recursive)
+  local fd, err_name, err_msg = self:fs_open("w", mode, recursive)
   if fd == nil then
     return false, err_name, err_msg
   else
@@ -592,7 +598,7 @@ end
 ---  `true` will default to 755.
 ---@return integer|nil fd, string? err_name, string? err_msg
 ---@nodiscard
-function Path:open(flags, mode, ensure_dir)
+function Path:fs_open(flags, mode, ensure_dir)
   if ensure_dir == true then
     ensure_dir = const.permission_from_string("rwxr-xr-x")
   end
@@ -609,7 +615,7 @@ end
 ---  `true` will default to 755.
 ---@param callback fun(err: nil|string, fd: integer|nil)
 ---@return uv_fs_t
-function Path:open_async(flags, mode, ensure_dir, callback)
+function Path:fs_open_async(flags, mode, ensure_dir, callback)
   if ensure_dir == true then
     ensure_dir = const.permission_from_string("rwxr-xr-x")
   end
@@ -619,38 +625,56 @@ function Path:open_async(flags, mode, ensure_dir, callback)
   return luv.fs_open(tostring(self), flags, mode, callback)
 end
 
----Call `luv.fs_read`. Use `self:open_async` and `luv.read` to use with callback.
----@param size integer
----@param offset integer|nil
----@return string|nil data, string? err_name, string? err_msg
+---Call `io.read`. Use `self:open_async` and `luv.read` to use with callback.
+---@return string|nil data, string? err_msg
 ---@nodiscard
-function Path:read(size, offset)
-  local flags = luv.constants.O_RDONLY
-  local fd, open_err, open_err_msg = self:open(flags, 0)
-  if fd == nil then
-    return nil, open_err, open_err_msg
+function Path:io_read()
+  local file, err_msg = io.open(tostring(self), "r")
+  if not file then
+    return nil, err_msg
   end
-  local data, err_name, err_msg = luv.fs_read(fd, size, offset)
-  luv.fs_close(fd)
-  return data, err_name, err_msg ---@diagnostic disable-line
+  return file:read("*a")
 end
 
----Call `luv.fs_write`. Use `self:open_async` and `luv.write` to use with callback. If failed, returns nil
----@param mode integer # permission. You may use `Path.permission()` to convert from "rwxrwxrwx". Overwrites S_IWRITE to true.
----@param data uv.aliases.buffer
----@param offset integer|nil
----@return integer|nil bytes, string? err_name, string? err_msg
+---Call `io.read` with byte read mode. Use `self:open_async` and `luv.read` to use with callback.
+---@return string|nil data, string? err_msg
 ---@nodiscard
-function Path:write(mode, data, offset)
-  local flags = luv.constants.O_CREAT + luv.constants.O_RDWR + luv.constants.O_TRUNC
-  local fd, open_err, open_err_msg =
-    self:open(flags, const.bitoper(mode, const.fs_permission_enum.S_IWRITE, const.bitops.OR))
-  if fd == nil then
-    return nil, open_err, open_err_msg
+function Path:io_read_bytes()
+  local file, err_msg = io.open(tostring(self), "rb")
+  if not file then
+    return nil, err_msg
   end
-  local bytes, err_name, err_msg = luv.fs_write(fd, data, offset)
-  luv.fs_close(fd)
-  return bytes, err_name, err_msg ---@diagnostic disable-line
+  return file:read("*a")
+end
+
+---Call `io.write`. Use `self:open_async` and `luv.write` to use with callback. If failed, returns nil
+---@param data string # content
+---@return boolean success, string? err_msg
+---@nodiscard
+function Path:io_write(data)
+  local file, err_msg = io.open(tostring(self), "w")
+  if not file then
+    return false, err_msg
+  end
+  local result = file:write(data)
+  file:flush()
+  file:close()
+  return result ---@diagnostic disable-line
+end
+
+---Call `io.write` with byte write mode. Use `self:open_async` and `luv.write` to use with callback. If failed, returns nil
+---@param data string # content
+---@return boolean success, string? err_msg
+---@nodiscard
+function Path:io_write_bytes(data)
+  local file, err_msg = io.open(tostring(self), "w")
+  if not file then
+    return false, err_msg
+  end
+  local result = file:write(tostring(data))
+  file:flush()
+  file:close()
+  return result ---@diagnostic disable-line
 end
 
 ---Alias to `vim.fs.dir` but returns PathlibPath objects.

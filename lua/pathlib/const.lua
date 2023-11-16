@@ -1,5 +1,7 @@
 local M = {}
 
+M.IS_WINDOWS = vim.fn.has("win32") == 1 or vim.fn.has("win32unix") == 1
+
 ---@enum PathlibBitOps
 M.bitops = {
   OR = 1,
@@ -88,9 +90,9 @@ M.check_permission_string = function(mode_string)
     return false
   end
   local modes = { "r", "w", "x" }
-  local index = 1
+  local index = 0
   for value in mode_string:gmatch(".") do
-    if value ~= "-" or modes[index % 3] ~= value then
+    if value ~= "-" and modes[index % 3 + 1] ~= value then
       return false
     end
     index = index + 1
