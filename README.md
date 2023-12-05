@@ -2,18 +2,10 @@
   <h1>🐍 pathlib.nvim</h1>
   <p>
     <strong>
-      OS Independent, ultimate solution to path handling in neovim.
+      OS independent, ultimate solution to path handling in neovim.
     </strong>
   </p>
 </div>
-
-# 🐍 `pathlib.nvim`
-
-This plugin aims to decrease the difficulties of path management across
-mutliple OSs in neovim. The plugin API is heavily inspired by Python's
-`pathlib.Path` with tweaks to fit neovim usage. It is mainly used in
-[neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) but it
-is very simple and portable to be used in any plugin.
 
 ❗ **This is still very WIP. Will be available in February at the
 earliest.**
@@ -26,6 +18,14 @@ earliest.**
 [![Build
 Status](https://img.shields.io/github/actions/workflow/status/pysan3/pathlib.nvim/lua_ls-typecheck.yml?style=for-the-badge)](https://github.com/pysan3/pathlib.nvim/actions/workflows/lua_ls-typecheck.yml)
 [![LuaRocks](https://img.shields.io/luarocks/v/pysan3/pathlib.nvim?logo=lua&color=purple&style=for-the-badge)](https://luarocks.org/modules/pysan3/pathlib.nvim)
+
+# 🐍 `pathlib.nvim`
+
+This plugin aims to decrease the difficulties of path management across
+mutliple OSs in neovim. The plugin API is heavily inspired by Python's
+`pathlib.Path` with tweaks to fit neovim usage. It is mainly used in
+[neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) but it
+is very simple and portable to be used in any plugin.
 
 # Usage Example
 
