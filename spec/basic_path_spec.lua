@@ -17,7 +17,7 @@ describe("Simple PathlibPath test;", function()
     local Path = require("pathlib.base")
     local utils = require("pathlib.utils")
 
-    it("signle args", function()
+    it("single argument", function()
       local path = Path.new(".")
       assert.is_true(utils.tables.is_type_of(path, "PathlibPath"))
       assert.are_same(path._raw_paths, { "." })
