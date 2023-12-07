@@ -4,28 +4,30 @@ local utils = require("pathlib.utils")
 local const = require("pathlib.const")
 local err = require("pathlib.utils.errors")
 
+---@alias PathlibString string # Specific annotation for result of `tostring(Path)`
+
 ---@class PathlibPath
 ---@field _raw_paths PathlibStrList
 ---@field _drive_name string # Drive name for Windows path. ("C:", "D:")
 ---@field __windows_panic boolean # Windows paths shouldn't be passed to this type, but when it is.
-local Path = {
+---@field __string_cache string? # Cache result of `tostring(self)`.
+local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
-}
-Path.__index = Path
-setmetatable(Path, {
-  ---@return PathlibPath
+  __string_cache = nil,
+}, {
   __call = function(cls, ...)
-    return cls.new(...)
+    return cls.new(cls, ...)
   end,
 })
+Path.__index = Path
 
 ---Private init method to create a new Path object
 ---@param ... string | PathlibPath # List of string and Path objects
 function Path:_init(...)
   local run_resolve = false
   for i, s in ipairs({ ... }) do
-    if utils.tables.is_type_of(s, const.path_module_enum.PathlibPath) then
+    if utils.tables.is_path_module(s) then
       ---@cast s PathlibPath
       if i == 1 then
         self:copy_all_from(s)
@@ -61,6 +63,16 @@ end
 ---@param ... string | PathlibPath # List of string and Path objects
 ---@return PathlibPath
 function Path.new(...)
+  for _, s in ipairs({ ... }) do -- find first arg that is PathlibWindowsPath or PathlibPosixPath
+    if utils.tables.is_path_module(s) then
+      ---@cast s PathlibPath
+      if utils.tables.is_type_of(s, const.path_module_enum.PathlibWindows) then
+        return require("pathlib.windows").new(...)
+      elseif utils.tables.is_type_of(s, const.path_module_enum.PathlibPosix) then
+        return require("pathlib.posix").new(...)
+      end
+    end
+  end
   local self = Path.new_empty()
   self:_init(...)
   return self
@@ -71,6 +83,7 @@ function Path.new_empty()
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
   self.__windows_panic = false
+  self.__string_cache = nil
   return self
 end
 
@@ -78,8 +91,9 @@ end
 ---@param ... string
 ---@return PathlibPath
 function Path:new_child(...)
-  local new = Path.new_all_from(self)
+  local new = self.new_all_from(self)
   new._raw_paths:extend({ ... })
+  new.__string_cache = nil
   return new
 end
 
@@ -87,10 +101,11 @@ end
 ---@param name string
 ---@return PathlibPath
 function Path:new_child_unpack(name)
-  local new = Path.new_all_from(self)
+  local new = self.new_all_from(self)
   for sub in name:gmatch("[/\\]") do
     new._raw_paths:append(sub)
   end
+  new.__string_cache = nil
   return new
 end
 
@@ -115,6 +130,7 @@ function Path:__clean_paths_list()
   if #self._raw_paths > 1 and self._raw_paths[1] == "." then
     self._raw_paths:shift()
   end
+  self.__string_cache = nil
 end
 
 ---Compare equality of path objects
@@ -170,7 +186,7 @@ function Path:__le(other)
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath
+---@param other PathlibPath | string
 ---@return PathlibPath
 function Path:__div(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
@@ -205,22 +221,35 @@ end
 ---Convert path object to string
 ---@return string
 function Path:__tostring()
-  local path_str = table.concat(self._raw_paths, self.sep_str):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
-  if self:is_absolute() then
-    path_str = self._drive_name .. path_str
+  if not self.__string_cache then
+    self.__string_cache = (
+      table.concat(self._raw_paths, self.sep_str):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
+    )
+    if self:is_absolute() and self._drive_name:len() > 0 then
+      self.__string_cache = self._drive_name .. self.__string_cache
+    end
   end
-  return path_str
+  if self.__string_cache:len() == 0 then
+    return "."
+  end
+  return self.__string_cache
+end
+
+---Alias to `tostring(self)`
+---@return string
+function Path:tostring()
+  return tostring(self)
 end
 
 ---Return the group name of the file GID.
 function Path:basename()
-  return fs.basename(tostring(self))
+  return fs.basename(self:tostring())
 end
 
 ---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
 ---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
 function Path:suffix()
-  local path_str = tostring(self)
+  local path_str = self:tostring()
   local without_ext = vim.fn.fnamemodify(path_str, ":r")
   return path_str:sub(without_ext:len() + 1) or ""
 end
@@ -228,14 +257,14 @@ end
 ---Return the group name of the file GID. Same as `self:modify(":t:r")`.
 ---@return string # stem of path. (src/version.c -> "version")
 function Path:stem()
-  return vim.fn.fnamemodify(tostring(self), ":t:r")
+  return vim.fn.fnamemodify(self:tostring(), ":t:r")
 end
 
 ---Return parent directory of itself. If parent does not exist, returns nil.
 ---@return PathlibPath?
 function Path:parent()
   if #self._raw_paths >= 2 then
-    return Path.new_from(self, 1)
+    return self.new_from(self, 1)
   else
     return nil
   end
@@ -258,25 +287,25 @@ end
 function Path:as_uri()
   assert(self:is_absolute(), "Relative paths cannot be expressed as a file URI.")
   local path = self:is_absolute() and self or self:absolute()
-  return vim.uri_from_fname(tostring(path))
+  return vim.uri_from_fname(path:tostring())
 end
 
 ---Copy all attributes from `path` to self
 ---@param path PathlibPath
 function Path:copy_all_from(path)
-  self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
   self._raw_paths:filter_internal(nil, 2)
+  self.__string_cache = nil
 end
 
 ---Copy all attributes from `path` to self
 ---@param path PathlibPath
 function Path.new_all_from(path)
   local self = Path.new_empty()
-  self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
+  self.__string_cache = nil
   return self
 end
 
@@ -291,6 +320,7 @@ function Path.new_from(path, trim_num)
   for _ = 1, trim_num do
     self._raw_paths:pop()
   end
+  self.__string_cache = nil
   return self
 end
 
@@ -313,12 +343,14 @@ end
 ---Returns whether registered path is absolute
 ---@return boolean
 function Path:is_absolute()
-  local starts_with_slash = #self._raw_paths >= 1 and self._raw_paths[1] == ""
-  if utils.tables.is_type_of(self, const.path_module_enum.PathlibWindows) then
-    return self._drive_name:len() == 2 and starts_with_slash
-  else
-    return starts_with_slash
-  end
+  error("PathlibPath: This function is an abstract method.")
+end
+
+---Return whether the file is treated as a _hidden_ file.
+---Posix: basename starts with `.`, Windows: calls `GetFileAttributesA`.
+---@return boolean
+function Path:is_hidden()
+  error("PathlibPath: This function is an abstract method.")
 end
 
 ---Returns whether registered path is relative
@@ -328,14 +360,14 @@ function Path:is_relative()
 end
 
 function Path:as_posix()
-  return tostring(self)
+  return self:tostring()
 end
 
 function Path:absolute()
   if self:is_absolute() then
     return self
   else
-    return Path.new(vim.fn.getcwd(), self)
+    return self.new(vim.fn.getcwd(), self)
   end
 end
 
@@ -343,7 +375,7 @@ end
 ---@param mods string # filename-modifiers passed to `vim.fn.fnamemodify`
 ---@return string # result of `vim.fn.fnamemodify(tostring(self), mods)`
 function Path:modify(mods)
-  return vim.fn.fnamemodify(tostring(self), mods)
+  return vim.fn.fnamemodify(self:tostring(), mods)
 end
 
 ---Call `fs_stat` with callback. This plugin will not help you here.
@@ -352,9 +384,9 @@ end
 function Path:stat_async(follow_symlinks, callback)
   err.check_and_raise_typeerror("Path:stat_async", callback, "function")
   if follow_symlinks then
-    luv.fs_stat(tostring(self), callback)
+    luv.fs_stat(self:tostring(), callback)
   else
-    luv.fs_lstat(tostring(self), callback) ---@diagnostic disable-line
+    luv.fs_lstat(self:tostring(), callback) ---@diagnostic disable-line
   end
 end
 
@@ -365,9 +397,9 @@ end
 ---@nodiscard
 function Path:stat(follow_symlinks)
   if follow_symlinks then
-    return luv.fs_stat(tostring(self))
+    return luv.fs_stat(self:tostring())
   else
-    return luv.fs_lstat(tostring(self)) ---@diagnostic disable-line
+    return luv.fs_lstat(self:tostring()) ---@diagnostic disable-line
   end
 end
 
@@ -451,7 +483,7 @@ function Path:mkdir(mode, recursive)
       end
     end
   end
-  luv.fs_mkdir(tostring(self), mode)
+  luv.fs_mkdir(self:tostring(), mode)
 end
 
 ---Make file. When `recursive` is true, will create parent dirs like shell command `mkdir -p`
@@ -475,7 +507,7 @@ function Path:copy(target)
   err.assert_function("Path:copy", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
-  return luv.fs_copyfile(tostring(self), tostring(target))
+  return luv.fs_copyfile(self:tostring(), target:tostring())
 end
 
 ---Create a simlink named `self` pointing to `target`
@@ -485,7 +517,7 @@ function Path:symlink_to(target)
   err.assert_function("Path:symlink_to", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
-  return luv.fs_symlink(tostring(self), tostring(target))
+  return luv.fs_symlink(self:tostring(), target:tostring())
 end
 
 ---Create a hardlink named `self` pointing to `target`
@@ -495,7 +527,7 @@ function Path:hardlink_to(target)
   err.assert_function("Path:hardlink_to", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
-  return luv.fs_link(tostring(self), tostring(target))
+  return luv.fs_link(self:tostring(), target:tostring())
 end
 
 ---Rename `self` to `target`. If `target` exists, fails with false. Ref: `Path:move`
@@ -505,7 +537,7 @@ function Path:rename(target)
   err.assert_function("Path:rename", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
-  return luv.fs_rename(tostring(self), tostring(target))
+  return luv.fs_rename(self:tostring(), target:tostring())
 end
 
 ---Move `self` to `target`. Overwrites `target` if exists. Ref: `Path:rename`
@@ -516,7 +548,7 @@ function Path:move(target)
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   target:unlink()
-  return luv.fs_rename(tostring(self), tostring(target))
+  return luv.fs_rename(self:tostring(), target:tostring())
 end
 
 ---@deprecated Use `Path:move` instead.
@@ -540,6 +572,8 @@ function Path:resolve()
   for i = accum, length do
     self._raw_paths[i] = nil
   end
+  self.__string_cache = nil
+  return self
 end
 
 ---Resolves path. Eliminates `../` representation and returns a new object. `self` is not changed.
@@ -557,6 +591,7 @@ function Path:resolve_copy()
   for i = accum, length do
     new._raw_paths[i] = nil
   end
+  new.__string_cache = nil
   return new
 end
 
@@ -572,22 +607,22 @@ end
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:chmod(mode, follow_symlinks)
   if follow_symlinks then
-    return luv.fs_chmod(tostring(self:resolve()), mode)
+    return luv.fs_chmod(self:resolve():tostring(), mode)
   else
-    return luv.fs_chmod(tostring(self), mode)
+    return luv.fs_chmod(self:tostring(), mode)
   end
 end
 
 ---Remove this file or link. If the path is a directory, use `Path:rmdir()` instead.
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:unlink()
-  return luv.fs_unlink(tostring(self))
+  return luv.fs_unlink(self:tostring())
 end
 
 ---Remove this directory.  The directory must be empty.
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:rmdir()
-  return luv.fs_rmdir(tostring(self))
+  return luv.fs_rmdir(self:tostring())
 end
 
 ---Call `luv.fs_open`. Use `self:open_async` to use with callback.
@@ -604,7 +639,7 @@ function Path:fs_open(flags, mode, ensure_dir)
   if type(ensure_dir) == "integer" then
     self:parent():mkdir(ensure_dir, true)
   end
-  return luv.fs_open(tostring(self), flags, mode)
+  return luv.fs_open(self:tostring(), flags, mode)
 end
 
 ---Call `luv.fs_open` with callback. Use `self:open` for sync version.
@@ -621,14 +656,14 @@ function Path:fs_open_async(flags, mode, ensure_dir, callback)
   if type(ensure_dir) == "integer" then
     self:parent():mkdir(ensure_dir, true)
   end
-  return luv.fs_open(tostring(self), flags, mode, callback)
+  return luv.fs_open(self:tostring(), flags, mode, callback)
 end
 
 ---Call `io.read`. Use `self:open_async` and `luv.read` to use with callback.
 ---@return string|nil data, string? err_msg
 ---@nodiscard
 function Path:io_read()
-  local file, err_msg = io.open(tostring(self), "r")
+  local file, err_msg = io.open(self:tostring(), "r")
   if not file then
     return nil, err_msg
   end
@@ -639,7 +674,7 @@ end
 ---@return string|nil data, string? err_msg
 ---@nodiscard
 function Path:io_read_bytes()
-  local file, err_msg = io.open(tostring(self), "rb")
+  local file, err_msg = io.open(self:tostring(), "rb")
   if not file then
     return nil, err_msg
   end
@@ -651,7 +686,7 @@ end
 ---@return boolean success, string? err_msg
 ---@nodiscard
 function Path:io_write(data)
-  local file, err_msg = io.open(tostring(self), "w")
+  local file, err_msg = io.open(self:tostring(), "w")
   if not file then
     return false, err_msg
   end
@@ -666,7 +701,7 @@ end
 ---@return boolean success, string? err_msg
 ---@nodiscard
 function Path:io_write_bytes(data)
-  local file, err_msg = io.open(tostring(self), "w")
+  local file, err_msg = io.open(self:tostring(), "w")
   if not file then
     return false, err_msg
   end
@@ -688,7 +723,7 @@ end
 ---        "type" is one of the following:
 ---        "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
 function Path:iterdir(opts)
-  local generator = fs.dir(tostring(self), opts)
+  local generator = fs.dir(self:tostring(), opts)
   return function()
     local name, fs_type = generator()
     if name ~= nil then
@@ -703,7 +738,7 @@ end
 ---@param on_error? fun(err: string) # function called when `luv.fs_scandir` fails
 ---@param on_exit? fun(count: integer) # function called after the scan has finished. `count` gives the number of children
 function Path:iterdir_async(callback, on_error, on_exit)
-  luv.fs_scandir(tostring(self), function(e, handler)
+  luv.fs_scandir(self:tostring(), function(e, handler)
     if e or not handler then
       if on_error and e then
         on_error(e)
@@ -731,14 +766,14 @@ end
 ---@param pattern string # glob pattern expression
 ---@return fun(): PathlibPath # iterator of results.
 function Path:glob(pattern)
-  local str = tostring(self)
+  local str = self:tostring()
   err.assert_function("Path:glob", function()
     return not (str:find([[,]]))
   end, "Path:glob cannot work on path that contains `,` (comma).")
   local result, i = vim.fn.globpath(str, pattern, false, true), 0 ---@diagnostic disable-line
   return function()
     i = i + 1
-    return Path.new(result[i])
+    return self.new(result[i])
   end
 end
 
