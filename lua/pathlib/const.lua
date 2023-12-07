@@ -15,7 +15,7 @@ local has_bit, bit = pcall(require, "bit")
 ---@param b integer
 ---@param oper PathlibBitOps
 ---@return integer
-M.bitoper = function(a, b, oper)
+function M.bitoper(a, b, oper)
   if has_bit then
     if oper == M.bitops.AND then
       return bit.band(a, b)
@@ -44,14 +44,14 @@ M.path_module_enum = {
 ---Return the portion of the file's mode that can be set by os.chmod()
 ---@param mode integer
 ---@return integer
-M.fs_imode = function(mode)
+function M.fs_imode(mode)
   return M.bitoper(mode, tonumber("0o7777", 8), M.bitops.AND)
 end
 
 ---Return the portion of the file's mode that can be set by os.chmod()
 ---@param mode integer
 ---@return integer
-M.fs_ifmt = function(mode)
+function M.fs_ifmt(mode)
   return M.bitoper(mode, tonumber("0o170000", 8), M.bitops.AND)
 end
 
@@ -92,7 +92,7 @@ M.fs_permission_enum = {
 ---Check if `mode_string` is a valid representation of permission string. (Eg `rwxrwxrwx`)
 ---@param mode_string string # "rwxrwxrwx" or '-' where permission not allowed
 ---@return boolean
-M.check_permission_string = function(mode_string)
+function M.check_permission_string(mode_string)
   if type(mode_string) ~= "string" then
     return false
   end
@@ -113,7 +113,7 @@ end
 ---Return integer of permission representing. Assert `M.check_permission_string` beforehand or this function will not work as expected.
 ---@param mode_string string
 ---@return integer
-M.permission_from_string = function(mode_string)
+function M.permission_from_string(mode_string)
   local result = 0
   for value in mode_string:gmatch(".") do
     result = result * 2
