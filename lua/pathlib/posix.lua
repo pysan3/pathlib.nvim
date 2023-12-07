@@ -1,6 +1,7 @@
 local Path = require("pathlib.base")
+local errors = require("pathlib.utils.errors")
 
----@class PathlibPosixPath
+---@class PathlibPosixPath : PathlibPath
 local PosixPath = {}
 PosixPath.__index = PosixPath
 setmetatable(PosixPath, {
@@ -14,5 +15,11 @@ setmetatable(PosixPath, {
 
 function PosixPath:_init(...)
   Path._init(self, ...)
-  -- TODO: PosixPath specific init procs
+  if self.__windows_panic then
+    errors.multiline_error(
+      "RuntimeError",
+      ("'%s' looks like a Windows path but you are using PosixPath."):format(self),
+      [[If this is intended, use `require("pathlib.windows")` instead.]]
+    )
+  end
 end

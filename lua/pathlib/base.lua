@@ -4,6 +4,8 @@ local utils = require("pathlib.utils")
 local const = require("pathlib.const")
 local err = require("pathlib.utils.errors")
 
+---@alias PathlibString string # Specific annotation for result of `tostring(Path)`
+
 ---@class PathlibPath
 ---@field _raw_paths PathlibStrList
 ---@field _drive_name string # Drive name for Windows path. ("C:", "D:")
@@ -170,7 +172,7 @@ function Path:__le(other)
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath
+---@param other PathlibPath | string
 ---@return PathlibPath
 function Path:__div(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
