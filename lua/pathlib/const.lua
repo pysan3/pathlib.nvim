@@ -8,6 +8,7 @@ M.bitops = {
   XOR = 3,
   AND = 4,
 }
+local has_bit, bit = pcall(require, "bit")
 
 ---Bitwise operator for uint32
 ---@param a integer
@@ -15,6 +16,15 @@ M.bitops = {
 ---@param oper PathlibBitOps
 ---@return integer
 M.bitoper = function(a, b, oper)
+  if has_bit then
+    if oper == M.bitops.AND then
+      return bit.band(a, b)
+    elseif oper == M.bitops.OR then
+      return bit.bor(a, b)
+    elseif oper == M.bitops.XOR then
+      return bit.bxor(a, b)
+    end
+  end
   local s
   local r, m = 0, 2 ^ 31
   repeat
