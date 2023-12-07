@@ -1,9 +1,5 @@
 local M = {}
 
-function M.is_abstract()
-  error("PathlibPath: This function is an abstract method.", 2)
-end
-
 ---Raise error with multiline message.
 ---@param error_t string # Error Type
 ---@param ... string # Table of each line of the error message.

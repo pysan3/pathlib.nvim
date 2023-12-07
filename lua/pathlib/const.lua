@@ -34,6 +34,30 @@ function M.bitoper(a, b, oper)
   return r
 end
 
+---Bitwise AND for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.band(a, b)
+  return M.bitoper(a, b, M.bitops.AND)
+end
+
+---Bitwise OR for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.bor(a, b)
+  return M.bitoper(a, b, M.bitops.OR)
+end
+
+---Bitwise XOR for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.bxor(a, b)
+  return M.bitoper(a, b, M.bitops.XOR)
+end
+
 ---@enum PathlibPathEnum
 M.path_module_enum = {
   PathlibPath = "PathlibPath",
@@ -45,14 +69,14 @@ M.path_module_enum = {
 ---@param mode integer
 ---@return integer
 function M.fs_imode(mode)
-  return M.bitoper(mode, tonumber("0o7777", 8), M.bitops.AND)
+  return M.band(mode, tonumber("0o7777", 8))
 end
 
 ---Return the portion of the file's mode that can be set by os.chmod()
 ---@param mode integer
 ---@return integer
 function M.fs_ifmt(mode)
-  return M.bitoper(mode, tonumber("0o170000", 8), M.bitops.AND)
+  return M.band(mode, tonumber("0o170000", 8))
 end
 
 ---@enum PathlibModeEnum
@@ -123,5 +147,22 @@ function M.permission_from_string(mode_string)
   end
   return result
 end
+
+---@enum PathlibGitStatusEnum
+M.git_status = {
+  UNMODIFIED = " ",
+  MODIFIED = "M",
+  FILE_TYPE_CHANGED = "T", -- (regular file, symbolic link or submodule)
+  ADDED = "A",
+  DELETED = "D",
+  RENAMED = "R",
+  COPIED = "C", -- (if config option status.renames is set to "copies")
+  UPDATED_BUT_UNMERGED = "U",
+  UNTRACKED = "?",
+  IGNORED = "!",
+}
+---@alias PathlibGitStatus { [1]?: PathlibGitStatusEnum, [2]?: PathlibGitStatusEnum }
+
+M.has_ffi = (pcall(require, "ffi"))
 
 return M

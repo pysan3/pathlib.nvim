@@ -11,25 +11,23 @@ local err = require("pathlib.utils.errors")
 ---@field _drive_name string # Drive name for Windows path. ("C:", "D:")
 ---@field __windows_panic boolean # Windows paths shouldn't be passed to this type, but when it is.
 ---@field __string_cache string? # Cache result of `tostring(self)`.
-local Path = {
+local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
   __string_cache = nil,
-}
-Path.__index = Path
-setmetatable(Path, {
-  ---@return PathlibPath
+}, {
   __call = function(cls, ...)
-    return cls.new(...)
+    return cls.new(cls, ...)
   end,
 })
+Path.__index = Path
 
 ---Private init method to create a new Path object
 ---@param ... string | PathlibPath # List of string and Path objects
 function Path:_init(...)
   local run_resolve = false
   for i, s in ipairs({ ... }) do
-    if utils.tables.is_type_of(s, const.path_module_enum.PathlibPath) then
+    if utils.tables.is_path_module(s) then
       ---@cast s PathlibPath
       if i == 1 then
         self:copy_all_from(s)
@@ -65,6 +63,16 @@ end
 ---@param ... string | PathlibPath # List of string and Path objects
 ---@return PathlibPath
 function Path.new(...)
+  for _, s in ipairs({ ... }) do -- find first arg that is PathlibWindowsPath or PathlibPosixPath
+    if utils.tables.is_path_module(s) then
+      ---@cast s PathlibPath
+      if utils.tables.is_type_of(s, const.path_module_enum.PathlibWindows) then
+        return require("pathlib.windows").new(...)
+      elseif utils.tables.is_type_of(s, const.path_module_enum.PathlibPosix) then
+        return require("pathlib.posix").new(...)
+      end
+    end
+  end
   local self = Path.new_empty()
   self:_init(...)
   return self
@@ -83,7 +91,7 @@ end
 ---@param ... string
 ---@return PathlibPath
 function Path:new_child(...)
-  local new = Path.new_all_from(self)
+  local new = self.new_all_from(self)
   new._raw_paths:extend({ ... })
   new.__string_cache = nil
   return new
@@ -93,7 +101,7 @@ end
 ---@param name string
 ---@return PathlibPath
 function Path:new_child_unpack(name)
-  local new = Path.new_all_from(self)
+  local new = self.new_all_from(self)
   for sub in name:gmatch("[/\\]") do
     new._raw_paths:append(sub)
   end
@@ -214,11 +222,15 @@ end
 ---@return string
 function Path:__tostring()
   if not self.__string_cache then
-    self.__string_cache =
+    self.__string_cache = (
       table.concat(self._raw_paths, self.sep_str):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
+    )
     if self:is_absolute() and self._drive_name:len() > 0 then
       self.__string_cache = self._drive_name .. self.__string_cache
     end
+  end
+  if self.__string_cache:len() == 0 then
+    return "."
   end
   return self.__string_cache
 end
@@ -252,7 +264,7 @@ end
 ---@return PathlibPath?
 function Path:parent()
   if #self._raw_paths >= 2 then
-    return Path.new_from(self, 1)
+    return self.new_from(self, 1)
   else
     return nil
   end
@@ -281,7 +293,6 @@ end
 ---Copy all attributes from `path` to self
 ---@param path PathlibPath
 function Path:copy_all_from(path)
-  self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
   self._raw_paths:filter_internal(nil, 2)
@@ -292,7 +303,6 @@ end
 ---@param path PathlibPath
 function Path.new_all_from(path)
   local self = Path.new_empty()
-  self.mytype = path.mytype
   self._drive_name = path._drive_name
   self._raw_paths:extend(path._raw_paths)
   self.__string_cache = nil
@@ -333,12 +343,14 @@ end
 ---Returns whether registered path is absolute
 ---@return boolean
 function Path:is_absolute()
-  local starts_with_slash = #self._raw_paths >= 1 and self._raw_paths[1] == ""
-  if utils.tables.is_type_of(self, const.path_module_enum.PathlibWindows) then
-    return self._drive_name:len() == 2 and starts_with_slash
-  else
-    return starts_with_slash
-  end
+  error("PathlibPath: This function is an abstract method.")
+end
+
+---Return whether the file is treated as a _hidden_ file.
+---Posix: basename starts with `.`, Windows: calls `GetFileAttributesA`.
+---@return boolean
+function Path:is_hidden()
+  error("PathlibPath: This function is an abstract method.")
 end
 
 ---Returns whether registered path is relative
@@ -355,7 +367,7 @@ function Path:absolute()
   if self:is_absolute() then
     return self
   else
-    return Path.new(vim.fn.getcwd(), self)
+    return self.new(vim.fn.getcwd(), self)
   end
 end
 
@@ -761,7 +773,7 @@ function Path:glob(pattern)
   local result, i = vim.fn.globpath(str, pattern, false, true), 0 ---@diagnostic disable-line
   return function()
     i = i + 1
-    return Path.new(result[i])
+    return self.new(result[i])
   end
 end
 
