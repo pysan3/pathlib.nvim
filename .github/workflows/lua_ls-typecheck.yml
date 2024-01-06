@@ -22,10 +22,10 @@ jobs:
           path: "deps/neodev.nvim"
 
       - name: Print Filetree
-        run: ls -la && ls -la deps
+        run: pwd && ls -la && ls -la deps
 
       - name: Type Check Code Base
-        uses: mrcjkb/lua-typecheck-action@v0.1.2
+        uses: mrcjkb/lua-typecheck-action@v0.2.1
         with:
           configpath: .github/workflows/.luarc.json
           directories: |
