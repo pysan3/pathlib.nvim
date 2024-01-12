@@ -2,7 +2,7 @@ local luv = vim.loop
 local fs = vim.fs
 local utils = require("pathlib.utils")
 local const = require("pathlib.const")
-local err = require("pathlib.utils.errors")
+local errs = require("pathlib.utils.errors")
 
 ---@alias PathlibString string # Specific annotation for result of `tostring(Path)`
 
@@ -14,7 +14,6 @@ local err = require("pathlib.utils.errors")
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
-  __string_cache = nil,
 }, {
   __call = function(cls, ...)
     return cls.new(cls, ...)
@@ -80,11 +79,16 @@ end
 
 function Path.new_empty()
   local self = setmetatable({}, Path)
+  self:to_empty()
+  return self
+end
+
+function Path:to_empty()
+  self.git_ignored = false
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
   self.__windows_panic = false
   self.__string_cache = nil
-  return self
 end
 
 ---Create a new Path object as self's child.
@@ -119,7 +123,7 @@ end
 ---@param mode_string string
 ---@return integer
 function Path.permission(mode_string)
-  err.assert_function("Path.permission", function()
+  errs.assert_function("Path.permission", function()
     return const.check_permission_string(mode_string)
   end, "mode_string must be in the form of `rwxrwxrwx` or `-` otherwise.")
   return const.permission_from_string(mode_string)
@@ -138,7 +142,7 @@ end
 ---@return boolean
 function Path:__eq(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
-    err.value_error("__eq", other)
+    errs.value_error("__eq", other)
   end
   if self._drive_name ~= other._drive_name then
     return false
@@ -159,7 +163,7 @@ end
 ---@return boolean
 function Path:__lt(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
-    err.value_error("__lt", other)
+    errs.value_error("__lt", other)
   end
   if self._drive_name ~= other._drive_name then
     error(
@@ -180,7 +184,7 @@ end
 ---@return boolean
 function Path:__le(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
-    err.value_error("__le", other)
+    errs.value_error("__le", other)
   end
   return (self < other) or (self == other)
 end
@@ -191,7 +195,7 @@ end
 function Path:__div(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
     -- one of objects must be a path object
-    err.value_error("__div", other)
+    errs.value_error("__div", other)
   end
   return self.new(self, other)
 end
@@ -203,7 +207,7 @@ end
 function Path:__concat(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
     -- one of objects must be a path object
-    err.value_error("__concat", other)
+    errs.value_error("__concat", other)
   end
   return self.new(self:parent(), other)
 end
@@ -504,7 +508,7 @@ end
 ---@param target PathlibPath # `self` will be copied to `target`
 ---@return boolean|nil success, string? err_name, string? err_msg # true if successfully created.
 function Path:copy(target)
-  err.assert_function("Path:copy", function()
+  errs.assert_function("Path:copy", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   return luv.fs_copyfile(self:tostring(), target:tostring())
@@ -514,7 +518,7 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:symlink_to(target)
-  err.assert_function("Path:symlink_to", function()
+  errs.assert_function("Path:symlink_to", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   return luv.fs_symlink(self:tostring(), target:tostring())
@@ -524,7 +528,7 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:hardlink_to(target)
-  err.assert_function("Path:hardlink_to", function()
+  errs.assert_function("Path:hardlink_to", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   return luv.fs_link(self:tostring(), target:tostring())
@@ -534,7 +538,7 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:rename(target)
-  err.assert_function("Path:rename", function()
+  errs.assert_function("Path:rename", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   return luv.fs_rename(self:tostring(), target:tostring())
@@ -544,7 +548,7 @@ end
 ---@param target PathlibPath
 ---@return boolean|nil success, string? err_name, string? err_msg
 function Path:move(target)
-  err.assert_function("Path:move", function()
+  errs.assert_function("Path:move", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
   target:unlink()
@@ -767,7 +771,7 @@ end
 ---@return fun(): PathlibPath # iterator of results.
 function Path:glob(pattern)
   local str = self:tostring()
-  err.assert_function("Path:glob", function()
+  errs.assert_function("Path:glob", function()
     return not (str:find([[,]]))
   end, "Path:glob cannot work on path that contains `,` (comma).")
   local result, i = vim.fn.globpath(str, pattern, false, true), 0 ---@diagnostic disable-line

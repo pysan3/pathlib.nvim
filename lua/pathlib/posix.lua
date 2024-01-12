@@ -77,10 +77,7 @@ end
 
 function PosixPath.new_empty()
   local self = setmetatable({}, PosixPath) ---@diagnostic disable-line
-  self._raw_paths = utils.lists.str_list.new()
-  self._drive_name = ""
-  self.__windows_panic = false
-  self.__string_cache = nil
+  self:to_empty()
   return self
 end
 
