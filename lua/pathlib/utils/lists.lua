@@ -20,15 +20,25 @@ function str_list.new()
 end
 
 ---@param value string
-function str_list:append(value)
+---@param ignore_empties boolean? # If true, does not add entries that are empty.
+function str_list:append(value, ignore_empties)
+  if ignore_empties and value == "" then
+    return
+  end
   self[#self + 1] = value
 end
 
 ---@param list PathlibStrList
-function str_list:extend(list)
+---@param ignore_empties boolean? # If true, does not add entries that are empty.
+function str_list:extend(list, ignore_empties)
   local start_from = #self
+  local ignores = 0
   for index, value in ipairs(list) do
-    self[start_from + index] = value
+    if ignore_empties and value == "" then
+      ignores = ignores + 1
+    else
+      self[start_from + index - ignores] = value
+    end
   end
 end
 

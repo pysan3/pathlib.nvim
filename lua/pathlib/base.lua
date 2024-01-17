@@ -32,7 +32,7 @@ function Path:_init(...)
         self:copy_all_from(s)
       else
         assert(not s:is_absolute(), ("new: invalid root path object in %sth argument: %s"):format(i, s))
-        self._raw_paths:extend(s._raw_paths)
+        self._raw_paths:extend(s._raw_paths, true)
       end
     elseif type(s) == "string" then
       local path = fs.normalize(s, { expand_env = true }):gsub([[^%./]], ""):gsub([[/%./]], "/"):gsub([[//]], "/")
@@ -46,7 +46,7 @@ function Path:_init(...)
       elseif vim.tbl_contains(splits, "..") then -- deal with '../' later in `self:resolve()`
         run_resolve = true
       end
-      self._raw_paths:extend(splits)
+      self._raw_paths:extend(splits, true)
     else
       error("PathlibPath(new): ValueError: Invalid type as argument: " .. ("%s (%s: %s)"):format(type(s), i, s))
     end
