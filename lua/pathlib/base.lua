@@ -116,7 +116,13 @@ end
 ---Return `vim.fn.getcwd` in Path object
 ---@return PathlibPath
 function Path.cwd()
-  return Path(vim.fn.getcwd())
+  return Path.new(vim.fn.getcwd())
+end
+
+---Return `vim.loop.os_homedir` in Path object
+---@return PathlibPath
+function Path.home()
+  return Path.new(vim.loop.os_homedir())
 end
 
 ---Calculate permission integer from "rwxrwxrwx" notation.

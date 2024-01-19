@@ -84,7 +84,11 @@ function WindowsPath.new_empty()
 end
 
 function WindowsPath.cwd()
-  return WindowsPath(vim.fn.getcwd())
+  return WindowsPath.new(vim.fn.getcwd())
+end
+
+function WindowsPath.home()
+  return WindowsPath.new(vim.loop.os_homedir())
 end
 
 function WindowsPath.new_all_from(path)

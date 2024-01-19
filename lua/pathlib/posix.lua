@@ -82,7 +82,11 @@ function PosixPath.new_empty()
 end
 
 function PosixPath.cwd()
-  return PosixPath(vim.fn.getcwd())
+  return PosixPath.new(vim.fn.getcwd())
+end
+
+function PosixPath.home()
+  return PosixPath.new(vim.loop.os_homedir())
 end
 
 function PosixPath.new_all_from(path)
