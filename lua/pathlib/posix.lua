@@ -13,7 +13,7 @@ local PosixPath = setmetatable({ ---@diagnostic disable-line
     return cls.new(...)
   end,
 })
-PosixPath.__index = PosixPath
+PosixPath.__index = require("pathlib.utils.nuv").generate_index(PosixPath)
 
 function PosixPath:_init(...)
   Path._init(self, ...)
@@ -30,21 +30,21 @@ end
 ---@param other PathlibPath
 ---@return boolean
 function PosixPath:__eq(other)
-  return Path:__eq(other)
+  return Path.__eq(self, other)
 end
 
 ---Compare less than of path objects
 ---@param other PathlibPath
 ---@return boolean
 function PosixPath:__lt(other)
-  return Path:__lt(other)
+  return Path.__lt(self, other)
 end
 
 ---Compare less than or equal of path objects
 ---@param other PathlibPath
 ---@return boolean
 function PosixPath:__le(other)
-  return Path:__le(other)
+  return Path.__le(self, other)
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
@@ -101,7 +101,6 @@ end
 ---@param path PathlibPath
 ---@param trim_num number? # 1 will trim the last entry in `_raw_paths`, 2 will trim 2.
 function PosixPath.new_from(path, trim_num)
-  vim.print(("PosixPath.new_from (%s) .. %s"):format(path.mytype, path:tostring()))
   local self = PosixPath.new_all_from(path)
   if not trim_num or trim_num < 1 then
     return self
@@ -113,19 +112,12 @@ function PosixPath.new_from(path, trim_num)
   return self
 end
 
----Shorthand to `vim.fn.stdpath` returned in Path object
----@param what string # See `:h stdpath` for information
----@return PathlibPosixPath
-function PosixPath.stdpath(what)
-  return PosixPath.new(vim.fn.stdpath(what))
-end
-
 ---Shorthand to `vim.fn.stdpath` and specify child path in later args.
 ---Mason bin path: `PosixPath.stdpath("data", "mason", "bin")` or `PosixPath.stdpath("data", "mason/bin")`
 ---@param what string # See `:h stdpath` for information
 ---@param ... string|PathlibPath # child path after the result of stdpath
 ---@return PathlibPosixPath
-function PosixPath.stdpath_child(what, ...)
+function PosixPath.stdpath(what, ...)
   return PosixPath.new(vim.fn.stdpath(what), ...)
 end
 

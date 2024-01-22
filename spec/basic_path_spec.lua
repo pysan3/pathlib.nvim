@@ -14,7 +14,7 @@ describe("Simple PathlibPath test;", function()
   end)
 
   describe("Relative init.", function()
-    local Path = require("pathlib.base")
+    local Path = require("pathlib")
     local utils = require("pathlib.utils")
 
     it("single argument", function()
@@ -25,7 +25,7 @@ describe("Simple PathlibPath test;", function()
   end)
 
   describe("Object is not shared.", function()
-    local Path = require("pathlib.base")
+    local Path = require("pathlib")
 
     local path1 = Path.new("a")
     local path2 = Path.new("b")

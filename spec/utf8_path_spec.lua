@@ -3,7 +3,7 @@ local _ = require("pathlib")
 local file_content = "File Content\n"
 
 describe("Utf8 Filename Manipulation;", function()
-  local Path = require("pathlib.base")
+  local Path = require("pathlib")
   local foo = Path.new("./ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ/ｆｏｏ.ｔｘｔ") -- these are non-ascii characters
   local parent = foo:parent()
   if parent == nil then
@@ -32,12 +32,11 @@ describe("Utf8 Filename Manipulation;", function()
   end)
 
   describe("foo:open", function()
-    local fd, err_name, err_msg = foo:fs_open("w", Path.permission("rw-r--r--"), true)
+    local fd = foo:fs_open("w", Path.permission("rw-r--r--"), true)
     ---@cast fd integer
     it("()", function()
       assert.is_not.is_nil(fd)
-      assert.is_nil(err_name)
-      assert.is_nil(err_msg)
+      assert.is_nil(foo.error_msg)
     end)
     it("exists()", function()
       assert.is_true(foo:is_file())
@@ -57,9 +56,9 @@ describe("Utf8 Filename Manipulation;", function()
 
   describe("io read / write", function()
     it("()", function()
-      local suc, err_msg = foo:io_write(file_content)
+      local suc = foo:io_write(file_content)
       assert.is_true(suc)
-      assert.is_nil(err_msg)
+      assert.is_nil(foo.error_msg)
       assert.is_equal(file_content, foo:io_read())
     end)
   end)

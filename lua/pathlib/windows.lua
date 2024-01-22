@@ -1,7 +1,5 @@
 local Path = require("pathlib.base")
-local utils = require("pathlib.utils")
 local const = require("pathlib.const")
-local err = require("pathlib.utils.errors")
 
 local function load_winapi()
   if not const.has_ffi then
@@ -21,32 +19,32 @@ local WindowsPath = setmetatable({ ---@diagnostic disable-line
     return cls.new(...)
   end,
 })
-WindowsPath.__index = WindowsPath
+WindowsPath.__index = require("pathlib.utils.nuv").generate_index(WindowsPath)
 
 function WindowsPath:_init(...)
   Path._init(self, ...)
-  -- TODO: WindowsPath specific init procs
+  self.__windows_panic = false
 end
 
 ---Compare equality of path objects
 ---@param other PathlibPath
 ---@return boolean
 function WindowsPath:__eq(other)
-  return Path:__eq(other)
+  return Path.__eq(self, other)
 end
 
 ---Compare less than of path objects
 ---@param other PathlibPath
 ---@return boolean
 function WindowsPath:__lt(other)
-  return Path:__lt(other)
+  return Path.__lt(self, other)
 end
 
 ---Compare less than or equal of path objects
 ---@param other PathlibPath
 ---@return boolean
 function WindowsPath:__le(other)
-  return Path:__le(other)
+  return Path.__le(self, other)
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
@@ -103,7 +101,6 @@ end
 ---@param path PathlibPath
 ---@param trim_num number? # 1 will trim the last entry in `_raw_paths`, 2 will trim 2.
 function WindowsPath.new_from(path, trim_num)
-  vim.print(("WindowsPath.new_from (%s) .. %s"):format(path.mytype, path:tostring()))
   local self = WindowsPath.new_all_from(path)
   if not trim_num or trim_num < 1 then
     return self
@@ -115,19 +112,12 @@ function WindowsPath.new_from(path, trim_num)
   return self
 end
 
----Shorthand to `vim.fn.stdpath` returned in Path object
----@param what string # See `:h stdpath` for information
----@return PathlibWindowsPath
-function WindowsPath.stdpath(what)
-  return WindowsPath.new(vim.fn.stdpath(what))
-end
-
 ---Shorthand to `vim.fn.stdpath` and specify child path in later args.
 ---Mason bin path: `WindowsPath.stdpath("data", "mason", "bin")` or `WindowsPath.stdpath("data", "mason/bin")`
 ---@param what string # See `:h stdpath` for information
 ---@param ... string|PathlibPath # child path after the result of stdpath
 ---@return PathlibWindowsPath
-function WindowsPath.stdpath_child(what, ...)
+function WindowsPath.stdpath(what, ...)
   return WindowsPath.new(vim.fn.stdpath(what), ...)
 end
 
@@ -135,7 +125,7 @@ end
 ---@return boolean
 function WindowsPath:is_absolute()
   local starts_with_slash = #self._raw_paths >= 1 and self._raw_paths[1] == ""
-  return self._drive_name:len() == 2 and starts_with_slash
+  return starts_with_slash and self._drive_name:len() > 0
 end
 
 ---Return whether the file is treated as a _hidden_ file.

@@ -32,7 +32,7 @@ is very simple and portable to be used in any plugin.
 ## Create Path Object
 
 ``` lua
-local Path = require("pathlib.base")
+local Path = require("pathlib")
 
 -- Use __div to chain file tree!
 local cwd     = Path.cwd()
@@ -54,15 +54,15 @@ assert(tostring(bar)          == "folder/bar.txt")
 
 ``` lua
 local luv = vim.loop
-local Path = require("pathlib.base")
+local Path = require("pathlib")
 
 -- Create new folder
 local new_file = Path.new("./new/folder/foo.txt")
 new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
 
 -- Create new file and write to it
-local fd, err_name, err_msg = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
-assert(fd ~= nil, "File creation failed. " .. err_name .. err_msg)
+local fd = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
+assert(fd ~= nil, "File creation failed. " .. new_file.error_msg)
 luv.fs_write(fd, "File Content\n")
 luv.fs_close(fd)
 

@@ -148,6 +148,9 @@ function M.permission_from_string(mode_string)
   return result
 end
 
+M.o755 = M.permission_from_string("rwxr-xr-x")
+M.o644 = M.permission_from_string("rw-r--r--")
+
 ---@enum PathlibGitStatusEnum
 M.git_status = {
   UNMODIFIED = " ",

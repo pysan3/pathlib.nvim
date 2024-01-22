@@ -3,8 +3,11 @@
 # Run local tests for lua using luarocks and busted extension
 # with neovim as the runtime environment.
 
+set -ex
+
 BUSTED_VERSION="2.2.0-1"
 luarocks init
+luarocks install --only-deps ./pathlib.nvim-scm-1.rockspec
 luarocks install busted "$BUSTED_VERSION"
 luarocks config --scope project lua_version 5.1
 nvim -u NONE \

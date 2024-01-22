@@ -8,12 +8,13 @@ describe("Posix File Manipulation;", function()
     return
   end
 
-  local Path = require("pathlib.base")
+  local Path = require("pathlib")
   local foo = Path.new("./tmp/test_folder/foo.txt")
   local parent = foo:parent()
   if parent == nil then
     return
   end
+
   describe("parent", function()
     it("()", function()
       assert.is_equal("tmp/test_folder", tostring(parent))
@@ -37,12 +38,11 @@ describe("Posix File Manipulation;", function()
   end)
 
   describe("foo:open", function()
-    local fd, err_name, err_msg = foo:fs_open("w", Path.permission("rw-r--r--"), true)
+    local fd = foo:fs_open("w", Path.permission("rw-r--r--"), true)
     ---@cast fd integer
     it("()", function()
+      assert.is_nil(foo.error_msg)
       assert.is_not.is_nil(fd)
-      assert.is_nil(err_name)
-      assert.is_nil(err_msg)
     end)
     it("exists()", function()
       assert.is_true(foo:is_file())
@@ -62,9 +62,8 @@ describe("Posix File Manipulation;", function()
 
   describe("io read / write", function()
     it("()", function()
-      local suc, err_msg = foo:io_write(file_content)
-      assert.is_true(suc)
-      assert.is_nil(err_msg)
+      local success = foo:io_write(file_content)
+      assert.is_true(success)
       assert.is_equal(file_content, foo:io_read())
     end)
   end)

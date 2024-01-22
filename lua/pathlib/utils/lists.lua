@@ -19,26 +19,22 @@ function str_list.new()
   return setmetatable({}, str_list)
 end
 
----@param value string
----@param ignore_empties boolean? # If true, does not add entries that are empty.
-function str_list:append(value, ignore_empties)
-  if ignore_empties and value == "" then
-    return
+function str_list:clear()
+  while self:pop() do
   end
+end
+
+---@param value string
+function str_list:append(value)
   self[#self + 1] = value
 end
 
 ---@param list PathlibStrList
----@param ignore_empties boolean? # If true, does not add entries that are empty.
-function str_list:extend(list, ignore_empties)
+function str_list:extend(list)
   local start_from = #self
   local ignores = 0
   for index, value in ipairs(list) do
-    if ignore_empties and value == "" then
-      ignores = ignores + 1
-    else
-      self[start_from + index - ignores] = value
-    end
+    self[start_from + index - ignores] = value
   end
 end
 
