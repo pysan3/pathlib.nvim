@@ -43,28 +43,36 @@ end
 ---@param status_string string
 ---@return PathlibGitStatus
 function M.get_simple_git_status_code(status_string)
-  -- Prioritze M then A over all others
-  if status_string:match("U") or status_string == "AA" or status_string == "DD" then
-    return { const.git_status.UNMODIFIED }
-  elseif status_string:match("M") then
-    return { const.git_status.MODIFIED }
-  elseif status_string:match("[ACR]") then
-    return { const.git_status.ADDED }
-  elseif status_string:match("!$") then
-    return { const.git_status.IGNORED }
-  elseif status_string:match("?$") then
-    return { const.git_status.UNTRACKED }
-  else
-    local len = #status_string
-    while len > 0 do
-      local char = status_string:sub(len, len)
-      if char ~= " " then
-        return git_simple_status_to_enum(char)
-      end
-      len = len - 1
-    end
-    return git_simple_status_to_enum(status_string)
+  local g = const.git_status
+  ---@type PathlibGitStatus
+  local result = {
+    status = g[status_string:sub(1, 1)] or g.STAGED,
+    change = g[status_string:sub(2, 2)],
+  }
+  if status_string:sub(1, 1) == " " then
+    result.status = g.UNSTAGED
   end
+  if status_string:match("?$") then
+    result.status = g.UNTRACKED
+    result.change = nil
+  elseif status_string:match("M") then
+    result.change = g.MODIFIED
+  elseif status_string:match("R") then
+    result.change = g.RENAMED
+  elseif status_string:match("[ACT]") then
+    result.change = g.ADDED
+  elseif status_string:match("!") then
+    result.change = g.IGNORED
+  elseif status_string:match("D") then
+    result.change = g.DELETED
+  end
+  if status_string == "UU" or status_string == "DD" or status_string == "AA" then
+    result.status = g.CONFLICT
+    result.change = g.CONFLICT
+  elseif status_string:match("U") then
+    result.status = g.CONFLICT
+  end
+  return result
 end
 
 ---Get the most significant git status among
@@ -106,9 +114,9 @@ end
 ---Parse and return status of git status output.
 ---@param line string # One line of git status output.
 ---@param git_status table<PathlibString, PathlibGitStatus>
----@param update_parent_dirs boolean # If true, updates status of parent dirs by merging the results of children.
+---@param update_parent_dir_state boolean # If true, updates status of parent dirs by merging the results of children.
 ---@param git_root PathlibPath
-local function parse_git_status_line(line, git_status, update_parent_dirs, git_root)
+local function parse_git_status_line(line, git_status, update_parent_dir_state, git_root)
   if type(line) ~= "string" then
     return
   end
@@ -125,20 +133,15 @@ local function parse_git_status_line(line, git_status, update_parent_dirs, git_r
     status_string = line_parts[3]
   end
   local status = M.get_simple_git_status_code(status_string)
-  local relative_path = line_parts[2]
-  -- remove any " due to whitespace or utf-8 in the path
-  relative_path = relative_path:gsub('^"', ""):gsub('"$', "")
-  -- convert octal encoded lines to utf-8
-  relative_path = M.octal_to_utf8(relative_path)
-
+  local relative_path = M.octal_to_utf8(line_parts[2])
   local absolute_path = git_root / relative_path
   local string_path = absolute_path:tostring()
   -- merge status result if there are results from multiple passes
   local existing_status = git_status[string_path] or {}
-  status[1] = M.get_priority_git_status_code(existing_status[1], status[1])
-  status[2] = M.get_priority_git_status_code(existing_status[2], status[2])
+  status.status = M.get_priority_git_status_code(existing_status.status, status.status)
+  status.change = M.get_priority_git_status_code(existing_status.change, status.change)
   git_status[string_path] = status
-  if update_parent_dirs then
+  if update_parent_dir_state then
     -- Now bubble this status up to the parent directories
     for parent in absolute_path:parents() do
       local parent_string = parent:tostring()
@@ -146,21 +149,21 @@ local function parse_git_status_line(line, git_status, update_parent_dirs, git_r
         git_status[parent_string] = {}
       end
       local parent_status = git_status[parent_string]
-      parent_status[1] = M.get_priority_git_status_code(parent_status[1], status[1])
-      parent_status[2] = M.get_priority_git_status_code(parent_status[2], status[2])
+      parent_status.status = M.get_priority_git_status_code(parent_status.status, status.status)
+      parent_status.change = M.get_priority_git_status_code(parent_status.change, status.change)
     end
   end
 end
 
 ---Fetch the status of files in a git repository.
----@param root_path PathlibPath
----@param update_parent_dirs boolean # If true, updates status of parent dirs by merging the results of children.
+---@param root_dir PathlibPath
+---@param update_parent_dir_state boolean # If true, updates status of parent dirs by merging the results of children.
 ---@param commit_base string? # Commit to compare against. If nil, uses `HEAD`.
 ---@return table<PathlibString, PathlibGitStatus> git_status
----@return PathlibPath git_root
-function M.status(root_path, update_parent_dirs, commit_base)
-  local git_root = M.find_root(root_path)
-  if not git_root or not git_root:is_dir() or not git_root:exists() then
+---@return PathlibPath? git_root
+function M.status(root_dir, update_parent_dir_state, commit_base)
+  local git_root = M.find_root(root_dir)
+  if not git_root or not git_root:is_dir() then
     return {}, git_root
   end
   if not commit_base or commit_base:len() == 0 then
@@ -186,20 +189,77 @@ function M.status(root_path, update_parent_dirs, commit_base)
   ---@type table<PathlibString, PathlibGitStatus>
   local git_status = {}
   for _, line in ipairs(staged_result) do
-    parse_git_status_line(line, git_status, update_parent_dirs, git_root)
+    parse_git_status_line(line, git_status, update_parent_dir_state, git_root)
   end
   for _, line in ipairs(unstaged_result) do
     if line then
-      parse_git_status_line(" " .. line, git_status, update_parent_dirs, git_root)
+      parse_git_status_line(" " .. line, git_status, update_parent_dir_state, git_root)
     end
   end
   for _, line in ipairs(untracked_result) do
     if line then
-      parse_git_status_line("? \t" .. line, git_status, update_parent_dirs, git_root)
+      parse_git_status_line("? \t" .. line, git_status, update_parent_dir_state, git_root)
     end
   end
 
   return git_status, git_root
+end
+
+---Fill in all `path.git_state.ignored`
+---@param paths PathlibAbsPath[]
+---@param git_root PathlibPath
+function M.fill_git_ignore(paths, git_root)
+  local cmd = { "git", "-C", git_root:tostring(), "check-ignore", "--stdin" }
+  local path_strs = {}
+  for _, path in ipairs(paths) do
+    path_strs[#path_strs + 1] = path:tostring()
+  end
+  local success, result = utils.execute_command(cmd, path_strs)
+  if not success then
+    return
+  end
+  local counter = 1
+  for _, line in ipairs(result) do
+    local line_path = git_root.new(M.octal_to_utf8(line))
+    while counter <= #paths and paths[counter] ~= line_path do
+      paths[counter].git_state.ignored = false
+      counter = counter + 1
+    end
+    if counter > #paths then
+      break
+    end
+    paths[counter].git_state.ignored = true
+    counter = counter + 1
+  end
+end
+
+---Fill in all `path.git_state` inside a single git repo. Use `M.fill_git_state_batch` when git root is unknown.
+---@param paths PathlibPath[] # List of paths to check git ignored or not. Overwrites `path.git_ignored`.
+---@param git_root PathlibPath # The git root dir.
+function M.fill_git_state_in_root(paths, git_root)
+  for _, path in ipairs(paths) do
+    path:inplace_absolute()
+  end
+  M.fill_git_ignore(paths, git_root)
+end
+
+---Fill in all `path.git_state` by asking git cli.
+---@param paths PathlibPath[] # List of paths to check git ignored or not. Overwrites `path.git_ignored`.
+function M.fill_git_state_batch(paths)
+  ---@type table<PathlibString, PathlibPath[] | { root: PathlibPath }>
+  local check_list = {} -- sort paths by their git roots
+  for _, path in ipairs(paths) do
+    local root = M.find_root(path)
+    if root then
+      if not check_list[root:tostring()] then
+        check_list[root:tostring()] = { root = root }
+      end
+      table.insert(check_list[path:tostring()], path)
+    end
+  end
+  for _, path_list in pairs(check_list) do
+    M.fill_git_state_in_root(path_list, path_list.root)
+  end
 end
 
 return M

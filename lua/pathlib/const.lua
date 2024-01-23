@@ -162,9 +162,12 @@ M.git_status = {
   COPIED = "C", -- (if config option status.renames is set to "copies")
   UPDATED_BUT_UNMERGED = "U",
   UNTRACKED = "?",
+  UNSTAGED = "N",
+  STAGED = "S",
+  CONFLICT = "F",
   IGNORED = "!",
 }
----@alias PathlibGitStatus { [1]?: PathlibGitStatusEnum, [2]?: PathlibGitStatusEnum }
+---@alias PathlibGitStatus { change?: PathlibGitStatusEnum, status?: PathlibGitStatusEnum }
 
 M.has_ffi = (pcall(require, "ffi"))
 
