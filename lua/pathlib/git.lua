@@ -1,43 +1,43 @@
 local const = require("pathlib.const")
 local utils = require("pathlib.utils")
 
+---@class PathlibGitState
+---@field is_ready boolean # true if the git status is up to date.
+---@field ignored boolean?
+
 ---@class PathlibGit
-local M = {}
+local M = {
+  ---@type table<PathlibString, PathlibPath>
+  __known_git_roots = {},
+}
 
 ---Find closest directory that contains `.git` directory, meaning that it's a root of a git repository
 ---@param current_focus PathlibPath?
 function M.find_root(current_focus)
-  vim.print("find_root")
-  vim.print(
-    string.format([[utils.tables.type_of(current_focus): %s]], vim.inspect(utils.tables.type_of(current_focus)))
-  )
-  if not current_focus or current_focus:is_dir() and current_focus:__div(".git"):exists() then
+  if not current_focus then
+    return nil
+  end
+  local cache = M.__known_git_roots[current_focus:tostring()]
+  if cache and cache:child(".git"):exists() then
+    return cache
+  end
+  if current_focus:child(".git"):exists() then
+    M.__known_git_roots[current_focus:tostring()] = current_focus
     return current_focus
   end
-  for parent in current_focus:parents() do
-    if parent:__div(".git"):exists() then
-      return parent
-    end
+  local root = M.find_root(current_focus:parent())
+  if root and current_focus:is_dir() then
+    M.__known_git_roots[current_focus:tostring()] = root -- save result to cache
   end
+  return root
 end
 
----Map simple status string notation into PathlibGitStatus
----@param status string
----@return PathlibGitStatus
-local function git_simple_status_to_enum(status)
-  ---@type PathlibGitStatus
-  local result = {}
-  local x, y = status:sub(1, 1), status:sub(2, 2)
-  for key, value in pairs(const.git_status) do
-    if x == value then
-      result[1] = const.git_status[key]
-    end
-    if y == value then
-      result[2] = const.git_status[key]
-    end
-  end
-  return result
-end
+-- ---Check if `git_status` contains `status`
+-- ---@param git_status PathlibGitStatus
+-- ---@param status PathlibGitStatusEnum
+-- local function git_status_has(git_status, status)
+--   return git_status[1] == status or git_status[2] == status
+-- end
 
 ---Parse the git status
 ---@param status_string string
@@ -94,7 +94,12 @@ function M.octal_to_utf8(text)
   local function convert_octal_char(octal)
     return string.char(tonumber(octal, 8))
   end
-  local success, converted = pcall(string.gsub, text, "\\([0-7][0-7][0-7])", convert_octal_char)
+  if type(text) ~= "string" then
+    return text
+  end
+  -- remove the first and last " due to whitespace or utf-8 in the path
+  -- convert octal encoded lines to utf-8
+  local success, converted = pcall(string.gsub, text:gsub('^"(.*)"$', "%1"), [[\([0-7][0-7][0-7])]], convert_octal_char)
   return success and converted or text
 end
 

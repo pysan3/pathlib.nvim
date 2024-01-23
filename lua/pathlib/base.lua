@@ -421,7 +421,7 @@ end
 
 ---Return result of `luv.fs_stat`.
 ---@param follow_symlinks? boolean # Whether to resolve symlinks
----@return nio.uv.Stat? stat
+---@return uv.aliases.fs_stat_table? stat # nil if `fs_stat` failed
 ---@nodiscard
 function Path:fs_stat(follow_symlinks)
   if follow_symlinks then
@@ -433,7 +433,7 @@ end
 
 ---Return result of `luv.fs_stat`. Use `self:stat_async` to use with callback.
 ---@param follow_symlinks? boolean # Whether to resolve symlinks
----@return nio.uv.Stat? stat # nil if `fs_stat` failed
+---@return uv.aliases.fs_stat_table? stat # nil if `fs_stat` failed
 ---@nodiscard
 function Path:stat(follow_symlinks)
   return self:fs_stat(follow_symlinks)
