@@ -418,7 +418,10 @@ end
 ---@nodiscard
 function Path:fs_stat(follow_symlinks)
   if follow_symlinks then
-    return self:realpath():fs_stat(false)
+    local realpath = self:realpath()
+    if realpath then
+      return realpath:fs_stat(false)
+    end
   else
     return self.nuv.fs_stat(self:tostring())
   end
@@ -462,8 +465,12 @@ function Path:is_symlink()
 end
 
 ---Return result of `luv.fs_realpath` in `PathlibPath`.
+---@return PathlibPath? # Resolves symlinks if exists. Returns nil if link does not exist.
 function Path:realpath()
-  return self.new(self.nuv.fs_realpath(self:tostring()))
+  local realpath = self.nuv.fs_realpath(self:tostring())
+  if realpath then
+    return self.new(realpath)
+  end
 end
 
 ---Get mode of path object. Use `self:get_type` to get type description in string instead.
