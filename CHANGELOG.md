@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0](https://github.com/pysan3/pathlib.nvim/compare/v0.2.0...v0.3.0) (2024-01-26)
+
+
+### Features
+
+* **base:** add `self:tostring()` and cache string result ([03be451](https://github.com/pysan3/pathlib.nvim/commit/03be451cb2139e449e952c5b38b9a6a853589056))
+* **git:** implement method to fetch git status of files in a folder ([88d73b9](https://github.com/pysan3/pathlib.nvim/commit/88d73b9d2eea7cd9cf1d97da2d956a3f24bde5cc))
+* **nuv:** integrate nvim-nio ([bcaeabd](https://github.com/pysan3/pathlib.nvim/commit/bcaeabddf29ba02e43fa665c92665c57579a43ad))
+* **path:** add `Path.home` to get path to home dir ([d5e79b1](https://github.com/pysan3/pathlib.nvim/commit/d5e79b17b388496d5348ffbccf750f1f48365036))
+
+
+### Bug Fixes
+
+* **base:** refactor initialize function ([44163c0](https://github.com/pysan3/pathlib.nvim/commit/44163c04bf577a6cb61755cc9a6298b77a23b6a2))
+* **ci:** do not release new tag to luarocks on pull_request ([4cf23f2](https://github.com/pysan3/pathlib.nvim/commit/4cf23f2b3068b578c9a976962b5b04ef9667d7fe))
+* define `_init` for each path subclass ([c4708f0](https://github.com/pysan3/pathlib.nvim/commit/c4708f01837f67d828c92c75fcca1d2bbf4110d5))
+* **git:** fix type annotations ([d2719a8](https://github.com/pysan3/pathlib.nvim/commit/d2719a801a3b584ab64214d74e4d4a6d4cbf1798))
+* **list:** add option to ignore empty entries ([c4334dc](https://github.com/pysan3/pathlib.nvim/commit/c4334dc68d57858ed56dcc290d68e05c9ac57eda)), closes [#15](https://github.com/pysan3/pathlib.nvim/issues/15)
+* **nuv:** add fallback for nio.current_task ([3d25ee2](https://github.com/pysan3/pathlib.nvim/commit/3d25ee272e263d2c8d5422d765a0bf41d7e84453))
+* **pathlib:** fix inherit problem between base and posix ([5f0f368](https://github.com/pysan3/pathlib.nvim/commit/5f0f368b38958be5ae963e33a8f97dd0ff01289b))
+* **type:** fix type annotations ([f982aba](https://github.com/pysan3/pathlib.nvim/commit/f982abae37fc4e94c439b7b9832ddc338b7e8152))
+* **vim.fs:** use custom fs.normalize to support UNC paths ([07bcab8](https://github.com/pysan3/pathlib.nvim/commit/07bcab847f1d1222b6c40ba768d8b002421303bf))
+
 ## [0.2.0](https://github.com/pysan3/pathlib.nvim/compare/v0.1.7...v0.2.0) (2023-11-16)
 
 
