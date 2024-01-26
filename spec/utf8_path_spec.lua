@@ -1,23 +1,17 @@
 local luv = vim.loop
 local _ = require("pathlib")
-local const = require("pathlib.const")
 local file_content = "File Content\n"
 
-describe("Posix File Manipulation;", function()
-  if const.IS_WINDOWS then
-    return
-  end
-
+describe("Utf8 Filename Manipulation;", function()
   local Path = require("pathlib")
-  local foo = Path.new("./tmp/test_folder/foo.txt")
+  local foo = Path.new("./ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ/ｆｏｏ.ｔｘｔ") -- these are non-ascii characters
   local parent = foo:parent()
   if parent == nil then
     return
   end
-
   describe("parent", function()
     it("()", function()
-      assert.is_equal("tmp/test_folder", tostring(parent))
+      assert.is_equal("ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ", tostring(parent))
       assert.is_not.is_nil(parent)
     end)
   end)
@@ -26,11 +20,11 @@ describe("Posix File Manipulation;", function()
     parent:mkdir(Path.permission("rwxr-xr-x"), true)
     it("exists()", function()
       assert.is_true(parent:exists())
-      assert.is_not.is_nil(luv.fs_stat("./tmp/test_folder"))
+      assert.is_not.is_nil(luv.fs_stat("./ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ"))
     end)
     it("is_dir()", function()
       assert.is_true(parent:is_dir())
-      local stat = luv.fs_stat("./tmp/test_folder")
+      local stat = luv.fs_stat("./ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ")
       assert.is_not.is_nil(stat)
       ---@cast stat uv.aliases.fs_stat_table
       assert.is_equal("directory", stat.type)
@@ -41,12 +35,12 @@ describe("Posix File Manipulation;", function()
     local fd = foo:fs_open("w", Path.permission("rw-r--r--"), true)
     ---@cast fd integer
     it("()", function()
-      assert.is_nil(foo.error_msg)
       assert.is_not.is_nil(fd)
+      assert.is_nil(foo.error_msg)
     end)
     it("exists()", function()
       assert.is_true(foo:is_file())
-      local stat = luv.fs_stat("./tmp/test_folder/foo.txt")
+      local stat = luv.fs_stat("./ｔｍｐ/ｔｅｓｔ＿ｆｏｌｄｅｒ/ｆｏｏ.ｔｘｔ")
       assert.is_not.is_nil(stat)
       ---@cast stat uv.aliases.fs_stat_table
       assert.is_equal("file", stat.type)
@@ -62,16 +56,17 @@ describe("Posix File Manipulation;", function()
 
   describe("io read / write", function()
     it("()", function()
-      local success = foo:io_write(file_content)
-      assert.is_true(success)
+      local suc = foo:io_write(file_content)
+      assert.is_true(suc)
+      assert.is_nil(foo.error_msg)
       assert.is_equal(file_content, foo:io_read())
     end)
   end)
 
   describe("iterdir", function()
     it("()", function()
-      foo:copy(foo .. "bar.txt")
-      foo:symlink_to(foo .. "baz.txt")
+      foo:copy(foo .. "ｂａｒ.ｔｘｔ")
+      foo:symlink_to(foo .. "ｂａｚ.ｔｘｔ")
       local accum = {}
       for path in parent:iterdir() do
         table.insert(accum, path)

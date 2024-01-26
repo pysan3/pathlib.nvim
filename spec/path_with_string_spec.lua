@@ -1,7 +1,7 @@
 local _ = require("pathlib")
 
 describe("Compatibility Between Path and String;", function()
-  local Path = require("pathlib.base")
+  local Path = require("pathlib")
   local utils = require("pathlib.utils")
 
   describe("Check string equals.", function()

@@ -1,4 +1,6 @@
+ほげ
 !.luarc.json
+/index.norg
 
 ### Vim ###
 [._]*.s[a-w][a-z]
@@ -56,3 +58,5 @@ luac.out
 /lua
 
 !/lua
+/tmp/
+/ｔｍｐ/

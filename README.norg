@@ -4,7 +4,7 @@ description:
 authors: takuto
 categories:
 created: 2023-11-14
-updated: 2023-11-14T01:17:18+0900
+updated: 2024-01-18T01:49:00+0900
 version: 1.1.1
 @end
 
@@ -38,7 +38,7 @@ version: 1.1.1
 * Usage Example
 ** Create Path Object
   @code lua
-  local Path = require("pathlib.base")
+  local Path = require("pathlib")
 
   -- Use __div to chain file tree!
   local cwd     = Path.cwd()
@@ -59,15 +59,15 @@ version: 1.1.1
 ** Create and Manipulate Files / Directories
    @code lua
    local luv = vim.loop
-   local Path = require("pathlib.base")
+   local Path = require("pathlib")
 
    -- Create new folder
    local new_file = Path.new("./new/folder/foo.txt")
    new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
 
    -- Create new file and write to it
-   local fd, err_name, err_msg = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
-   assert(fd ~= nil, "File creation failed. " .. err_name .. err_msg)
+   local fd = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
+   assert(fd ~= nil, "File creation failed. " .. new_file.error_msg)
    luv.fs_write(fd, "File Content\n")
    luv.fs_close(fd)
 

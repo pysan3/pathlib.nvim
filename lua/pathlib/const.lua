@@ -8,13 +8,23 @@ M.bitops = {
   XOR = 3,
   AND = 4,
 }
+local has_bit, bit = pcall(require, "bit")
 
 ---Bitwise operator for uint32
 ---@param a integer
 ---@param b integer
 ---@param oper PathlibBitOps
 ---@return integer
-M.bitoper = function(a, b, oper)
+function M.bitoper(a, b, oper)
+  if has_bit then
+    if oper == M.bitops.AND then
+      return bit.band(a, b)
+    elseif oper == M.bitops.OR then
+      return bit.bor(a, b)
+    elseif oper == M.bitops.XOR then
+      return bit.bxor(a, b)
+    end
+  end
   local s
   local r, m = 0, 2 ^ 31
   repeat
@@ -22,6 +32,30 @@ M.bitoper = function(a, b, oper)
     r, m = r + m * oper % (s - a - b), m / 2
   until m < 1
   return r
+end
+
+---Bitwise AND for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.band(a, b)
+  return M.bitoper(a, b, M.bitops.AND)
+end
+
+---Bitwise OR for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.bor(a, b)
+  return M.bitoper(a, b, M.bitops.OR)
+end
+
+---Bitwise XOR for uint32
+---@param a integer
+---@param b integer
+---@return integer
+function M.bxor(a, b)
+  return M.bitoper(a, b, M.bitops.XOR)
 end
 
 ---@enum PathlibPathEnum
@@ -34,15 +68,15 @@ M.path_module_enum = {
 ---Return the portion of the file's mode that can be set by os.chmod()
 ---@param mode integer
 ---@return integer
-M.fs_imode = function(mode)
-  return M.bitoper(mode, tonumber("0o7777", 8), M.bitops.AND)
+function M.fs_imode(mode)
+  return M.band(mode, tonumber("0o7777", 8))
 end
 
 ---Return the portion of the file's mode that can be set by os.chmod()
 ---@param mode integer
 ---@return integer
-M.fs_ifmt = function(mode)
-  return M.bitoper(mode, tonumber("0o170000", 8), M.bitops.AND)
+function M.fs_ifmt(mode)
+  return M.band(mode, tonumber("0o170000", 8))
 end
 
 ---@enum PathlibModeEnum
@@ -82,7 +116,7 @@ M.fs_permission_enum = {
 ---Check if `mode_string` is a valid representation of permission string. (Eg `rwxrwxrwx`)
 ---@param mode_string string # "rwxrwxrwx" or '-' where permission not allowed
 ---@return boolean
-M.check_permission_string = function(mode_string)
+function M.check_permission_string(mode_string)
   if type(mode_string) ~= "string" then
     return false
   end
@@ -103,7 +137,7 @@ end
 ---Return integer of permission representing. Assert `M.check_permission_string` beforehand or this function will not work as expected.
 ---@param mode_string string
 ---@return integer
-M.permission_from_string = function(mode_string)
+function M.permission_from_string(mode_string)
   local result = 0
   for value in mode_string:gmatch(".") do
     result = result * 2
@@ -113,5 +147,28 @@ M.permission_from_string = function(mode_string)
   end
   return result
 end
+
+M.o755 = M.permission_from_string("rwxr-xr-x")
+M.o644 = M.permission_from_string("rw-r--r--")
+
+---@enum PathlibGitStatusEnum
+M.git_status = {
+  UNMODIFIED = " ",
+  MODIFIED = "M",
+  FILE_TYPE_CHANGED = "T", -- (regular file, symbolic link or submodule)
+  ADDED = "A",
+  DELETED = "D",
+  RENAMED = "R",
+  COPIED = "C", -- (if config option status.renames is set to "copies")
+  UPDATED_BUT_UNMERGED = "U",
+  UNTRACKED = "?",
+  UNSTAGED = "N",
+  STAGED = "S",
+  CONFLICT = "F",
+  IGNORED = "!",
+}
+---@alias PathlibGitStatus { change?: PathlibGitStatusEnum, status?: PathlibGitStatusEnum }
+
+M.has_ffi = (pcall(require, "ffi"))
 
 return M

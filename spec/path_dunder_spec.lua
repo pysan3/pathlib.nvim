@@ -18,40 +18,42 @@ local _ = require("pathlib")
 -- __shr
 
 describe("Test Dunder Methods of Path Object;", function()
-  local Path = require("pathlib.base")
-  local foo = Path.new("./folder/foo.txt")
+  local Posix = require("pathlib.posix")
+  local Windows = require("pathlib.windows")
+  local foo = Posix.new("./folder/foo.txt")
   describe("__tostring", function()
     it("()", function()
       assert.is_equal(tostring(foo), "folder/foo.txt")
       assert.is_not.is_equal(tostring(foo), "/folder/foo.txt")
-      local windows = Path.new([[C:\hoge\fuga.txt]])
-      assert.is_equal(tostring(windows), [[C:/hoge/fuga.txt]])
+      local windows = Windows.new([[C:\hoge\fuga.txt]])
+      assert.is_equal(tostring(windows), [[C:\hoge\fuga.txt]])
     end)
   end)
 
   describe("__eq", function()
     it("()", function()
-      assert.is_equal(foo, Path.new("./folder/foo.txt")) -- "./" does not matter
-      assert.is_equal(foo, Path.new("folder/foo.txt"))
-      assert.is_not.is_equal(foo, Path.new("foo.txt"))
-      assert.is_not.is_equal(foo, Path.new("/folder/foo.txt"))
+      foo.__string_cache = nil
+      assert.are.equals(foo, Posix.new("./folder/foo.txt")) -- "./" does not matter
+      assert.are.equals(foo, Posix.new("folder/foo.txt"))
+      assert.are_not.equals(foo, Posix.new("foo.txt"))
+      assert.are_not.equals(foo, Posix.new("/folder/foo.txt"))
     end)
   end)
 
   describe("__lt", function()
     it("()", function()
-      assert.is_true(foo < Path.new("folder/foo.zzz"))
-      assert.is_true(foo < Path.new("folder/zzz"))
+      assert.is_true(foo < Posix.new("folder/foo.zzz"))
+      assert.is_true(foo < Posix.new("folder/zzz"))
       assert.is_true(foo > foo:parent()) -- parent is always smaller
       assert.is_not_true(foo < foo)
-      assert.is_not_true(foo < Path.new("/folder/foo.txt")) -- compare path length
+      assert.is_not_true(foo < Posix.new("/folder/foo.txt")) -- compare path length
     end)
   end)
 
   describe("__le", function()
     it("()", function()
-      assert.is_true(foo <= Path.new("folder/foo.zzz"))
-      assert.is_true(foo <= Path.new("folder/zzz"))
+      assert.is_true(foo <= Posix.new("folder/foo.zzz"))
+      assert.is_true(foo <= Posix.new("folder/zzz"))
       assert.is_true(foo >= foo:parent()) -- parent is always smaller
       assert.is_true(foo <= foo) -- __le contains itself
     end)
@@ -59,30 +61,30 @@ describe("Test Dunder Methods of Path Object;", function()
 
   describe("__div", function()
     it("()", function()
-      assert.is_equal(foo, Path.new(".") / "folder" / "foo.txt")
-      assert.is_equal(foo, Path.new("folder") / "foo.txt")
-      assert.is_equal(foo, Path.new(".") / Path.new("./") / Path.new("./folder") / "foo.txt")
+      assert.is_equal(foo, Posix.new(".") / "folder" / "foo.txt")
+      assert.is_equal(foo, Posix.new("folder") / "foo.txt")
+      assert.is_equal(foo, Posix.new(".") / Posix.new("./") / Posix.new("./folder") / "foo.txt")
       -- Path.new(".") many times is OK
     end)
 
     it("raise error", function()
       assert.has_error(function()
-        return Path.new(".") / {}
+        return Posix.new(".") / {}
       end)
     end)
   end)
 
   describe("__concat", function()
     it("()", function()
-      local sibling_file = Path.new("./folder/baz.txt")
+      local sibling_file = Posix.new("./folder/baz.txt")
       assert.is_equal(foo, sibling_file .. "foo.txt")
       assert.is_equal(foo, sibling_file .. "./foo.txt")
-      assert.is_equal(foo, sibling_file .. Path.new("./foo.txt"))
+      assert.is_equal(foo, sibling_file .. Posix.new("./foo.txt"))
     end)
 
     it("raise error", function()
       assert.has_error(function()
-        return Path.new(".") / {}
+        return Posix.new(".") / {}
       end)
     end)
   end)

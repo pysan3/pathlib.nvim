@@ -14,18 +14,18 @@ describe("Simple PathlibPath test;", function()
   end)
 
   describe("Relative init.", function()
-    local Path = require("pathlib.base")
+    local Path = require("pathlib")
     local utils = require("pathlib.utils")
 
-    it("signle args", function()
+    it("single argument", function()
       local path = Path.new(".")
       assert.is_true(utils.tables.is_type_of(path, "PathlibPath"))
-      assert.are_same(path._raw_paths, { "." })
+      assert.are_same(path._raw_paths, {})
     end)
   end)
 
   describe("Object is not shared.", function()
-    local Path = require("pathlib.base")
+    local Path = require("pathlib")
 
     local path1 = Path.new("a")
     local path2 = Path.new("b")
