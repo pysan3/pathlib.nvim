@@ -26,7 +26,7 @@ jobs:
             It is mainly used in neo-tree.nvim but it is so simple that you can use it in your own configs!
           version: ${{ env.LUAROCKS_VERSION }}
           dependencies: |
-            nvim-nio >= 1.4.0
+            nvim-nio >= 1.2.0
           labels: |
             neovim
             nvim
