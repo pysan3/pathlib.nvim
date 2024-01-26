@@ -441,6 +441,11 @@ function Path:exists(follow_symlinks)
   return not not stat
 end
 
+function Path:size()
+  local stat = self:stat(true)
+  return stat and stat.size
+end
+
 function Path:is_dir(follow_symlinks)
   local stat = self:stat(follow_symlinks)
   return stat and stat.type == "directory"
@@ -676,12 +681,12 @@ function Path:fs_open(flags, mode, ensure_dir)
 end
 
 ---Call `luv.fs_open("r") -> luv.fs_read`.
----@param size integer
+---@param size integer? # if nil, uses `self:stat().size`
 ---@param offset integer?
 ---@return string? content # content of the file
 function Path:fs_read(size, offset)
   local fd = self:fs_open("r")
-  return fd and self.nuv.fs_read(fd, size, offset) --[[@as string]]
+  return fd and self.nuv.fs_read(fd, size or self:size(), offset) --[[@as string]]
 end
 
 ---Call `luv.fs_open("w") -> luv.fs_write`.
@@ -690,6 +695,15 @@ end
 ---@return integer? bytes # number of bytes written
 function Path:fs_write(data, offset)
   local fd = self:fs_open("w")
+  return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
+end
+
+---Call `luv.fs_open("a") -> luv.fs_write`.
+---@param data uv.aliases.buffer
+---@param offset integer?
+---@return integer? bytes # number of bytes written
+function Path:fs_append(data, offset)
+  local fd = self:fs_open("a")
   return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
 end
 

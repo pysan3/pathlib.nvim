@@ -33,11 +33,12 @@ is very simple and portable to be used in any plugin.
 
 ``` lua
 local Path = require("pathlib")
+local cwd     = Path.cwd()
+vim.print(string.format([[cwd: %s]], cwd))
 
 -- Use __div to chain file tree!
-local cwd     = Path.cwd()
-local folder  =      cwd / "folder"
-local foo     =             folder / "foo.txt"
+local folder  = Path(".") / "folder"
+local foo     =              folder / "foo.txt"
 assert(tostring(foo)          == "folder/foo.txt") -- $PWD/folder/foo.txt
 assert(tostring(foo:parent()) == "folder")
 
@@ -65,6 +66,7 @@ local fd = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
 assert(fd ~= nil, "File creation failed. " .. new_file.error_msg)
 luv.fs_write(fd, "File Content\n")
 luv.fs_close(fd)
+-- HINT: new_file:fs_write(...) does this all at once.
 
 -- SHORTHAND: read file content with `io.read`
 local content = new_file:io_read()
@@ -84,22 +86,48 @@ new_file:symlink_to(new_file .. "baz.txt") -- create symlink of `foo.txt` named 
 for path in new_file:parent():iterdir() do
   -- loop: [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
 end
+```
 
--- fs_scandir-like usage for async scan
-new_file:parent():iterdir_async(function(path, fs_type) -- callback on all files
-    vim.print(tostring(path), fs_type)
-end, function(error) -- on error
-    vim.print("Error: " .. error)
-end, function(count) -- on exit
-    vim.print("Scan Finished. " .. count .. " files found.")
+## Async Execution
+
+This library uses [nvim-nio](https://github.com/nvim-neotest/nvim-nio)
+under the hood to run async calls. Supported methods will turn into
+async calls inside a `nio.run` environment and has the **EXACT SAME
+INTERFACE**.
+
+``` lua
+local nio = require("nio")
+local path = Path("foo.txt")
+nio.run(function() -- async run (does not block the main thread)
+  vim.print(path:fs_stat())       -- coroutine (async)
+  path:fs_write("File Content\n") -- coroutine (async)
+  vim.print(path:fs_read())       -- coroutine (async)
+  vim.print("async done")         -- prints last
+end)
+
+vim.print("sync here") -- prints first (maybe not if above functions end very fast)
+```
+
+When execution fails, function will return `nil` and the error message
+is captured into `self.error_msg`. This property holds the error message
+of the latest async function call.
+
+``` lua
+nio.run(function ()
+  local path = Path("./does/not/exist.txt")
+  local fd = path:fs_open("r")
+  assert(not fd, "fs_open failed. ERROR: " .. path.error_msg)
+  -- fd will be nil when `:fs_open` fails. Check `self.error_msg` for the error message.
 end)
 ```
 
 # TODO
 
-- API documentation
+- [ ] API documentation.
 
-- Windows implementation, test environment.
+- [ ] Git operation integration.
+
+- [ ] Windows implementation, test environment.
 
 # Contributions
 
