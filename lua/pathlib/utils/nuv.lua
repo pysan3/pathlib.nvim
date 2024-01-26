@@ -11,8 +11,10 @@ local function luv_err_msg(self, func, ...)
   return unpack(result)
 end
 
-nio.current_task = function()
-  return false
+if not nio.current_task then
+  nio.current_task = function()
+    return require("nio.tasks").current_task()
+  end
 end
 
 ---@param self PathlibPath
