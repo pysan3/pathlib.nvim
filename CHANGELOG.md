@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/pysan3/pathlib.nvim/compare/v0.3.0...v0.3.1) (2024-01-26)
+
+
+### Bug Fixes
+
+* **ci:** fix nvim-nio version ([d2965a5](https://github.com/pysan3/pathlib.nvim/commit/d2965a5225c7447b7b870a051dbf1607bda09de2))
+
 ## [0.3.0](https://github.com/pysan3/pathlib.nvim/compare/v0.2.0...v0.3.0) (2024-01-26)
 
 
