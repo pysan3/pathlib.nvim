@@ -20,7 +20,7 @@ describe("Simple PathlibPath test;", function()
     it("single argument", function()
       local path = Path.new(".")
       assert.is_true(utils.tables.is_type_of(path, "PathlibPath"))
-      assert.are_same(path._raw_paths, { "." })
+      assert.are_same(path._raw_paths, {})
     end)
   end)
 

@@ -37,7 +37,7 @@ function Path:_init(...)
         self._raw_paths:extend(s._raw_paths)
       end
     elseif type(s) == "string" then
-      local path = fs.normalize(s, { expand_env = true }):gsub([[^%./]], "")
+      local path = require("pathlib.utils.paths").normalize(s, const.IS_WINDOWS, { collapse_slash = false })
       if i == 1 then
         if path:sub(2, 2) == ":" then -- Windows C: etc
           self.__windows_panic = true
@@ -48,14 +48,10 @@ function Path:_init(...)
           local path_start = path:find("/", 3) or 0
           local network_device = path:sub(3, path_start - 1)
           self._drive_name = self.sep_str:rep(2) .. network_device
-          if path_start > 0 then
-            path = path:sub(path_start)
-          else
-            path = "/"
-          end
+          path = path_start > 0 and path:sub(path_start) or "/"
         end
       end
-      local splits = vim.split(path, "/", { plain = true, trimempty = false })
+      local splits = vim.split(path:gsub("//", "/"), "/", { plain = true, trimempty = false })
       if #splits == 0 then
         goto continue
       elseif vim.tbl_contains(splits, "..") then -- deal with '../' later in `self:resolve()`
@@ -162,10 +158,7 @@ function Path.permission(mode_string)
 end
 
 function Path:__clean_paths_list()
-  self._raw_paths:filter_internal(nil, 2)
-  if #self._raw_paths > 1 and self._raw_paths[1] == "." then
-    self._raw_paths:shift()
-  end
+  self._raw_paths:filter_internal()
   self.__string_cache = nil
 end
 
@@ -218,7 +211,7 @@ function Path:__le(other)
   if not utils.tables.is_path_module(self) or not utils.tables.is_path_module(other) then
     errs.value_error("__le", other)
   end
-  return (self < other) or (self == other)
+  return (self == other) or (self < other)
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`

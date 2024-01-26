@@ -24,10 +24,8 @@ describe("Absolute vs Relative Paths;", function()
       [[D:\foo\bar.txt]],
       [[c:/foo/bar/txt]],
       [[z:\foo\bar.txt]],
-      -- TODO: Network storage paths are not supported yet
-      -- https://github.com/neovim/neovim/issues/27068
-      -- [[\\127.0.0.1\foo\bar.txt]],
-      -- [[\\wsl$\foo\bar.txt]],
+      [[\\127.0.0.1\foo\bar.txt]],
+      [[\\wsl$\foo\bar.txt]],
     }
     for _, value in ipairs(check_list) do
       local foo = Windows.new(value)

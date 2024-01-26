@@ -9,10 +9,10 @@ setmetatable(str_list, {
 
 ---Filters out empty string
 ---@param e string
----@param _ integer
+---@param i integer
 ---@return boolean
-function str_list.filter_empty(e, _)
-  return e ~= ""
+function str_list.filter_empty(e, i)
+  return (i == 1 or e ~= "") and e ~= "."
 end
 
 function str_list.new()
@@ -76,18 +76,18 @@ end
 ---Filter list but elements before `index_from` are free-pass. Returns new list.
 ---@param func? fun(e: string, idx: integer): boolean # filter function
 ---@param index_from integer? # Start filtering from this index and after. Set this value <= 0 or nil to have normal behavior
----@return PathlibStrList # Newly created list of filtered values
 function str_list:filter_internal(func, index_from)
-  if index_from == nil then
-    index_from = 0
-  end
-  local new = str_list.new()
+  local accum = 0
   for index, value in ipairs(self) do
-    if index < index_from or (func or self.filter_empty)(value, index) then
-      new:append(value)
+    if (index_from and index < index_from) or (func or self.filter_empty)(value, index) then
+      accum = accum + 1
+      self[accum] = value
+    end
+    if accum ~= index then
+      self[index] = nil
     end
   end
-  return new
+  self[0] = nil
 end
 
 return {
