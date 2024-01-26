@@ -116,7 +116,7 @@ of the latest async function call.
 nio.run(function ()
   local path = Path("./does/not/exist.txt")
   local fd = path:fs_open("r")
-  assert(not fd, "fs_open failed. ERROR: " .. path.error_msg)
+  assert(fd, "ERROR: " .. path.error_msg)
   -- fd will be nil when `:fs_open` fails. Check `self.error_msg` for the error message.
 end)
 ```
