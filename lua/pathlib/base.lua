@@ -513,6 +513,9 @@ end
 ---@param recursive boolean # if true, creates parent directories as well
 ---@return boolean? success
 function Path:mkdir(mode, recursive)
+  if self:is_dir() then
+    return true
+  end
   if recursive then
     local parent = self:parent()
     if parent and not parent:is_dir() then
