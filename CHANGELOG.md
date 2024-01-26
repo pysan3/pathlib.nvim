@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/pysan3/pathlib.nvim/compare/v0.3.1...v0.3.2) (2024-01-26)
+
+
+### Bug Fixes
+
+* **base:** update error_msg correctly ([37bdec1](https://github.com/pysan3/pathlib.nvim/commit/37bdec194f76e13178517e2acd9c6ad11f6f0d08))
+
 ## [0.3.1](https://github.com/pysan3/pathlib.nvim/compare/v0.3.0...v0.3.1) (2024-01-26)
 
 
