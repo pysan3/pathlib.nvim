@@ -209,6 +209,9 @@ end
 ---@param paths PathlibAbsPath[]
 ---@param git_root PathlibPath
 function M.fill_git_ignore(paths, git_root)
+  if not git_root then
+    return
+  end
   local cmd = { "git", "-C", git_root:tostring(), "check-ignore", "--stdin" }
   local path_strs = {}
   for _, path in ipairs(paths) do

@@ -14,7 +14,7 @@ M.normalize_default_opts = {
 function M.normalize(path, iswin, opts)
   opts = vim.tbl_deep_extend("force", M.normalize_default_opts, opts or {})
   if path:sub(1, 1) == "~" then
-    path = (vim.loop.os_homedir() or "~") .. "/" .. path
+    path = (vim.loop.os_homedir() or "~") .. "/" .. path:sub(2)
   end
   if opts.expand_env then
     path = path:gsub("%$([%w_]+)", vim.loop.os_getenv)

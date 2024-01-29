@@ -27,6 +27,7 @@ Path.__index = require("pathlib.utils.nuv").generate_index(Path)
 ---@param ... string | PathlibPath # List of string and Path objects
 function Path:_init(...)
   local run_resolve = false
+  local iswin = not utils.tables.is_type_of(self, const.path_module_enum.PathlibPosix)
   for i, s in ipairs({ ... }) do
     if utils.tables.is_path_module(s) then
       ---@cast s PathlibPath
@@ -37,7 +38,7 @@ function Path:_init(...)
         self._raw_paths:extend(s._raw_paths)
       end
     elseif type(s) == "string" then
-      local path = require("pathlib.utils.paths").normalize(s, const.IS_WINDOWS, { collapse_slash = false })
+      local path = require("pathlib.utils.paths").normalize(s, iswin, { collapse_slash = false })
       if i == 1 then
         if path:sub(2, 2) == ":" then -- Windows C: etc
           self.__windows_panic = true
@@ -51,7 +52,7 @@ function Path:_init(...)
           path = path_start > 0 and path:sub(path_start) or "/"
         end
       end
-      local splits = vim.split(path:gsub("//", "/"), "/", { plain = true, trimempty = false })
+      local splits = vim.split(path:gsub("/+", "/"), "/", { plain = true, trimempty = false })
       if #splits == 0 then
         goto continue
       elseif vim.tbl_contains(splits, "..") then -- deal with '../' later in `self:resolve()`
@@ -270,36 +271,35 @@ end
 ---Alias to `tostring(self)`
 ---@return string
 function Path:tostring()
-  return tostring(self)
+  return self:__tostring()
 end
 
----Return the group name of the file GID.
+---Return the basename of `self`.
+---Eg: foo/bar/baz.txt -> baz.txt
+---@return string
 function Path:basename()
-  return fs.basename(self:tostring())
+  return self._raw_paths[#self._raw_paths]
 end
 
 ---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
 ---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
 function Path:suffix()
-  local path_str = self:tostring()
-  local without_ext = vim.fn.fnamemodify(path_str, ":r")
-  return path_str:sub(without_ext:len() + 1) or ""
+  return self:basename():sub(self:stem():len() + 1)
 end
 
 ---Return the group name of the file GID. Same as `self:modify(":t:r")`.
 ---@return string # stem of path. (src/version.c -> "version")
 function Path:stem()
-  return vim.fn.fnamemodify(self:tostring(), ":t:r")
+  return (self:basename():gsub("([^.])%.[^.]+$", "%1", 1))
 end
 
 ---Return parent directory of itself. If parent does not exist, returns nil.
 ---@return PathlibPath?
 function Path:parent()
-  if #self._raw_paths >= 2 then
-    return self.new_from(self, 1)
-  else
-    return nil
+  if not self.__parent_cache and #self._raw_paths >= 2 then
+    self.__parent_cache = self.new_from(self, 1)
   end
+  return self.__parent_cache
 end
 
 ---Return iterator of parents.
@@ -520,12 +520,12 @@ end
 ---@param recursive boolean # if true, creates parent directories as well
 ---@return boolean? success
 function Path:mkdir(mode, recursive)
-  if self:is_dir() then
+  if self:is_dir(true) then
     return true
   end
   if recursive then
     local parent = self:parent()
-    if parent and not parent:is_dir() then
+    if parent and not parent:is_dir(true) then
       local success = parent:mkdir(mode, recursive)
       if not success then
         return success
@@ -595,7 +595,9 @@ function Path:move(target)
   errs.assert_function("Path:move", function()
     return utils.tables.is_path_module(target)
   end, "target is not a Path object.")
-  target:unlink()
+  if target:exists() then
+    target:unlink()
+  end
   return self.nuv.fs_rename(self:tostring(), target:tostring())
 end
 
@@ -684,7 +686,7 @@ function Path:fs_open(flags, mode, ensure_dir)
   if ensure_dir == true then
     ensure_dir = const.o755
   end
-  if type(ensure_dir) == "integer" then
+  if type(ensure_dir) == "number" then
     self:parent():mkdir(ensure_dir, true)
   end
   return self.nuv.fs_open(self:tostring(), flags, mode or const.o644)
@@ -704,7 +706,7 @@ end
 ---@param offset integer?
 ---@return integer? bytes # number of bytes written
 function Path:fs_write(data, offset)
-  local fd = self:fs_open("w")
+  local fd = self:fs_open("w", nil, true)
   return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
 end
 
@@ -713,13 +715,12 @@ end
 ---@param offset integer?
 ---@return integer? bytes # number of bytes written
 function Path:fs_append(data, offset)
-  local fd = self:fs_open("a")
+  local fd = self:fs_open("a", nil, true)
   return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
 end
 
 ---Call `io.read`. Use `self:fs_read` to use with `nio.run` instead.
 ---@return string? data # whole file content
----@nodiscard
 function Path:io_read()
   local file, err_msg = io.open(self:tostring(), "r")
   if not file then
@@ -736,7 +737,6 @@ end
 
 ---Call `io.read` with byte read mode.
 ---@return string? bytes # whole file content
----@nodiscard
 function Path:io_read_bytes()
   local file, err_msg = io.open(self:tostring(), "rb")
   if not file then
@@ -754,7 +754,6 @@ end
 ---Call `io.write`. Use `self:fs_write` to use with `nio.run` instead. If failed, returns error message
 ---@param data string # content
 ---@return boolean # success
----@nodiscard
 function Path:io_write(data)
   local file, err_msg = io.open(self:tostring(), "w")
   if not file then
@@ -773,7 +772,6 @@ end
 
 ---Call `io.write` with byte write mode.
 ---@param data string # content
----@nodiscard
 function Path:io_write_bytes(data)
   local file, err_msg = io.open(self:tostring(), "wb")
   if not file then
@@ -831,7 +829,7 @@ function Path:iterdir_async(callback, on_error, on_exit)
         break
       end
       counter = counter + 1
-      if callback(self:new_child_unpack(name), fs_type) == false then
+      if callback(self:child(name), fs_type) == false then
         break
       end
     end
