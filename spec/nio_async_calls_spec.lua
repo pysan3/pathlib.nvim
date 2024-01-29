@@ -46,7 +46,7 @@ describe("nvim-nio async calls;", function()
   end)
 
   describe("`nio` updates error_msg.", function()
-    local path = Path("./file/not/exists.txt")
+    local path = Path("./unknown/dir/file/not/exists.txt")
     _G.it = it
     nio.tests.it("no exist file stat", function()
       assert.is_nil(path:stat(true))
@@ -57,7 +57,7 @@ describe("nvim-nio async calls;", function()
     nio.tests.it("fail to async read / write", function()
       -- reset error_msg to check if it is udpated
       path.error_msg = file_content
-      assert.is_nil(path:fs_write(file_content))
+      assert.is_nil(path:fs_open("w"))
       assert.is_not.is_nil(path.error_msg)
       assert.is_true(path.error_msg:len() > 0)
       assert.is_not.is_equal(file_content, path.error_msg) -- error_msg is updated

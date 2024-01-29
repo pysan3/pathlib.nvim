@@ -4,6 +4,8 @@ local utils = require("pathlib.utils")
 ---@class PathlibGitState
 ---@field is_ready boolean # true if the git status is up to date.
 ---@field ignored boolean?
+---@field git_root PathlibPath?
+---@field state PathlibGitStatus?
 
 ---@class PathlibGit
 local M = {
@@ -237,18 +239,23 @@ function M.fill_git_ignore(paths, git_root)
 end
 
 ---Fill in all `path.git_state` inside a single git repo. Use `M.fill_git_state_batch` when git root is unknown.
+---You may want to pass absolute paths for better performance.
 ---@param paths PathlibPath[] # List of paths to check git ignored or not. Overwrites `path.git_ignored`.
 ---@param git_root PathlibPath # The git root dir.
 function M.fill_git_state_in_root(paths, git_root)
+  local status, _ = M.status(git_root, true)
   for _, path in ipairs(paths) do
     path:inplace_absolute()
+    path.git_state.is_ready = true
+    path.git_state.git_root = git_root
+    path.git_state.state = status[path:tostring()]
   end
   M.fill_git_ignore(paths, git_root)
 end
 
 ---Fill in all `path.git_state` by asking git cli.
 ---@param paths PathlibPath[] # List of paths to check git ignored or not. Overwrites `path.git_ignored`.
-function M.fill_git_state_batch(paths)
+function M.fill_git_state(paths)
   ---@type table<PathlibString, PathlibPath[] | { root: PathlibPath }>
   local check_list = {} -- sort paths by their git roots
   for _, path in ipairs(paths) do
@@ -262,6 +269,29 @@ function M.fill_git_state_batch(paths)
   end
   for _, path_list in pairs(check_list) do
     M.fill_git_state_in_root(path_list, path_list.root)
+  end
+end
+
+---Callback to update `PathlibPath.git_state` on fs_event
+---@param path PathlibPath
+---@param args PathlibWatcherArgs
+function M.update_git_state_callback(path, args)
+  if path:is_dir(true) then
+    return
+  end
+  path.git_state.is_ready = false
+  if not path.git_state.git_root then
+    path.git_state.git_root = M.find_root(path)
+  end
+  local cmd = { "git", "-C", path.git_state.git_root:tostring(), "check-ignore", path:tostring() }
+  local suc, result = utils.execute_command(cmd)
+  if suc then
+    path.git_state.ignored = #result > 0
+  end
+  if not path.git_state.ignored then
+    -- TODO: request status update cycle via debounce
+    local status, _ = M.status(path.git_state.git_root, false)
+    path.git_state.state = status[path:tostring()]
   end
 end
 

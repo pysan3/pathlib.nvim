@@ -2,20 +2,25 @@ local fs = vim.fs
 local utils = require("pathlib.utils")
 local const = require("pathlib.const")
 local errs = require("pathlib.utils.errors")
+local watcher = require("pathlib.utils.watcher")
 
 ---@alias PathlibString string # Specific annotation for result of `tostring(Path)`
+---@alias PathlibPointer string # A unique id to each path object
 
 ---@class PathlibPath
 ---@field nuv uv
 ---@field git_state PathlibGitState
 ---@field error_msg string?
 ---@field _raw_paths PathlibStrList
----@field _drive_name string # Drive name for Windows path. ("C:", "D:")
----@field __windows_panic boolean # Windows paths shouldn't be passed to this type, but when it is.
+---@field _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
+---@field __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
+---@field __fs_event_callbacks? table<string, PathlibWatcherCallback> # List of functions called when a fs_event is triggered.
 ---@field __string_cache string? # Cache result of `tostring(self)`.
+---@field __parent_cache PathlibPath? # Cache reference to parent object.
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
+  const = const,
 }, {
   __call = function(cls, ...)
     return cls.new(cls, ...)
@@ -851,6 +856,76 @@ function Path:glob(pattern)
   return function()
     i = i + 1
     return self.new(result[i])
+  end
+end
+
+---Register fs_event watcher for `self`.
+---@param func_name string? # Name of the callback to check existence. If nil, returns whether any callback exists.
+---@return boolean exists
+function Path:has_watcher(func_name)
+  if not self.__fs_event_callbacks then
+    return false
+  end
+  if not func_name then
+    for _, _ in pairs(self.__fs_event_callbacks) do
+      return true
+    end
+    return false
+  end
+  return not not self.__fs_event_callbacks[func_name]
+end
+
+---Register fs_event watcher for `self`.
+---@param func_name string # Name of the callback to prevent register same callback multiple time
+---@param callback PathlibWatcherCallback # Callback passed to `luv.fs_event_start`
+---@return boolean succeess
+function Path:register_watcher(func_name, callback)
+  self.__fs_event_callbacks = self.__fs_event_callbacks or {}
+  self.__fs_event_callbacks[func_name] = callback
+  local suc, err_msg = watcher.register(self)
+  if suc ~= nil then
+    return true
+  else
+    self.error_msg = err_msg
+    return false
+  end
+end
+
+---Unregister fs_event watcher for `self`.
+---@param func_name string # Name of the callback registered with `self:register(func_name, ...)`
+---@return boolean succeess
+function Path:unregister_watcher(func_name)
+  if not self.__fs_event_callbacks then
+    return true
+  end
+  self.__fs_event_callbacks[func_name] = nil
+  for _, _ in pairs(self.__fs_event_callbacks) do
+    return true -- still has other callbacks
+  end
+  local suc, err_msg = watcher.unregister(self)
+  if suc ~= nil then
+    return true
+  else
+    self.error_msg = err_msg
+    return false
+  end
+end
+
+---Register fs_event watcher for `self`.
+---@param func_name string? # Name of the callback to check existence. If nil, calls all watchers.
+---@param args PathlibWatcherArgs
+function Path:execute_watchers(func_name, args)
+  if not self.__fs_event_callbacks then
+    return
+  end
+  if func_name then
+    if self.__fs_event_callbacks[func_name] then
+      pcall(self.__fs_event_callbacks[func_name], self, args)
+    end
+  else
+    for _, func in pairs(self.__fs_event_callbacks) do
+      pcall(func, self, args)
+    end
   end
 end
 

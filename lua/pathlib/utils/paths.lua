@@ -29,4 +29,10 @@ function M.normalize(path, iswin, opts)
   return (path:gsub("([^/])/+$", "%1"))
 end
 
+---@param path PathlibPath
+---@return PathlibPointer
+function M.path_pointer(path)
+  return string.format("%p", path)
+end
+
 return M

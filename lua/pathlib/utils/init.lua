@@ -14,11 +14,12 @@ end
 ---@return boolean success
 ---@return string[] result_lines # Each line of the output from the command.
 function M.execute_command(cmd, input)
-  local result = vim.fn.systemlist(cmd, input)
-  if vim.v.shell_error ~= 0 or (#result > 0 and vim.startswith(result[1], "fatal:")) then
-    return false, {}
+  -- TODO: execute_command cannot be called inside async task
+  local result = vim.system(cmd, { stdin = input }):wait()
+  if result.code == 0 then
+    return true, vim.split(result.stdout or "", "\n", { plain = true, trimempty = false })
   else
-    return true, result
+    return false, {}
   end
 end
 
