@@ -27,7 +27,56 @@ mutliple OSs in neovim. The plugin API is heavily inspired by Python's
 [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) but it
 is very simple and portable to be used in any plugin.
 
-# Usage Example
+# ✨ Benefits
+
+## 📦 Intuitive and Useful Methods
+
+``` lua
+local Path = require("pathlib")
+local dir = Path("~/Documents") -- Same as `Path.home() / "Documents"`
+local foo = dir / "foo.txt"
+
+print(foo:basename(), foo:stem(), foo:suffix()) -- foo.txt, foo, .txt
+print(foo:parent()) -- "/home/user/Documents"
+```
+
+## 📋 Git Integration
+
+``` lua
+local git_root = Path("/path/to/git/workdir")
+-- assert(git_root:child(".git"):exists(), string.format("%s is not a git repo.", git_root))
+
+require("pathlib.git").fill_git_state({ file_a, file_b, ... })
+
+file_a.git_state.ignored  -- is git ignored
+file_a.git_state.status   -- git status (modified, added, staged, ...)
+file_a.git_state.git_root -- root directory of the repo
+```
+
+## ⏱️ Sync / Async Operations
+
+The API is designed so it is very easy to switch between sync and async
+operations. Call them inside [nvim-nio
+task](https://github.com/nvim-neotest/nvim-nio) without any change, and
+the operations are converted to be async (does not block the main
+thread).
+
+``` lua
+local foo = Path("~/Documents/foo.txt")
+local content = "File Content\n"
+
+-- # sync
+local sync_bytes = foo:fs_write(content)
+assert(sync_bytes == content:len(), foo.error_msg)
+
+-- # async
+require("nio").run(function()
+  local async_bytes = foo:fs_write(content)
+  assert(async_bytes == content:len(), foo.error_msg)
+end)
+```
+
+# 🚀 Usage Example
 
 ## Create Path Object
 
@@ -49,6 +98,26 @@ assert(foo                    == Path(folder, "foo.txt"))  -- Unpack any of them
 -- Create siblings (just like `./<foo>/../bar.txt`)
 local bar = foo .. "bar.txt"
 assert(tostring(bar)          == "folder/bar.txt")
+```
+
+### Path object is stored with `string[]`.
+
+- Very fast operations to work with parents / children / siblings.
+
+- No need to worry about path separator =\> OS Independent.
+
+  - `/`: Unix, `\`: Windows
+
+### Nicely integrated with vim functions.
+
+There are wrappers around vim functions such as `fnamemodify`, `stdpath`
+and `getcwd`.
+
+``` lua
+path:modify(":p:t:r")                -- vim.fn.fnamemodify
+
+-- Define child directory of stdpaths
+Path.stdpath("data", "mason", "bin") -- vim.fn.stdpath("data") .. "/mason/bin"
 ```
 
 ## Create and Manipulate Files / Directories
