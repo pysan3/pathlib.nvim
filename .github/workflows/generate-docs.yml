@@ -23,7 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v5
-        shell: bash
         with:
           python-version: '3.11'
           cache: 'pip'
