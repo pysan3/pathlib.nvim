@@ -11,11 +11,6 @@ function d.p(...) ---@diagnostic disable-line
   vim.loop.fs_write(fd, d.ps(...) .. "\n")
 end
 
----@alias after_func_cb fun(array: PathlibPath[])
-
----@param dir PathlibPath
----@param array PathlibPath[]
----@param cb after_func_cb?
 local function scan_sync_rec(dir, array, cb)
   for path in dir:iterdir() do
     if path:is_dir() then
@@ -28,9 +23,6 @@ local function scan_sync_rec(dir, array, cb)
   end
 end
 
----@param dir PathlibPath
----@param array PathlibPath[]
----@param cb after_func_cb?
 local function scan_sync_depth(dir, array, cb)
   for path in dir:iterdir({ depth = 100 }) do
     array[#array + 1] = path
@@ -40,9 +32,6 @@ local function scan_sync_depth(dir, array, cb)
   end
 end
 
----@param dir PathlibPath
----@param array PathlibPath[]
----@param cb after_func_cb?
 local function scan_async_iterdir(dir, array, cb)
   local function _iterdir_cb(path, fs_type)
     if fs_type == "directory" then
@@ -57,9 +46,6 @@ local function scan_async_iterdir(dir, array, cb)
   end)
 end
 
----@param dir PathlibPath
----@param array PathlibPath[]
----@param cb after_func_cb?
 local function scan_async_nuv(dir, array, cb)
   local nuv = dir.nuv
   local function _iterdir(path)
@@ -84,10 +70,6 @@ local function scan_async_nuv(dir, array, cb)
   end
 end
 
----comment
----@param name string
----@param dir PathlibPath
----@param func fun(dir: PathlibPath, array: PathlibPath[], cb: after_func_cb?)
 local function time_it(name, dir, func, times)
   d.pf("==== Start %s (%s times) ====", name, times)
   times = times or 1
@@ -128,7 +110,6 @@ nio.run(function()
   time_it("scan_async_nuv", linux, scan_async_nuv, test_times)
 end)
 
----@type PathlibPath[]
 local array = {}
 scan_async_nuv(linux, array)
 d.pf("scan_async_nuv done. %s files.", #array)
