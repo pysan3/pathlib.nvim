@@ -1,9 +1,15 @@
 PathlibPath                                                        *PathlibPath*
 
     Fields: ~
-        {nuv}        (uv)
-        {git_state}  (PathlibGitState)
-        {error_msg}  (string|nil)
+        {nuv}                   (uv)
+        {git_state}             (PathlibGitState)
+        {error_msg}             (string|nil)
+        {_raw_paths}            (PathlibStrList)
+        {_drive_name}           (string)                                    # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
+        {__windows_panic}       (boolean)                                   # Set to true when passed path might be a windows path. PathlibWindows ignores this.
+        {__fs_event_callbacks}  (table<string,PathlibWatcherCallback>|nil)  # List of functions called when a fs_event is triggered.
+        {__string_cache}        (string|nil)                                # Cache result of `tostring(self)`.
+        {__parent_cache}        (PathlibPath|nil)                           # Cache reference to parent object.
 
 
 Path.new({...})                                                       *Path.new*
