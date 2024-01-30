@@ -4,7 +4,7 @@ description:
 authors: takuto
 categories:
 created: 2023-11-14
-updated: 2024-01-29T17:41:30+0900
+updated: 2024-01-30T23:09:30+0900
 version: 1.1.1
 @end
 
@@ -34,6 +34,15 @@ version: 1.1.1
   The plugin API is heavily inspired by Python's `pathlib.Path` with tweaks to fit neovim usage.
   It is mainly used in {https://github.com/nvim-neo-tree/neo-tree.nvim}[neo-tree.nvim]
   but it is very simple and portable to be used in any plugin.
+
+  - {https://pysan3.github.io/pathlib.nvim/}[Documentation]
+  - Module References
+  -- {https://pysan3.github.io/pathlib.nvim/doc/PathlibPath.html}[`PathlibPath`]: base class with operations.
+  -- {https://pysan3.github.io/pathlib.nvim/doc/PathlibPosixPath.html}[`PathlibPosixPath`]: posix system specific.
+  -- {https://pysan3.github.io/pathlib.nvim/doc/PathlibWindowsPath.html}[`PathlibWindowsPath`]: posix system specific.
+  - 🔎 Search for Keyword
+  -- {https://pysan3.github.io/pathlib.nvim/search.html}[Search]
+  -- {https://pysan3.github.io/pathlib.nvim/genindex.html}[Index]
 
 * ✨ Benefits
 ** 📦 Intuitive and Useful Methods
