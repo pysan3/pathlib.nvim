@@ -4,11 +4,6 @@ local const = require("pathlib.const")
 local errs = require("pathlib.utils.errors")
 local watcher = require("pathlib.utils.watcher")
 
----@alias PathlibString string # Specific annotation for result of `tostring(Path)`
----@alias PathlibPointer string # A unique id to each path object
----@alias PathlibAbsPath PathlibPath
----@alias PathlibRelPath PathlibPath
-
 ---@class PathlibPath
 ---@field public nuv uv
 ---@field public git_state PathlibGitState
@@ -937,5 +932,10 @@ function Path:execute_watchers(func_name, args)
     end
   end
 end
+
+---@alias PathlibString string # Specific annotation for result of `tostring(Path)`
+---@alias PathlibPointer string # A unique id to each path object
+---@alias PathlibAbsPath PathlibPath
+---@alias PathlibRelPath PathlibPath
 
 return Path

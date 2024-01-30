@@ -1,0 +1,740 @@
+PathlibPath                                                        *PathlibPath*
+
+    Fields: ~
+        {nuv}        (uv)
+        {git_state}  (PathlibGitState)
+        {error_msg}  (string|nil)
+
+
+Path.new({...})                                                       *Path.new*
+    Create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path.new_empty()                                                *Path.new_empty*
+
+
+Path.cwd()                                                            *Path.cwd*
+    Return `vim.fn.getcwd` in Path object
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path.home()                                                          *Path.home*
+    Return `vim.loop.os_homedir` in Path object
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path.permission({mode_string})                                 *Path.permission*
+    Calculate permission integer from "rwxrwxrwx" notation.
+
+    Parameters: ~
+        {mode_string}  (string)
+
+    Returns: ~
+        (integer)
+
+
+Path.stdpath({what}, {...})                                       *Path.stdpath*
+    Shorthand to `vim.fn.stdpath` and specify child path in later args.
+    Mason bin path: `Path.stdpath("data", "mason", "bin")` or `Path.stdpath("data", "mason/bin")`
+
+    Parameters: ~
+        {what}  (string)              # See `:h stdpath` for information
+        {...}   (string|PathlibPath)  # child path after the result of stdpath
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:_init({...})                                                   *Path:_init*
+    Private init method to create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+
+Path:to_empty()                                                  *Path:to_empty*
+
+
+Path:copy_all_from({path})                                  *Path:copy_all_from*
+    Copy all attributes from `path` to self
+
+    Parameters: ~
+        {path}  (PathlibPath)
+
+
+Path:deep_copy()                                                *Path:deep_copy*
+    Copy all attributes from `path` to self
+
+
+Path:child({name})                                                  *Path:child*
+    Create a new Path object as self's child. `name` cannot be a grandchild.
+
+    Parameters: ~
+        {name}  (string)
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:new_descendant({...})                                 *Path:new_descendant*
+    Create a new Path object as self's descentant. Use `self:child` if new path is a direct child of the dir.
+
+    Parameters: ~
+        {...}  (string)
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:new_child_unpack({name})                            *Path:new_child_unpack*
+    Unpack name and return a new self's grandchild, where `name` contains more than one `/`.
+
+    Parameters: ~
+        {name}  (string)
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:__clean_paths_list()                              *Path:__clean_paths_list*
+
+
+Path:basename()                                                  *Path:basename*
+    Return the basename of `self`.
+    Eg: foo/bar/baz.txt -> baz.txt
+
+    Returns: ~
+        (string)
+
+
+Path:suffix()                                                      *Path:suffix*
+    Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
+
+    Returns: ~
+        (string)   extension of path including the dot (`.`): `.py`, `.lua` etc
+
+
+Path:stem()                                                          *Path:stem*
+    Return the group name of the file GID. Same as `self:modify(":t:r")`.
+
+    Returns: ~
+        (string)   stem of path. (src/version.c -> "version")
+
+
+Path:parent()                                                      *Path:parent*
+    Return parent directory of itself. If parent does not exist, returns nil.
+
+    Returns: ~
+        (PathlibPath|nil)
+
+
+Path:parents()                                                    *Path:parents*
+    Return iterator of parents.
+
+
+Path:as_uri()                                                      *Path:as_uri*
+
+
+Path:is_absolute()                                            *Path:is_absolute*
+    Returns whether registered path is absolute
+
+    Returns: ~
+        (boolean)
+
+
+Path:is_hidden()                                                *Path:is_hidden*
+    Return whether the file is treated as a _hidden_ file.
+    Posix: basename starts with `.`, Windows: calls `GetFileAttributesA`.
+
+    Returns: ~
+        (boolean)
+
+
+Path:is_relative()                                            *Path:is_relative*
+    Returns whether registered path is relative
+
+    Returns: ~
+        (boolean)
+
+
+Path:as_posix()                                                  *Path:as_posix*
+
+
+Path:absolute()                                                  *Path:absolute*
+
+
+Path:to_absolute()                                            *Path:to_absolute*
+
+
+Path:modify({mods})                                                *Path:modify*
+    Get the path being modified with `filename-modifiers`
+
+    Parameters: ~
+        {mods}  (string)  # filename-modifiers passed to `vim.fn.fnamemodify`
+
+    Returns: ~
+        (string)   result of `vim.fn.fnamemodify(tostring(self), mods)`
+
+
+Path:resolve()                                                    *Path:resolve*
+    Resolves path. Eliminates `../` representation.
+    Changes internal. (See `Path:resolve_copy` to create new object)
+
+
+Path:resolve_copy()                                          *Path:resolve_copy*
+    Resolves path. Eliminates `../` representation and returns a new object. `self` is not changed.
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:iterdir({opts})                                              *Path:iterdir*
+    Alias to `vim.fs.dir` but returns PathlibPath objects.
+
+    Parameters: ~
+        {opts}  (table|nil)  Optional keyword arguments:
+                                          - depth: integer|nil How deep the traverse (default 1)
+                                          - skip: (fun(dir_name: string): boolean)|nil Predicate
+                                            to control traversal. Return false to stop searching the current directory.
+                                            Only useful when depth > 1
+
+
+    Returns: ~
+        (fun():PathlibPath|nil,string|nil)   items in {self}. Each iteration yields two values: "path" and "type".
+                                                    "path" is the PathlibPath object.
+                                                    "type" is one of the following:
+                                                    "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
+
+
+Path:glob({pattern})                                                 *Path:glob*
+    Run `vim.fn.globpath` on this path.
+
+    Parameters: ~
+        {pattern}  (string)  # glob pattern expression
+
+    Returns: ~
+        (fun():PathlibPath)   iterator of results.
+
+
+Path:fs_stat({follow_symlinks})                                   *Path:fs_stat*
+    Return result of `luv.fs_stat`.
+
+    Parameters: ~
+        {follow_symlinks}  (boolean|nil)  # Whether to resolve symlinks
+
+    Returns: ~
+        (uv.aliases.fs_stat_table|nil)  # nil if `fs_stat` failed
+                                        @nodiscard
+
+
+Path:stat({follow_symlinks})                                         *Path:stat*
+    Return result of `luv.fs_stat`. Use `self:stat_async` to use with callback.
+
+    Parameters: ~
+        {follow_symlinks}  (boolean|nil)  # Whether to resolve symlinks
+
+    Returns: ~
+        (uv.aliases.fs_stat_table|nil)  # nil if `fs_stat` failed
+                                        @nodiscard
+
+
+Path:lstat()                                                        *Path:lstat*
+
+
+Path:exists()                                                      *Path:exists*
+
+
+Path:size()                                                          *Path:size*
+
+
+Path:is_dir()                                                      *Path:is_dir*
+
+
+Path:is_file()                                                    *Path:is_file*
+
+
+Path:is_symlink()                                              *Path:is_symlink*
+
+
+Path:realpath()                                                  *Path:realpath*
+    Return result of `luv.fs_realpath` in `PathlibPath`.
+
+    Returns: ~
+        (PathlibPath|nil)   Resolves symlinks if exists. Returns nil if link does not exist.
+
+
+Path:get_mode({follow_symlinks})                                 *Path:get_mode*
+    Get mode of path object. Use `self:get_type` to get type description in string instead.
+
+    Parameters: ~
+        {follow_symlinks}  (boolean)  # Whether to resolve symlinks
+
+    Returns: ~
+        (PathlibModeEnum|nil)
+
+
+Path:get_type({follow_symlinks})                                 *Path:get_type*
+    Get type description of path object. Use `self:get_mode` to get mode instead.
+
+    Parameters: ~
+        {follow_symlinks}  (boolean)  # Whether to resolve symlinks
+
+
+Path:samefile({other})                                           *Path:samefile*
+    Return whether `other` is the same file or not.
+
+    Parameters: ~
+        {other}  (PathlibPath)
+
+    Returns: ~
+        (boolean)
+
+
+Path:is_mount()                                                  *Path:is_mount*
+
+
+Path:mkdir({mode}, {recursive})                                     *Path:mkdir*
+    Make directory. When `recursive` is true, will create parent dirs like shell command `mkdir -p`
+
+    Parameters: ~
+        {mode}       (integer)  # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
+        {recursive}  (boolean)  # if true, creates parent directories as well
+
+    Returns: ~
+        (boolean|nil)  success
+
+
+Path:touch({mode}, {recursive})                                     *Path:touch*
+    Make file. When `recursive` is true, will create parent dirs like shell command `mkdir -p`
+
+    Parameters: ~
+        {mode}       (integer)  # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
+        {recursive}  (boolean)  # if true, creates parent directories as well
+
+    Returns: ~
+        (boolean|nil)  success
+
+
+Path:copy({target})                                                  *Path:copy*
+    Copy file to `target`
+
+    Parameters: ~
+        {target}  (PathlibPath)  # `self` will be copied to `target`
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:symlink_to({target})                                      *Path:symlink_to*
+    Create a simlink named `self` pointing to `target`
+
+    Parameters: ~
+        {target}  (PathlibPath)
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:hardlink_to({target})                                    *Path:hardlink_to*
+    Create a hardlink named `self` pointing to `target`
+
+    Parameters: ~
+        {target}  (PathlibPath)
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:rename({target})                                              *Path:rename*
+    Rename `self` to `target`. If `target` exists, fails with false. Ref: `Path:move`
+
+    Parameters: ~
+        {target}  (PathlibPath)
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:move({target})                                                  *Path:move*
+    Move `self` to `target`. Overwrites `target` if exists. Ref: `Path:rename`
+
+    Parameters: ~
+        {target}  (PathlibPath)
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:replace({target})                                            *Path:replace*
+    @deprecated Use `Path:move` instead.
+
+    Parameters: ~
+        {target}  (PathlibPath)
+
+
+Path:chmod({mode}, {follow_symlinks})                               *Path:chmod*
+    Change the permission of the path to `mode`.
+
+    Parameters: ~
+        {mode}             (integer)  # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
+        {follow_symlinks}  (boolean)  # Whether to resolve symlinks
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:unlink()                                                      *Path:unlink*
+    Remove this file or link. If the path is a directory, use `Path:rmdir()` instead.
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+Path:rmdir()                                                        *Path:rmdir*
+    Remove this directory.  The directory must be empty.
+
+    Returns: ~
+        (boolean|nil)  # whether operation succeeded
+
+
+                                                                  *Path:fs_open*
+Path:fs_open({flags}, {mode}, {ensure_dir})
+    Call `luv.fs_open`.
+
+    Parameters: ~
+        {flags}       (uv.aliases.fs_access_flags|integer)
+        {mode}        (integer|nil)                         # permission. You may use `Path.permission()` to convert from "rwxrwxrwx".
+        {ensure_dir}  (integer|boolean|nil)                 # if not nil, runs `mkdir -p self:parent()` with permission to ensure parent exists.
+                                                              `true` will default to 755.
+
+    Returns: ~
+        (integer|nil)  @nodiscard
+
+
+Path:fs_read({size}, {offset})                                    *Path:fs_read*
+    Call `luv.fs_open("r") -> luv.fs_read`.
+
+    Parameters: ~
+        {size}    (integer|nil)  # if nil, uses `self:stat().size`
+        {offset}  (integer|nil)
+
+    Returns: ~
+        (string|nil)  # content of the file
+
+
+Path:fs_write({data}, {offset})                                  *Path:fs_write*
+    Call `luv.fs_open("w") -> luv.fs_write`.
+
+    Parameters: ~
+        {data}    (uv.aliases.buffer)
+        {offset}  (integer|nil)
+
+    Returns: ~
+        (integer|nil)  # number of bytes written
+
+
+Path:fs_append({data}, {offset})                                *Path:fs_append*
+    Call `luv.fs_open("a") -> luv.fs_write`.
+
+    Parameters: ~
+        {data}    (uv.aliases.buffer)
+        {offset}  (integer|nil)
+
+    Returns: ~
+        (integer|nil)  # number of bytes written
+
+
+Path:io_read()                                                    *Path:io_read*
+    Call `io.read`. Use `self:fs_read` to use with `nio.run` instead.
+
+    Returns: ~
+        (string|nil)  # whole file content
+
+
+Path:io_read_bytes()                                        *Path:io_read_bytes*
+    Call `io.read` with byte read mode.
+
+    Returns: ~
+        (string|nil)  # whole file content
+
+
+Path:io_write({data})                                            *Path:io_write*
+    Call `io.write`. Use `self:fs_write` to use with `nio.run` instead. If failed, returns error message
+
+    Parameters: ~
+        {data}  (string)  # content
+
+    Returns: ~
+        (boolean)   success
+
+
+Path:io_write_bytes({data})                                *Path:io_write_bytes*
+    Call `io.write` with byte write mode.
+
+    Parameters: ~
+        {data}  (string)  # content
+
+
+                                                            *Path:iterdir_async*
+Path:iterdir_async({callback}, {on_error}, {on_exit})
+    Iterate directory with callback receiving PathlibPath objects
+
+    Parameters: ~
+        {callback}  (fun(path:PathlibPath,fs_type:uv.aliases.fs_stat_types):boolean|nil)  # function called for each child in directory
+                                                                                            When `callback` returns `false` the iteration will break out.
+        {on_error}  (fun(err:string)|nil)                                                 # function called when `luv.fs_scandir` fails
+        {on_exit}   (fun(count:integer)|nil)                                              # function called after the scan has finished. `count` gives the number of children
+
+
+Path:__eq({other})                                                   *Path:__eq*
+    Compare equality of path objects
+
+    Parameters: ~
+        {other}  (PathlibPath)
+
+    Returns: ~
+        (boolean)
+
+
+Path:__lt({other})                                                   *Path:__lt*
+    Compare less than of path objects
+
+    Parameters: ~
+        {other}  (PathlibPath)
+
+    Returns: ~
+        (boolean)
+
+
+Path:__le({other})                                                   *Path:__le*
+    Compare less than or equal of path objects
+
+    Parameters: ~
+        {other}  (PathlibPath)
+
+    Returns: ~
+        (boolean)
+
+
+Path:len()                                                            *Path:len*
+    Get length of `self._raw_paths`. `/foo/bar.txt ==> 3: { "", "foo", "bar.txt" } (root dir counts as 1!!)`
+
+    Returns: ~
+        (integer)
+
+
+Path:__div({other})                                                 *Path:__div*
+    Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
+
+    Parameters: ~
+        {other}  (PathlibPath|string)
+
+    Returns: ~
+        (PathlibPath)
+
+
+Path:__concat()                                                  *Path:__concat*
+
+
+Path:__tostring()                                              *Path:__tostring*
+    Convert path object to string
+
+    Returns: ~
+        (string)
+
+
+Path:tostring()                                                  *Path:tostring*
+    Alias to `tostring(self)`
+
+    Returns: ~
+        (string)
+
+
+Path:has_watcher({func_name})                                 *Path:has_watcher*
+    Register fs_event watcher for `self`.
+
+    Parameters: ~
+        {func_name}  (string|nil)  # Name of the callback to check existence. If nil, returns whether any callback exists.
+
+    Returns: ~
+        (boolean)  exists
+
+
+                                                         *Path:register_watcher*
+Path:register_watcher({func_name}, {callback})
+    Register fs_event watcher for `self`.
+
+    Parameters: ~
+        {func_name}  (string)                  # Name of the callback to prevent register same callback multiple time
+        {callback}   (PathlibWatcherCallback)  # Callback passed to `luv.fs_event_start`
+
+    Returns: ~
+        (boolean)  succeess
+
+
+Path:unregister_watcher({func_name})                   *Path:unregister_watcher*
+    Unregister fs_event watcher for `self`.
+
+    Parameters: ~
+        {func_name}  (string)  # Name of the callback registered with `self:register(func_name, ...)`
+
+    Returns: ~
+        (boolean)  succeess
+
+
+                                                         *Path:execute_watchers*
+Path:execute_watchers({func_name}, {args})
+    Register fs_event watcher for `self`.
+
+    Parameters: ~
+        {func_name}  (string|nil)          # Name of the callback to check existence. If nil, calls all watchers.
+        {args}       (PathlibWatcherArgs)
+
+
+PathlibString                                                    *PathlibString*
+
+    Type: ~
+        string
+
+
+PathlibPointer                                                  *PathlibPointer*
+
+    Type: ~
+        string
+
+
+PathlibAbsPath                                                  *PathlibAbsPath*
+
+    Type: ~
+        PathlibPath
+
+
+PathlibRelPath                                                  *PathlibRelPath*
+
+    Type: ~
+        PathlibPath
+
+
+PathlibPosixPath : PathlibPath                                *PathlibPosixPath*
+
+
+PosixPath:_init({...})                                         *PosixPath:_init*
+    Private init method to create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+
+PosixPath.new({...})                                             *PosixPath.new*
+    Create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+    Returns: ~
+        (PathlibPosixPath)
+
+
+PosixPath.new_empty()                                      *PosixPath.new_empty*
+
+
+PosixPath.cwd()                                                  *PosixPath.cwd*
+
+
+PosixPath.home()                                                *PosixPath.home*
+
+
+PosixPath.stdpath({what}, {...})                             *PosixPath.stdpath*
+    Shorthand to `vim.fn.stdpath` and specify child path in later args.
+    Mason bin path: `PosixPath.stdpath("data", "mason", "bin")` or `PosixPath.stdpath("data", "mason/bin")`
+
+    Parameters: ~
+        {what}  (string)              # See `:h stdpath` for information
+        {...}   (string|PathlibPath)  # child path after the result of stdpath
+
+    Returns: ~
+        (PathlibPosixPath)
+
+
+PosixPath:is_absolute()                                  *PosixPath:is_absolute*
+    Returns whether registered path is absolute
+
+    Returns: ~
+        (boolean)
+
+
+PosixPath:is_hidden()                                      *PosixPath:is_hidden*
+    Return whether the file is treated as a _hidden_ file.
+    Posix: basename starts with `.`.
+
+    Returns: ~
+        (boolean)
+
+
+PathlibWindowsPath : PathlibPath                            *PathlibWindowsPath*
+
+
+WindowsPath:_init({...})                                     *WindowsPath:_init*
+    Private init method to create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+
+WindowsPath.new({...})                                         *WindowsPath.new*
+    Create a new Path object
+
+    Parameters: ~
+        {...}  (string|PathlibPath)  # List of string and Path objects
+
+    Returns: ~
+        (PathlibWindowsPath)
+
+
+WindowsPath.new_empty()                                  *WindowsPath.new_empty*
+
+
+WindowsPath.cwd()                                              *WindowsPath.cwd*
+
+
+WindowsPath.home()                                            *WindowsPath.home*
+
+
+WindowsPath.stdpath({what}, {...})                         *WindowsPath.stdpath*
+    Shorthand to `vim.fn.stdpath` and specify child path in later args.
+    Mason bin path: `WindowsPath.stdpath("data", "mason", "bin")` or `WindowsPath.stdpath("data", "mason/bin")`
+
+    Parameters: ~
+        {what}  (string)              # See `:h stdpath` for information
+        {...}   (string|PathlibPath)  # child path after the result of stdpath
+
+    Returns: ~
+        (PathlibWindowsPath)
+
+
+WindowsPath:is_absolute()                              *WindowsPath:is_absolute*
+    Returns whether registered path is absolute
+
+    Returns: ~
+        (boolean)
+
+
+WindowsPath:is_hidden()                                  *WindowsPath:is_hidden*
+    Return whether the file is treated as a _hidden_ file.
+    Posix: basename starts with `.`, Windows: calls `GetFileAttributesA`.
+
+    Returns: ~
+        (boolean)
+
+
+vim:tw=78:ts=8:noet:ft=help:norl:
