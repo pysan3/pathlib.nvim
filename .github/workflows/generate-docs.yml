@@ -29,6 +29,7 @@ jobs:
       - name: Build docs
         shell: bash
         run: |
+          pip install myst-parser pydata-sphinx-theme sphinx-lua sphinx-press-theme sphinx
           cat "$GITHUB_PATH"
           echo "$PATH"
           ls -la "$HOME/.local/bin" || true
