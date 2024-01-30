@@ -26,9 +26,6 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-      - name: install pip deps
-        run: |
-          python -m pip install myst-parser pydata-sphinx-theme sphinx-lua sphinx-press-theme
       - name: Build docs
         shell: bash
         run: |
