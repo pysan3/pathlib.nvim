@@ -167,7 +167,7 @@ M.git_status = {
   CONFLICT = "F",
   IGNORED = "!",
 }
----@alias PathlibGitStatus { change?: PathlibGitStatusEnum, status?: PathlibGitStatusEnum }
+---@alias PathlibGitStatus { change: PathlibGitStatusEnum|nil, status: PathlibGitStatusEnum|nil }
 
 M.has_ffi = (pcall(require, "ffi"))
 

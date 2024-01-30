@@ -10,7 +10,7 @@ end
 
 ---Execute command via `systemlist` and return its status as well.
 ---@param cmd string[] # Command to execute as a list of strings.
----@param input? string[] # Lines to send to stdin.
+---@param input string[]|nil # Lines to send to stdin.
 ---@return boolean success
 ---@return string[] result_lines # Each line of the output from the command.
 function M.execute_command(cmd, input)

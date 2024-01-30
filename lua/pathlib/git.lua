@@ -2,10 +2,10 @@ local const = require("pathlib.const")
 local utils = require("pathlib.utils")
 
 ---@class PathlibGitState
----@field is_ready boolean # true if the git status is up to date.
----@field ignored boolean?
----@field git_root PathlibPath?
----@field state PathlibGitStatus?
+---@field public is_ready boolean # true if the git status is up to date.
+---@field public ignored boolean|nil
+---@field public git_root PathlibPath|nil
+---@field public state PathlibGitStatus|nil
 
 ---@class PathlibGit
 local M = {
@@ -14,7 +14,7 @@ local M = {
 }
 
 ---Find closest directory that contains `.git` directory, meaning that it's a root of a git repository
----@param current_focus PathlibPath?
+---@param current_focus PathlibPath|nil
 function M.find_root(current_focus)
   if not current_focus then
     return nil
@@ -78,9 +78,9 @@ function M.get_simple_git_status_code(status_string)
 end
 
 ---Get the most significant git status among
----@param status PathlibGitStatusEnum?
----@param other_status PathlibGitStatusEnum?
----@return PathlibGitStatusEnum?
+---@param status PathlibGitStatusEnum|nil
+---@param other_status PathlibGitStatusEnum|nil
+---@return PathlibGitStatusEnum|nil
 function M.get_priority_git_status_code(status, other_status)
   if not status then
     return other_status
@@ -160,9 +160,9 @@ end
 ---Fetch the status of files in a git repository.
 ---@param root_dir PathlibPath
 ---@param update_parent_dir_state boolean # If true, updates status of parent dirs by merging the results of children.
----@param commit_base string? # Commit to compare against. If nil, uses `HEAD`.
+---@param commit_base string|nil # Commit to compare against. If nil, uses `HEAD`.
 ---@return table<PathlibString, PathlibGitStatus> git_status
----@return PathlibPath? git_root
+---@return PathlibPath|nil git_root
 function M.status(root_dir, update_parent_dir_state, commit_base)
   local git_root = M.find_root(root_dir)
   if not git_root or not git_root:is_dir() then

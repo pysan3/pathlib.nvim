@@ -10,15 +10,15 @@ local watcher = require("pathlib.utils.watcher")
 ---@alias PathlibRelPath PathlibPath
 
 ---@class PathlibPath
----@field nuv uv
----@field git_state PathlibGitState
----@field error_msg string?
----@field _raw_paths PathlibStrList
----@field _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
----@field __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
----@field __fs_event_callbacks? table<string, PathlibWatcherCallback> # List of functions called when a fs_event is triggered.
----@field __string_cache string? # Cache result of `tostring(self)`.
----@field __parent_cache PathlibPath? # Cache reference to parent object.
+---@field public nuv uv
+---@field public git_state PathlibGitState
+---@field public error_msg string|nil
+---@field private _raw_paths PathlibStrList
+---@field private _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
+---@field private __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
+---@field private __fs_event_callbacks table<string, PathlibWatcherCallback>|nil # List of functions called when a fs_event is triggered.
+---@field private __string_cache string|nil # Cache result of `tostring(self)`.
+---@field private __parent_cache PathlibPath|nil # Cache reference to parent object.
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
@@ -56,9 +56,9 @@ function Path.new(...)
   return self
 end
 
-------------╭─────────────────────────────────────────────────────────╮------------
-------------│                     Class Methods                       │------------
-------------╰─────────────────────────────────────────────────────────╯------------
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                     Class Methods                       │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
 
 function Path.new_empty()
   ---@type PathlibPath
@@ -98,9 +98,9 @@ function Path.stdpath(what, ...)
   return Path.new(vim.fn.stdpath(what), ...)
 end
 
-------------╭─────────────────────────────────────────────────────────╮------------
-------------│                     Object Methods                      │------------
-------------╰─────────────────────────────────────────────────────────╯------------
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                     Object Methods                      │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
 
 ---Private init method to create a new Path object
 ---@param ... string | PathlibPath # List of string and Path objects
@@ -226,7 +226,7 @@ function Path:stem()
 end
 
 ---Return parent directory of itself. If parent does not exist, returns nil.
----@return PathlibPath?
+---@return PathlibPath|nil
 function Path:parent()
   if not self.__parent_cache and #self._raw_paths >= 2 then
     local parent = self.deep_copy(self)
@@ -351,13 +351,13 @@ function Path:resolve_copy()
 end
 
 ---Alias to `vim.fs.dir` but returns PathlibPath objects.
----@param opts table? Optional keyword arguments:
+---@param opts table|nil Optional keyword arguments:
 ---             - depth: integer|nil How deep the traverse (default 1)
 ---             - skip: (fun(dir_name: string): boolean)|nil Predicate
 ---               to control traversal. Return false to stop searching the current directory.
 ---               Only useful when depth > 1
 ---
----@return fun(): PathlibPath?, string? # items in {self}. Each iteration yields two values: "path" and "type".
+---@return fun(): PathlibPath|nil, string|nil # items in {self}. Each iteration yields two values: "path" and "type".
 ---        "path" is the PathlibPath object.
 ---        "type" is one of the following:
 ---        "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
@@ -387,13 +387,13 @@ function Path:glob(pattern)
   end
 end
 
-------------╭─────────────────────────────────────────────────────────╮------------
-------------│                  UV Filesystem Methods                  │------------
-------------╰─────────────────────────────────────────────────────────╯------------
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                  UV Filesystem Methods                  │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
 
 ---Return result of `luv.fs_stat`.
----@param follow_symlinks? boolean # Whether to resolve symlinks
----@return uv.aliases.fs_stat_table? stat # nil if `fs_stat` failed
+---@param follow_symlinks boolean|nil # Whether to resolve symlinks
+---@return uv.aliases.fs_stat_table|nil stat # nil if `fs_stat` failed
 ---@nodiscard
 function Path:fs_stat(follow_symlinks)
   if follow_symlinks then
@@ -407,8 +407,8 @@ function Path:fs_stat(follow_symlinks)
 end
 
 ---Return result of `luv.fs_stat`. Use `self:stat_async` to use with callback.
----@param follow_symlinks? boolean # Whether to resolve symlinks
----@return uv.aliases.fs_stat_table? stat # nil if `fs_stat` failed
+---@param follow_symlinks boolean|nil # Whether to resolve symlinks
+---@return uv.aliases.fs_stat_table|nil stat # nil if `fs_stat` failed
 ---@nodiscard
 function Path:stat(follow_symlinks)
   return self:fs_stat(follow_symlinks)
@@ -444,7 +444,7 @@ function Path:is_symlink()
 end
 
 ---Return result of `luv.fs_realpath` in `PathlibPath`.
----@return PathlibPath? # Resolves symlinks if exists. Returns nil if link does not exist.
+---@return PathlibPath|nil # Resolves symlinks if exists. Returns nil if link does not exist.
 function Path:realpath()
   local realpath = self.nuv.fs_realpath(self:tostring())
   if realpath then
@@ -454,7 +454,7 @@ end
 
 ---Get mode of path object. Use `self:get_type` to get type description in string instead.
 ---@param follow_symlinks boolean # Whether to resolve symlinks
----@return PathlibModeEnum?
+---@return PathlibModeEnum|nil
 function Path:get_mode(follow_symlinks)
   local stat = self:stat(follow_symlinks)
   return stat and stat.mode
@@ -497,7 +497,7 @@ end
 ---Make directory. When `recursive` is true, will create parent dirs like shell command `mkdir -p`
 ---@param mode integer # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
 ---@param recursive boolean # if true, creates parent directories as well
----@return boolean? success
+---@return boolean|nil success
 function Path:mkdir(mode, recursive)
   if self:is_dir(true) then
     return true
@@ -517,7 +517,7 @@ end
 ---Make file. When `recursive` is true, will create parent dirs like shell command `mkdir -p`
 ---@param mode integer # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
 ---@param recursive boolean # if true, creates parent directories as well
----@return boolean? success
+---@return boolean|nil success
 function Path:touch(mode, recursive)
   local fd = self:fs_open("w", mode, recursive)
   if fd ~= nil then
@@ -529,7 +529,7 @@ end
 
 ---Copy file to `target`
 ---@param target PathlibPath # `self` will be copied to `target`
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:copy(target)
   errs.assert_function("Path:copy", function()
     return utils.tables.is_path_module(target)
@@ -539,7 +539,7 @@ end
 
 ---Create a simlink named `self` pointing to `target`
 ---@param target PathlibPath
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:symlink_to(target)
   errs.assert_function("Path:symlink_to", function()
     return utils.tables.is_path_module(target)
@@ -549,7 +549,7 @@ end
 
 ---Create a hardlink named `self` pointing to `target`
 ---@param target PathlibPath
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:hardlink_to(target)
   errs.assert_function("Path:hardlink_to", function()
     return utils.tables.is_path_module(target)
@@ -559,7 +559,7 @@ end
 
 ---Rename `self` to `target`. If `target` exists, fails with false. Ref: `Path:move`
 ---@param target PathlibPath
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:rename(target)
   errs.assert_function("Path:rename", function()
     return utils.tables.is_path_module(target)
@@ -569,7 +569,7 @@ end
 
 ---Move `self` to `target`. Overwrites `target` if exists. Ref: `Path:rename`
 ---@param target PathlibPath
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:move(target)
   errs.assert_function("Path:move", function()
     return utils.tables.is_path_module(target)
@@ -589,7 +589,7 @@ end
 ---Change the permission of the path to `mode`.
 ---@param mode integer # permission. You may use `Path.permission()` to convert from "rwxrwxrwx"
 ---@param follow_symlinks boolean # Whether to resolve symlinks
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:chmod(mode, follow_symlinks)
   if follow_symlinks then
     return self.nuv.fs_chmod(self:realpath():tostring(), mode)
@@ -599,23 +599,23 @@ function Path:chmod(mode, follow_symlinks)
 end
 
 ---Remove this file or link. If the path is a directory, use `Path:rmdir()` instead.
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:unlink()
   return self.nuv.fs_unlink(self:tostring())
 end
 
 ---Remove this directory.  The directory must be empty.
----@return boolean? success # whether operation succeeded
+---@return boolean|nil success # whether operation succeeded
 function Path:rmdir()
   return self.nuv.fs_rmdir(self:tostring())
 end
 
 ---Call `luv.fs_open`.
 ---@param flags uv.aliases.fs_access_flags|integer
----@param mode integer? # permission. You may use `Path.permission()` to convert from "rwxrwxrwx".
+---@param mode integer|nil # permission. You may use `Path.permission()` to convert from "rwxrwxrwx".
 ---@param ensure_dir integer|boolean|nil # if not nil, runs `mkdir -p self:parent()` with permission to ensure parent exists.
 ---  `true` will default to 755.
----@return integer? fd
+---@return integer|nil fd
 ---@nodiscard
 function Path:fs_open(flags, mode, ensure_dir)
   if ensure_dir == true then
@@ -628,18 +628,18 @@ function Path:fs_open(flags, mode, ensure_dir)
 end
 
 ---Call `luv.fs_open("r") -> luv.fs_read`.
----@param size integer? # if nil, uses `self:stat().size`
----@param offset integer?
----@return string? content # content of the file
+---@param size integer|nil # if nil, uses `self:stat().size`
+---@param offset integer|nil
+---@return string|nil content # content of the file
 function Path:fs_read(size, offset)
   local fd = self:fs_open("r")
-  return fd and self.nuv.fs_read(fd, size or self:size(), offset) --[[@as string]]
+  return fd and self.nuv.fs_read(fd, size or self:size() or 0, offset) --[[@as string]]
 end
 
 ---Call `luv.fs_open("w") -> luv.fs_write`.
 ---@param data uv.aliases.buffer
----@param offset integer?
----@return integer? bytes # number of bytes written
+---@param offset integer|nil
+---@return integer|nil bytes # number of bytes written
 function Path:fs_write(data, offset)
   local fd = self:fs_open("w", nil, true)
   return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
@@ -647,15 +647,15 @@ end
 
 ---Call `luv.fs_open("a") -> luv.fs_write`.
 ---@param data uv.aliases.buffer
----@param offset integer?
----@return integer? bytes # number of bytes written
+---@param offset integer|nil
+---@return integer|nil bytes # number of bytes written
 function Path:fs_append(data, offset)
   local fd = self:fs_open("a", nil, true)
   return fd and self.nuv.fs_write(fd, data, offset) --[[@as integer]]
 end
 
 ---Call `io.read`. Use `self:fs_read` to use with `nio.run` instead.
----@return string? data # whole file content
+---@return string|nil data # whole file content
 function Path:io_read()
   local file, err_msg = io.open(self:tostring(), "r")
   if not file then
@@ -671,7 +671,7 @@ function Path:io_read()
 end
 
 ---Call `io.read` with byte read mode.
----@return string? bytes # whole file content
+---@return string|nil bytes # whole file content
 function Path:io_read_bytes()
   local file, err_msg = io.open(self:tostring(), "rb")
   if not file then
@@ -724,10 +724,10 @@ function Path:io_write_bytes(data)
 end
 
 ---Iterate directory with callback receiving PathlibPath objects
----@param callback fun(path: PathlibPath, fs_type: uv.aliases.fs_stat_types): boolean? # function called for each child in directory
+---@param callback fun(path: PathlibPath, fs_type: uv.aliases.fs_stat_types): boolean|nil # function called for each child in directory
 ---  When `callback` returns `false` the iteration will break out.
----@param on_error? fun(err: string) # function called when `luv.fs_scandir` fails
----@param on_exit? fun(count: integer) # function called after the scan has finished. `count` gives the number of children
+---@param on_error fun(err: string)|nil # function called when `luv.fs_scandir` fails
+---@param on_exit fun(count: integer)|nil # function called after the scan has finished. `count` gives the number of children
 function Path:iterdir_async(callback, on_error, on_exit)
   vim.loop.fs_scandir(self:tostring(), function(e, handler)
     if e or not handler then
@@ -753,9 +753,9 @@ function Path:iterdir_async(callback, on_error, on_exit)
   end)
 end
 
-------------╭─────────────────────────────────────────────────────────╮------------
-------------│                     Dunder Methods                      │------------
-------------╰─────────────────────────────────────────────────────────╯------------
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                     Dunder Methods                      │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
 
 ---Compare equality of path objects
 ---@param other PathlibPath
@@ -864,12 +864,12 @@ function Path:tostring()
   return self:__tostring()
 end
 
-------------╭─────────────────────────────────────────────────────────╮------------
-------------│                     Watcher Methods                     │------------
-------------╰─────────────────────────────────────────────────────────╯------------
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                     Watcher Methods                     │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
 
 ---Register fs_event watcher for `self`.
----@param func_name string? # Name of the callback to check existence. If nil, returns whether any callback exists.
+---@param func_name string|nil # Name of the callback to check existence. If nil, returns whether any callback exists.
 ---@return boolean exists
 function Path:has_watcher(func_name)
   if not self.__fs_event_callbacks then
@@ -921,7 +921,7 @@ function Path:unregister_watcher(func_name)
 end
 
 ---Register fs_event watcher for `self`.
----@param func_name string? # Name of the callback to check existence. If nil, calls all watchers.
+---@param func_name string|nil # Name of the callback to check existence. If nil, calls all watchers.
 ---@param args PathlibWatcherArgs
 function Path:execute_watchers(func_name, args)
   if not self.__fs_event_callbacks then

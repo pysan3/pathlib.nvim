@@ -1,21 +1,21 @@
----@alias PathlibWatcherEvent { change: boolean?, rename: boolean? }
+---@alias PathlibWatcherEvent { change: boolean|nil, rename: boolean|nil }
 ---@alias PathlibWatcherArgs { filename: string, events: PathlibWatcherEvent, dir: PathlibPath }
 ---@alias PathlibWatcherCallback fun(path: PathlibPath, args: PathlibWatcherArgs)
 
 ---@alias pathlib.private.callback_table table<PathlibPointer, PathlibPath>
 
 ---@class pathlib.private.watcher_storage
----@field handler uv_fs_event_t
----@field dir_callbacks pathlib.private.callback_table # directory path
----@field children table<PathlibString, pathlib.private.callback_table> # basename: path object
----@field num_children integer
----@field is_active boolean
+---@field public handler uv_fs_event_t
+---@field public dir_callbacks pathlib.private.callback_table # directory path
+---@field public children table<PathlibString, pathlib.private.callback_table> # basename: path object
+---@field public num_children integer
+---@field public is_active boolean
 
 ---@class PathlibWatcher
 local M = {
   ---@type table<PathlibString, pathlib.private.watcher_storage>
   storage = {},
-  ---@type PathlibWatcherCallback[]?
+  ---@type PathlibWatcherCallback[]|nil
   allways_run = nil,
 }
 
@@ -24,9 +24,9 @@ local nio = require("nio")
 
 ---Register new path to watcher
 ---@param dir PathlibPath
----@param recursive boolean?
----@return uv_fs_event_t? fs_event_t # nil if failed to create an event.
----@return string? err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
+---@param recursive boolean|nil
+---@return uv_fs_event_t|nil fs_event_t # nil if failed to create an event.
+---@return string|nil err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
 function M.register_dir(dir, recursive)
   if recursive ~= false then
     M.register_file(dir, false)
@@ -72,9 +72,9 @@ end
 
 ---Register new path to watcher
 ---@param path PathlibPath
----@param unique boolean?
----@return uv_fs_event_t? fs_event_t # nil if failed to create an event.
----@return string? err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
+---@param unique boolean|nil
+---@return uv_fs_event_t|nil fs_event_t # nil if failed to create an event.
+---@return string|nil err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
 function M.register_file(path, unique)
   local parent = path:parent()
   if not parent then
@@ -101,8 +101,8 @@ end
 
 ---Register new path to watcher
 ---@param path PathlibPath
----@return uv_fs_event_t? fs_event_t # nil if failed to create an event.
----@return string? err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
+---@return uv_fs_event_t|nil fs_event_t # nil if failed to create an event.
+---@return string|nil err_msg # error message from `new_fs_event` or `fs_event_start` (`fs_event_t` == nil)
 function M.register(path)
   if path:is_dir(true) then
     return M.register_dir(path, true)
@@ -114,7 +114,7 @@ end
 ---Unregister path from watcher
 ---@param path PathlibPath
 ---@return boolean success
----@return string? err_msg # error message if `success` is false
+---@return string|nil err_msg # error message if `success` is false
 function M.unregister_file(path)
   local parent = path:parent()
   if not parent or not M.storage[parent:tostring()] then
@@ -144,7 +144,7 @@ end
 ---Unregister path from watcher
 ---@param dir PathlibPath
 ---@return boolean success
----@return string? err_msg # error message if `success` is false
+---@return string|nil err_msg # error message if `success` is false
 function M.unregister_dir(dir)
   M.unregister_file(dir)
   local watcher = M.storage[dir:tostring()]
@@ -163,7 +163,7 @@ end
 ---Unregister path from watcher
 ---@param path PathlibPath
 ---@return boolean success
----@return string? err_msg # error message if `success` is false
+---@return string|nil err_msg # error message if `success` is false
 function M.unregister(path)
   if path:is_dir(true) then
     return M.unregister_dir(path)
