@@ -8,12 +8,12 @@ local watcher = require("pathlib.utils.watcher")
 ---@field public nuv uv
 ---@field public git_state PathlibGitState
 ---@field public error_msg string|nil
----@field private _raw_paths PathlibStrList
----@field private _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
----@field private __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
----@field private __fs_event_callbacks table<string, PathlibWatcherCallback>|nil # List of functions called when a fs_event is triggered.
----@field private __string_cache string|nil # Cache result of `tostring(self)`.
----@field private __parent_cache PathlibPath|nil # Cache reference to parent object.
+---@field public _raw_paths PathlibStrList
+---@field public _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
+---@field public __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
+---@field public __fs_event_callbacks table<string, PathlibWatcherCallback>|nil # List of functions called when a fs_event is triggered.
+---@field public __string_cache string|nil # Cache result of `tostring(self)`.
+---@field public __parent_cache PathlibPath|nil # Cache reference to parent object.
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
