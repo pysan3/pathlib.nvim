@@ -1,0 +1,1398 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. PathlibPath &#8212; pathlib.nvim 0.3.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'doc/PathlibPath';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. PathlibPosixPath" href="PathlibPosixPath.html" />
+    <link rel="prev" title="1. 🐍 pathlib.nvim" href="../README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pathlib.nvim 0.3.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../README.html">
+                        🐍 pathlib.nvim
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        PathlibPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="PathlibPosixPath.html">
+                        PathlibPosixPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="PathlibWindowsPath.html">
+                        PathlibWindowsPath
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../README.html">
+                        🐍 pathlib.nvim
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        PathlibPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="PathlibPosixPath.html">
+                        PathlibPosixPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="PathlibWindowsPath.html">
+                        PathlibWindowsPath
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pathlibpath">
+<h1><span class="section-number">7. </span>PathlibPath<a class="headerlink" href="#pathlibpath" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="lua class">
+<dt class="sig sig-object lua" id="PathlibPath">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PathlibPath</span></span><a class="headerlink" href="#PathlibPath" title="Link to this definition">#</a></dt>
+<dd><dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.nuv">
+<span class="sig-name descname"><span class="pre">nuv</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">uv</span><a class="headerlink" href="#PathlibPath.nuv" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.git_state">
+<span class="sig-name descname"><span class="pre">git_state</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">PathlibGitState</span><a class="headerlink" href="#PathlibPath.git_state" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.error_msg">
+<span class="sig-name descname"><span class="pre">error_msg</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span><a class="headerlink" href="#PathlibPath.error_msg" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath._raw_paths">
+<span class="sig-name descname"><span class="pre">_raw_paths</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">PathlibStrList</span><a class="headerlink" href="#PathlibPath._raw_paths" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath._drive_name">
+<span class="sig-name descname"><span class="pre">_drive_name</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">str</span><a class="headerlink" href="#PathlibPath._drive_name" title="Link to this definition">#</a></dt>
+<dd><p># Drive name for Windows path. (“C:”, “D:”, “\127.0.0.1”)</p>
+</dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.__windows_panic">
+<span class="sig-name descname"><span class="pre">__windows_panic</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">boolean</span><a class="headerlink" href="#PathlibPath.__windows_panic" title="Link to this definition">#</a></dt>
+<dd><p># Set to true when passed path might be a windows path. PathlibWindows ignores this.</p>
+</dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.__fs_event_callbacks">
+<span class="sig-name descname"><span class="pre">__fs_event_callbacks</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">dict[str,</span> <span class="pre">PathlibWatcherCallback]</span> <span class="pre">or</span> <span class="pre">nil</span><a class="headerlink" href="#PathlibPath.__fs_event_callbacks" title="Link to this definition">#</a></dt>
+<dd><p># List of functions called when a fs_event is triggered.</p>
+</dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.__string_cache">
+<span class="sig-name descname"><span class="pre">__string_cache</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span><a class="headerlink" href="#PathlibPath.__string_cache" title="Link to this definition">#</a></dt>
+<dd><p># Cache result of <cite>tostring(self)</cite>.</p>
+</dd></dl>
+
+<dl class="lua attribute">
+<dt class="sig sig-object lua" id="PathlibPath.__parent_cache">
+<span class="sig-name descname"><span class="pre">__parent_cache</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span><a class="headerlink" href="#PathlibPath.__parent_cache" title="Link to this definition">#</a></dt>
+<dd><p># Cache reference to parent object.</p>
+</dd></dl>
+
+<dl class="lua staticmethod">
+<dt class="sig sig-object lua" id="PathlibPath.new">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.new" title="Link to this definition">#</a></dt>
+<dd><p>Create a new Path object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">PathlibPath</span></code></span>) – # List of string and Path objects</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua staticmethod">
+<dt class="sig sig-object lua" id="PathlibPath.cwd">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">cwd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.cwd" title="Link to this definition">#</a></dt>
+<dd><p>Return <cite>vim.fn.getcwd</cite> in Path object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua staticmethod">
+<dt class="sig sig-object lua" id="PathlibPath.home">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.home" title="Link to this definition">#</a></dt>
+<dd><p>Return <cite>vim.loop.os_homedir</cite> in Path object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua staticmethod">
+<dt class="sig sig-object lua" id="PathlibPath.permission">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode_string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.permission" title="Link to this definition">#</a></dt>
+<dd><p>Calculate permission integer from “rwxrwxrwx” notation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode_string</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua staticmethod">
+<dt class="sig sig-object lua" id="PathlibPath.stdpath">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">stdpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">what</span></em>, <em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.stdpath" title="Link to this definition">#</a></dt>
+<dd><p>Shorthand to <cite>vim.fn.stdpath</cite> and specify child path in later args.</p>
+<p>Mason bin path: <cite>Path.stdpath(“data”, “mason”, “bin”)</cite> or <cite>Path.stdpath(“data”, “mason/bin”)</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>what</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # See <cite>:h stdpath</cite> for information</p></li>
+<li><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">PathlibPath</span></code></span>) – # child path after the result of stdpath</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.to_empty">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">to_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.to_empty" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.copy_all_from">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">copy_all_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.copy_all_from" title="Link to this definition">#</a></dt>
+<dd><p>Copy all attributes from <cite>path</cite> to self</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.deep_copy">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">deep_copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.deep_copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy all attributes from <cite>path</cite> to self</p>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.child">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.child" title="Link to this definition">#</a></dt>
+<dd><p>Create a new Path object as self’s child. <cite>name</cite> cannot be a grandchild.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.new_descendant">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">new_descendant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.new_descendant" title="Link to this definition">#</a></dt>
+<dd><p>Create a new Path object as self’s descentant. Use <cite>self:child</cite> if new path is a direct child of the dir.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.new_child_unpack">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">new_child_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.new_child_unpack" title="Link to this definition">#</a></dt>
+<dd><p>Unpack name and return a new self’s grandchild, where <cite>name</cite> contains more than one <cite>/</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.basename">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">basename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.basename" title="Link to this definition">#</a></dt>
+<dd><p>Return the basename of <cite>self</cite>.</p>
+<p>Eg: foo/bar/baz.txt -&gt; baz.txt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.suffix">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">suffix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.suffix" title="Link to this definition">#</a></dt>
+<dd><p>Return the group name of the file GID. Same as <cite>str(self) minus self:modify(“:r”)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p># extension of path including the dot (<cite>.</cite>): <cite>.py</cite>, <cite>.lua</cite> etc</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.stem">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">stem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.stem" title="Link to this definition">#</a></dt>
+<dd><p>Return the group name of the file GID. Same as <cite>self:modify(“:t:r”)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p># stem of path. (src/version.c -&gt; “version”)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.parent">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parent" title="Link to this definition">#</a></dt>
+<dd><p>Return parent directory of itself. If parent does not exist, returns nil.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.parents">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parents" title="Link to this definition">#</a></dt>
+<dd><p>Return iterator of parents.</p>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.as_uri">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">as_uri</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.as_uri" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_absolute">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_absolute" title="Link to this definition">#</a></dt>
+<dd><p>Returns whether registered path is absolute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_hidden">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_hidden</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_hidden" title="Link to this definition">#</a></dt>
+<dd><p>Return whether the file is treated as a _hidden_ file.</p>
+<p>Posix: basename starts with <cite>.</cite>, Windows: calls <cite>GetFileAttributesA</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_relative">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_relative</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_relative" title="Link to this definition">#</a></dt>
+<dd><p>Returns whether registered path is relative</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.as_posix">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">as_posix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.as_posix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.absolute">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.absolute" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.to_absolute">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">to_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.to_absolute" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.modify">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mods</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.modify" title="Link to this definition">#</a></dt>
+<dd><p>Get the path being modified with <cite>filename-modifiers</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mods</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # filename-modifiers passed to <cite>vim.fn.fnamemodify</cite></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p># result of <cite>vim.fn.fnamemodify(tostring(self), mods)</cite></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.resolve">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.resolve" title="Link to this definition">#</a></dt>
+<dd><p>Resolves path. Eliminates <cite>../</cite> representation.</p>
+<p>Changes internal. (See <cite>Path:resolve_copy</cite> to create new object)</p>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.resolve_copy">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">resolve_copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.resolve_copy" title="Link to this definition">#</a></dt>
+<dd><p>Resolves path. Eliminates <cite>../</cite> representation and returns a new object. <cite>self</cite> is not changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.iterdir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.iterdir" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <cite>vim.fs.dir</cite> but returns PathlibPath objects.</p>
+<p>depth: integer|nil How deep the traverse (default 1)
+skip: (fun(dir_name: string): boolean)|nil Predicate
+to control traversal. Return false to stop searching the current directory.
+Only useful when depth &gt; 1</p>
+<p>“path” is the PathlibPath object.
+“type” is one of the following:
+“file”, “directory”, “link”, “fifo”, “socket”, “char”, “block”, “unknown”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>opts</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – Optional keyword arguments:</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p># items in {self}. Each iteration yields two values: “path” and “type”.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun():PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span> <span class="pre">or</span> <span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.glob">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">glob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pattern</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.glob" title="Link to this definition">#</a></dt>
+<dd><p>Run <cite>vim.fn.globpath</cite> on this path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # glob pattern expression</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p># iterator of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun():PathlibPath</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_stat">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_stat" title="Link to this definition">#</a></dt>
+<dd><p>Return result of <cite>luv.fs_stat</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Whether to resolve symlinks</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stat # nil if <cite>fs_stat</cite> failed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_stat_table</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.stat">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.stat" title="Link to this definition">#</a></dt>
+<dd><p>Return result of <cite>luv.fs_stat</cite>. Use <cite>self:stat_async</cite> to use with callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Whether to resolve symlinks</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stat # nil if <cite>fs_stat</cite> failed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_stat_table</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.lstat">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">lstat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.lstat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.exists">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.exists" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.size">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.size" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_dir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_dir" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_file">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_file" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_symlink">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_symlink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_symlink" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.realpath">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">realpath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.realpath" title="Link to this definition">#</a></dt>
+<dd><p>Return result of <cite>luv.fs_realpath</cite> in <cite>PathlibPath</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p># Resolves symlinks if exists. Returns nil if link does not exist.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.get_mode">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">get_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.get_mode" title="Link to this definition">#</a></dt>
+<dd><p>Get mode of path object. Use <cite>self:get_type</cite> to get type description in string instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span>) – # Whether to resolve symlinks</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibModeEnum</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.get_type">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.get_type" title="Link to this definition">#</a></dt>
+<dd><p>Get type description of path object. Use <cite>self:get_mode</cite> to get mode instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span>) – # Whether to resolve symlinks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.samefile">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">samefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.samefile" title="Link to this definition">#</a></dt>
+<dd><p>Return whether <cite>other</cite> is the same file or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_mount">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_mount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_mount" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.mkdir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">mkdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">recursive</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.mkdir" title="Link to this definition">#</a></dt>
+<dd><p>Make directory. When <cite>recursive</cite> is true, will create parent dirs like shell command <cite>mkdir -p</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”</p></li>
+<li><p><strong>recursive</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span>) – # if true, creates parent directories as well</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.touch">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">touch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">recursive</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.touch" title="Link to this definition">#</a></dt>
+<dd><p>Make file. When <cite>recursive</cite> is true, will create parent dirs like shell command <cite>mkdir -p</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”</p></li>
+<li><p><strong>recursive</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span>) – # if true, creates parent directories as well</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.copy">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy file to <cite>target</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – # <cite>self</cite> will be copied to <cite>target</cite></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.symlink_to">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">symlink_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.symlink_to" title="Link to this definition">#</a></dt>
+<dd><p>Create a simlink named <cite>self</cite> pointing to <cite>target</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.hardlink_to">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">hardlink_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.hardlink_to" title="Link to this definition">#</a></dt>
+<dd><p>Create a hardlink named <cite>self</cite> pointing to <cite>target</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.rename">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.rename" title="Link to this definition">#</a></dt>
+<dd><p>Rename <cite>self</cite> to <cite>target</cite>. If <cite>target</cite> exists, fails with false. Ref: <cite>Path:move</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.move">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.move" title="Link to this definition">#</a></dt>
+<dd><p>Move <cite>self</cite> to <cite>target</cite>. Overwrites <cite>target</cite> if exists. Ref: <cite>Path:rename</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.replace">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.replace" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.chmod">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">chmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.chmod" title="Link to this definition">#</a></dt>
+<dd><p>Change the permission of the path to <cite>mode</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”</p></li>
+<li><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span>) – # Whether to resolve symlinks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.unlink">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">unlink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.unlink" title="Link to this definition">#</a></dt>
+<dd><p>Remove this file or link. If the path is a directory, use <cite>Path:rmdir()</cite> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.rmdir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">rmdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.rmdir" title="Link to this definition">#</a></dt>
+<dd><p>Remove this directory.  The directory must be empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>success # whether operation succeeded</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_open">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flags</span></em>, <em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">ensure_dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_open" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>luv.fs_open</cite>.</p>
+<p><cite>true</cite> will default to 755.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flags</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_access_flags</span> <span class="pre">or</span> <span class="pre">integer</span></code></span>) – </p></li>
+<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”.</p></li>
+<li><p><strong>ensure_dir</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # if not nil, runs <cite>mkdir -p self:parent()</cite> with permission to ensure parent exists.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>fd</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_read">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">size</span></em>, <em class="sig-param"><span class="pre">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_read" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>luv.fs_open(“r”) -&gt; luv.fs_read</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # if nil, uses <cite>self:stat().size</cite></p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>content # content of the file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_write">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_write" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>luv.fs_open(“w”) -&gt; luv.fs_write</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>) – </p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes # number of bytes written</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_append">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_append" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>luv.fs_open(“a”) -&gt; luv.fs_write</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>) – </p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes # number of bytes written</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.io_read">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">io_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.io_read" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>io.read</cite>. Use <cite>self:fs_read</cite> to use with <cite>nio.run</cite> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>data # whole file content</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.io_read_bytes">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">io_read_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.io_read_bytes" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>io.read</cite> with byte read mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes # whole file content</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.io_write">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">io_write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.io_write" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>io.write</cite>. Use <cite>self:fs_write</cite> to use with <cite>nio.run</cite> instead. If failed, returns error message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # content</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p># success</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.io_write_bytes">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">io_write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.io_write_bytes" title="Link to this definition">#</a></dt>
+<dd><p>Call <cite>io.write</cite> with byte write mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # content</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.iterdir_async">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">iterdir_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">callback</span></em>, <em class="sig-param"><span class="pre">on_error</span></em>, <em class="sig-param"><span class="pre">on_exit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.iterdir_async" title="Link to this definition">#</a></dt>
+<dd><p>Iterate directory with callback receiving PathlibPath objects</p>
+<p>When <cite>callback</cite> returns <cite>false</cite> the iteration will break out.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>callback</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(PathlibPath,</span> <span class="pre">uv.aliases.fs_stat_types):boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called for each child in directory</p></li>
+<li><p><strong>on_error</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(str)</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called when <cite>luv.fs_scandir</cite> fails</p></li>
+<li><p><strong>on_exit</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(integer)</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called after the scan has finished. <cite>count</cite> gives the number of children</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.len">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.len" title="Link to this definition">#</a></dt>
+<dd><p>Get length of <cite>self._raw_paths</cite>. <cite>/foo/bar.txt ==&gt; 3: { “”, “foo”, “bar.txt” } (root dir counts as 1!!)</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.tostring">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">tostring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.tostring" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <cite>tostring(self)</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.has_watcher">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">has_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.has_watcher" title="Link to this definition">#</a></dt>
+<dd><p>Register fs_event watcher for <cite>self</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Name of the callback to check existence. If nil, returns whether any callback exists.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>exists</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.register_watcher">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">register_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func_name</span></em>, <em class="sig-param"><span class="pre">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.register_watcher" title="Link to this definition">#</a></dt>
+<dd><p>Register fs_event watcher for <cite>self</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # Name of the callback to prevent register same callback multiple time</p></li>
+<li><p><strong>callback</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibWatcherCallback</span></code></span>) – # Callback passed to <cite>luv.fs_event_start</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>succeess</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.unregister_watcher">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">unregister_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.unregister_watcher" title="Link to this definition">#</a></dt>
+<dd><p>Unregister fs_event watcher for <cite>self</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # Name of the callback registered with <cite>self:register(func_name, …)</cite></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>succeess</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.execute_watchers">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">execute_watchers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func_name</span></em>, <em class="sig-param"><span class="pre">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.execute_watchers" title="Link to this definition">#</a></dt>
+<dd><p>Register fs_event watcher for <cite>self</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Name of the callback to check existence. If nil, calls all watchers.</p></li>
+<li><p><strong>args</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibWatcherArgs</span></code></span>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>🐍 <code class="docutils literal notranslate"><span class="pre">pathlib.nvim</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PathlibPosixPath.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>PathlibPosixPath</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/doc/PathlibPath.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, pysan3.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

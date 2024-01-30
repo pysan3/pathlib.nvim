@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Changelog &#8212; pathlib.nvim 0.3.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=71d9d8e6"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CHANGELOG';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pathlib.nvim 0.3.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="README.html">
+                        🐍 pathlib.nvim
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibPath.html">
+                        PathlibPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibPosixPath.html">
+                        PathlibPosixPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibWindowsPath.html">
+                        PathlibWindowsPath
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="README.html">
+                        🐍 pathlib.nvim
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibPath.html">
+                        PathlibPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibPosixPath.html">
+                        PathlibPosixPath
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc/PathlibWindowsPath.html">
+                        PathlibWindowsPath
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Changelog</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.3.1...v0.3.2">0.3.2</a> (2024-01-26)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> update error_msg correctly (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/37bdec194f76e13178517e2acd9c6ad11f6f0d08">37bdec1</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.3.0...v0.3.1">0.3.1</a> (2024-01-26)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Bug Fixes<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>ci:</strong> fix nvim-nio version (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/d2965a5225c7447b7b870a051dbf1607bda09de2">d2965a5</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.2.0...v0.3.0">0.3.0</a> (2024-01-26)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> add <code class="docutils literal notranslate"><span class="pre">self:tostring()</span></code> and cache string result (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/03be451cb2139e449e952c5b38b9a6a853589056">03be451</a>)</p></li>
+<li><p><strong>git:</strong> implement method to fetch git status of files in a folder (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/88d73b9d2eea7cd9cf1d97da2d956a3f24bde5cc">88d73b9</a>)</p></li>
+<li><p><strong>nuv:</strong> integrate nvim-nio (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/bcaeabddf29ba02e43fa665c92665c57579a43ad">bcaeabd</a>)</p></li>
+<li><p><strong>path:</strong> add <code class="docutils literal notranslate"><span class="pre">Path.home</span></code> to get path to home dir (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/d5e79b17b388496d5348ffbccf750f1f48365036">d5e79b1</a>)</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Bug Fixes<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> refactor initialize function (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/44163c04bf577a6cb61755cc9a6298b77a23b6a2">44163c0</a>)</p></li>
+<li><p><strong>ci:</strong> do not release new tag to luarocks on pull_request (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/4cf23f2b3068b578c9a976962b5b04ef9667d7fe">4cf23f2</a>)</p></li>
+<li><p>define <code class="docutils literal notranslate"><span class="pre">_init</span></code> for each path subclass (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/c4708f01837f67d828c92c75fcca1d2bbf4110d5">c4708f0</a>)</p></li>
+<li><p><strong>git:</strong> fix type annotations (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/d2719a801a3b584ab64214d74e4d4a6d4cbf1798">d2719a8</a>)</p></li>
+<li><p><strong>list:</strong> add option to ignore empty entries (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/c4334dc68d57858ed56dcc290d68e05c9ac57eda">c4334dc</a>), closes <a class="reference external" href="https://github.com/pysan3/pathlib.nvim/issues/15">#15</a></p></li>
+<li><p><strong>nuv:</strong> add fallback for nio.current_task (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/3d25ee272e263d2c8d5422d765a0bf41d7e84453">3d25ee2</a>)</p></li>
+<li><p><strong>pathlib:</strong> fix inherit problem between base and posix (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/5f0f368b38958be5ae963e33a8f97dd0ff01289b">5f0f368</a>)</p></li>
+<li><p><strong>type:</strong> fix type annotations (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/f982abae37fc4e94c439b7b9832ddc338b7e8152">f982aba</a>)</p></li>
+<li><p><strong>vim.fs:</strong> use custom fs.normalize to support UNC paths (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/07bcab847f1d1222b6c40ba768d8b002421303bf">07bcab8</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.7...v0.2.0">0.2.0</a> (2023-11-16)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>Features<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> Implement posix methods (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/issues/10">#10</a>) (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/c32288e2d598e248d1dcb9f216be2b287ee52ab0">c32288e</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.6...v0.1.7">0.1.7</a> (2023-11-15)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>Bug Fixes<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> delete unnecessary call to luarocks-tag-release (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/3bde587e26726eec5363d84e702a3f27bf00e7bb">3bde587</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.5...v0.1.6">0.1.6</a> (2023-11-15)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>Bug Fixes<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> use personal token for release-please (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/3f7dc80c77b7e12917d6d296782fa9ce034cadc5">3f7dc80</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id12">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.4...v0.1.5">0.1.5</a> (2023-11-15)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<section id="id13">
+<h3>Bug Fixes<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> luarocks-tag-release is not running (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/14868f5205ee7f1ad22f1bcc0d921b7da63f7efb">14868f5</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id14">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.3...v0.1.4">0.1.4</a> (2023-11-15)<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3>Bug Fixes<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> fix typo (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/296aa238066b1bae34241cd7d800f2d07bffac83">296aa23</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id16">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.2...v0.1.3">0.1.3</a> (2023-11-15)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3>Bug Fixes<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> no dispatch (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/01de854704eabc57cad1b8ed4c112777f4d8ebfb">01de854</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id18">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.1...v0.1.2">0.1.2</a> (2023-11-15)<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3>Bug Fixes<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> no need to panic (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/359122c63e7573697050e4e82648eac3ca1e646c">359122c</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id20">
+<h2><a class="reference external" href="https://github.com/pysan3/pathlib.nvim/compare/v0.1.0...v0.1.1">0.1.1</a> (2023-11-15)<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="id21">
+<h3>Bug Fixes<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>action:</strong> fix luarocks release action to invoke with new release (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/1be79332f000ba44d9e9b0ed854d586f624b8537">1be7933</a>)</p></li>
+<li><p><strong>action:</strong> fix typo (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/5fdd0725ff3ccea3874b8e48200a8b4a30c4d2d4">5fdd072</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id22">
+<h2>0.1.0 (2023-11-15)<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<section id="id23">
+<h3>Features<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>base:</strong> add few more basic utilities for pathlib (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/7e805851cbd2044a0152f0b6e21da986628dab1e">7e80585</a>)</p></li>
+<li><p><strong>base:</strong> implement dunder methods (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/08011047e09b68da064099977aea238741a57a48">0801104</a>)</p></li>
+<li><p><strong>base:</strong> implement plugin template (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/879d3509a717f8e24478642e58f13baf0ebd5683">879d350</a>)</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>Bug Fixes<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>ci:</strong> add neodev to rtp (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/3434639d5f1e4f151f92b5002e6f3efd1f26ad0c">3434639</a>)</p></li>
+<li><p><strong>ci:</strong> install neodev before type checking (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/752630f98d8b791524a61e05f62d31680df6efee">752630f</a>)</p></li>
+<li><p><strong>ci:</strong> specify absolute path for libraries (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/dda83f792959733325ea2a1c977a5a7501f6e902">dda83f7</a>)</p></li>
+<li><p><strong>ci:</strong> specify correct path to config file (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/320b29a05b2bf98759e096570c844b599124d31b">320b29a</a>)</p></li>
+<li><p><strong>ci:</strong> specify path to luarc configpath (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/7a10cb53adf0905523bf8674fcf519cc228f62f0">7a10cb5</a>)</p></li>
+</ul>
+</section>
+<section id="miscellaneous-chores">
+<h3>Miscellaneous Chores<a class="headerlink" href="#miscellaneous-chores" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>release unstable version to test luarocks (<a class="reference external" href="https://github.com/pysan3/pathlib.nvim/commit/094be4b695baae127986f7c76936b5514ca2de32">094be4b</a>)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.3.2 (2024-01-26)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.3.1 (2024-01-26)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.3.0 (2024-01-26)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">0.2.0 (2023-11-16)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">0.1.7 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">0.1.6 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">0.1.5 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">0.1.4 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">0.1.3 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">0.1.2 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">0.1.1 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">0.1.0 (2023-11-15)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous-chores">Miscellaneous Chores</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/CHANGELOG.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, pysan3.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
