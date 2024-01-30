@@ -245,7 +245,7 @@ end
 function M.fill_git_state_in_root(paths, git_root)
   local status, _ = M.status(git_root, true)
   for _, path in ipairs(paths) do
-    path:inplace_absolute()
+    path:to_absolute()
     path.git_state.is_ready = true
     path.git_state.git_root = git_root
     path.git_state.state = status[path:tostring()]

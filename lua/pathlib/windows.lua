@@ -20,50 +20,13 @@ local WindowsPath = setmetatable({ ---@diagnostic disable-line
   end,
 })
 WindowsPath.__index = require("pathlib.utils.nuv").generate_index(WindowsPath)
+require("pathlib.utils.paths").link_dunders(WindowsPath, Path)
 
+---Private init method to create a new Path object
+---@param ... string | PathlibPath # List of string and Path objects
 function WindowsPath:_init(...)
   Path._init(self, ...)
   self.__windows_panic = false
-end
-
----Compare equality of path objects
----@param other PathlibPath
----@return boolean
-function WindowsPath:__eq(other)
-  return Path.__eq(self, other)
-end
-
----Compare less than of path objects
----@param other PathlibPath
----@return boolean
-function WindowsPath:__lt(other)
-  return Path.__lt(self, other)
-end
-
----Compare less than or equal of path objects
----@param other PathlibPath
----@return boolean
-function WindowsPath:__le(other)
-  return Path.__le(self, other)
-end
-
----Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath | string
----@return PathlibWindowsPath
-function WindowsPath:__div(other)
-  return Path.__div(self, other) ---@diagnostic disable-line
-end
-
----Concatenate paths with the parent of lhs. `Path("./foo/foo.txt") .. "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath | string
----@return PathlibWindowsPath
--- Path.__concat = function(self, other)
-function WindowsPath:__concat(other)
-  return Path.__concat(self, other) ---@diagnostic disable-line
-end
-
-function WindowsPath:__tostring()
-  return Path.__tostring(self)
 end
 
 ---Create a new Path object
@@ -76,6 +39,7 @@ function WindowsPath.new(...)
 end
 
 function WindowsPath.new_empty()
+  ---@type PathlibWindowsPath
   local self = setmetatable({}, WindowsPath) ---@diagnostic disable-line
   self:to_empty()
   return self
@@ -87,29 +51,6 @@ end
 
 function WindowsPath.home()
   return WindowsPath.new(vim.loop.os_homedir())
-end
-
-function WindowsPath.new_all_from(path)
-  local self = WindowsPath.new_empty()
-  self._drive_name = path._drive_name
-  self._raw_paths:extend(path._raw_paths)
-  self.__string_cache = nil
-  return self
-end
-
----Inherit from `path` and trim `_raw_paths` if specified.
----@param path PathlibPath
----@param trim_num number? # 1 will trim the last entry in `_raw_paths`, 2 will trim 2.
-function WindowsPath.new_from(path, trim_num)
-  local self = WindowsPath.new_all_from(path)
-  if not trim_num or trim_num < 1 then
-    return self
-  end
-  for _ = 1, trim_num do
-    self._raw_paths:pop()
-  end
-  self.__string_cache = nil
-  return self
 end
 
 ---Shorthand to `vim.fn.stdpath` and specify child path in later args.
