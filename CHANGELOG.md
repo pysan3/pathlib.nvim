@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.0](https://github.com/pysan3/pathlib.nvim/compare/v0.3.2...v0.4.0) (2024-01-30)
+
+
+### Features
+
+* **docs:** try to generate docs via sphinx ([4d8ca25](https://github.com/pysan3/pathlib.nvim/commit/4d8ca25575af9587294d3ae49ee6f47d463ceb0c))
+* **watcher:** implement watcher to detect and invoke on file change ([de8a39d](https://github.com/pysan3/pathlib.nvim/commit/de8a39dc8daaff31ded1754a495f6258a5a90b72))
+
+
+### Bug Fixes
+
+* **base:** fix bugs and optimize performance ([8fb9050](https://github.com/pysan3/pathlib.nvim/commit/8fb90509d10730d62241e3ba31c84b1909888e16))
+* **ci:** ensure pip reqs are installed ([227f409](https://github.com/pysan3/pathlib.nvim/commit/227f409e76bd53c9043e07ddf127dc9b7ecf667e))
+* **ci:** fix typo ([4fdbc89](https://github.com/pysan3/pathlib.nvim/commit/4fdbc899d4388560a86dbc0961b8359fa446884e))
+* **ci:** get sphinx executable paths ([0c72aa6](https://github.com/pysan3/pathlib.nvim/commit/0c72aa65df28ad0967106446e6b6c550ecfd272e))
+* **ci:** ignore failed commands ([bfc23f3](https://github.com/pysan3/pathlib.nvim/commit/bfc23f3f3c5d62701a2d6b0c63cf61d814864720))
+* **ci:** try to find executables installed with pip ([104f8a3](https://github.com/pysan3/pathlib.nvim/commit/104f8a386f6c73dd362a8e650543bcbaee66c609))
+* **docs:** add link to docs in README ([f9f6b4c](https://github.com/pysan3/pathlib.nvim/commit/f9f6b4cda596aaff9accd9f72e674270f1f8842c))
+* **docs:** save sphinx deps in requirement.txt ([70dcc2f](https://github.com/pysan3/pathlib.nvim/commit/70dcc2f19605ecf94a4554835adcf04120f63dda))
+* **type:** public all fields ([41436f8](https://github.com/pysan3/pathlib.nvim/commit/41436f851f1ea7b681ece595ac93c43d7a4ba057))
+* **types:** delete type annots on spec files ([4f47de8](https://github.com/pysan3/pathlib.nvim/commit/4f47de8db3e7a0af1ef0736d0bfb18b425a44edc))
+
 ## [0.3.2](https://github.com/pysan3/pathlib.nvim/compare/v0.3.1...v0.3.2) (2024-01-26)
 
 
