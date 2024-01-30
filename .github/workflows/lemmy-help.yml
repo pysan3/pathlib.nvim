@@ -1,6 +1,11 @@
 name: lemmy-help
 
-on: [push]
+on:
+  workflow_run:
+    workflows:
+      - stylua
+    types:
+      - complete
 
 env:
   PLUGIN_NAME: pathlib.nvim
