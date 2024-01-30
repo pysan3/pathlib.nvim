@@ -25,3 +25,5 @@ jobs:
           release-type: simple
           package-name: pathlib.nvim
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          extra-files: |
+            conf.py

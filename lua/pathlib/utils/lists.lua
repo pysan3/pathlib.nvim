@@ -39,7 +39,7 @@ function str_list:extend(list)
 end
 
 ---Remove the first element in the list and return removed value.
----@return string? # first element that has been removed. If the list is already empty, returns nil.
+---@return string|nil # first element that has been removed. If the list is already empty, returns nil.
 function str_list:shift()
   if #self == 0 then
     return nil
@@ -48,7 +48,7 @@ function str_list:shift()
 end
 
 ---Remove the last element in the list and return removed value.
----@return string? # last element that has been removed. If the list is already empty, returns nil.
+---@return string|nil # last element that has been removed. If the list is already empty, returns nil.
 function str_list:pop()
   if #self == 0 then
     return nil
@@ -56,9 +56,11 @@ function str_list:pop()
   return table.remove(self, #self)
 end
 
+---@alias pathlib.private.list_filter_function fun(e: string, idx: integer): boolean
+
 ---Filter list but elements before `index_from` are free-pass. Returns new list.
----@param func? fun(e: string, idx: integer): boolean # filter function
----@param index_from integer? # Start filtering from this index and after. Set this value <= 0 or nil to have normal behavior
+---@param func pathlib.private.list_filter_function|nil # filter function
+---@param index_from integer|nil # Start filtering from this index and after. Set this value <= 0 or nil to have normal behavior
 ---@return PathlibStrList # Newly created list of filtered values
 function str_list:filter(func, index_from)
   if index_from == nil then
@@ -74,8 +76,8 @@ function str_list:filter(func, index_from)
 end
 
 ---Filter list but elements before `index_from` are free-pass. Returns new list.
----@param func? fun(e: string, idx: integer): boolean # filter function
----@param index_from integer? # Start filtering from this index and after. Set this value <= 0 or nil to have normal behavior
+---@param func pathlib.private.list_filter_function|nil # filter function
+---@param index_from integer|nil # Start filtering from this index and after. Set this value <= 0 or nil to have normal behavior
 function str_list:filter_internal(func, index_from)
   local accum = 0
   for index, value in ipairs(self) do

@@ -2,6 +2,9 @@
 !.luarc.json
 /index.norg
 
+### Sphinx ###
+/_build/
+
 ### Vim ###
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]

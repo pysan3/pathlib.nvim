@@ -1,5 +1,4 @@
 local Path = require("pathlib.base")
-local utils = require("pathlib.utils")
 local const = require("pathlib.const")
 local err = require("pathlib.utils.errors")
 
@@ -14,7 +13,10 @@ local PosixPath = setmetatable({ ---@diagnostic disable-line
   end,
 })
 PosixPath.__index = require("pathlib.utils.nuv").generate_index(PosixPath)
+require("pathlib.utils.paths").link_dunders(PosixPath, Path)
 
+---Private init method to create a new Path object
+---@param ... string | PathlibPath # List of string and Path objects
 function PosixPath:_init(...)
   Path._init(self, ...)
   if self.__windows_panic then
@@ -24,46 +26,6 @@ function PosixPath:_init(...)
       [[If this is intended, use `require("pathlib.windows")` instead.]]
     )
   end
-end
-
----Compare equality of path objects
----@param other PathlibPath
----@return boolean
-function PosixPath:__eq(other)
-  return Path.__eq(self, other)
-end
-
----Compare less than of path objects
----@param other PathlibPath
----@return boolean
-function PosixPath:__lt(other)
-  return Path.__lt(self, other)
-end
-
----Compare less than or equal of path objects
----@param other PathlibPath
----@return boolean
-function PosixPath:__le(other)
-  return Path.__le(self, other)
-end
-
----Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath | string
----@return PathlibPosixPath
-function PosixPath:__div(other)
-  return Path.__div(self, other) ---@diagnostic disable-line
-end
-
----Concatenate paths with the parent of lhs. `Path("./foo/foo.txt") .. "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath | string
----@return PathlibPosixPath
--- Path.__concat = function(self, other)
-function PosixPath:__concat(other)
-  return Path.__concat(self, other) ---@diagnostic disable-line
-end
-
-function PosixPath:__tostring()
-  return Path.__tostring(self)
 end
 
 ---Create a new Path object
@@ -76,6 +38,7 @@ function PosixPath.new(...)
 end
 
 function PosixPath.new_empty()
+  ---@type PathlibPosixPath
   local self = setmetatable({}, PosixPath) ---@diagnostic disable-line
   self:to_empty()
   return self
@@ -87,29 +50,6 @@ end
 
 function PosixPath.home()
   return PosixPath.new(vim.loop.os_homedir())
-end
-
-function PosixPath.new_all_from(path)
-  local self = PosixPath.new_empty()
-  self._drive_name = path._drive_name
-  self._raw_paths:extend(path._raw_paths)
-  self.__string_cache = nil
-  return self
-end
-
----Inherit from `path` and trim `_raw_paths` if specified.
----@param path PathlibPath
----@param trim_num number? # 1 will trim the last entry in `_raw_paths`, 2 will trim 2.
-function PosixPath.new_from(path, trim_num)
-  local self = PosixPath.new_all_from(path)
-  if not trim_num or trim_num < 1 then
-    return self
-  end
-  for _ = 1, trim_num do
-    self._raw_paths:pop()
-  end
-  self.__string_cache = nil
-  return self
 end
 
 ---Shorthand to `vim.fn.stdpath` and specify child path in later args.
