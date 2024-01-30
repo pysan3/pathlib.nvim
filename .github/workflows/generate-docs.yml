@@ -1,4 +1,4 @@
-name: test-and-docs
+name: generate-docs
 
 on:
   push:
@@ -23,13 +23,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v5
+        shell: bash
         with:
           python-version: '3.11'
           cache: 'pip'
+        run: |
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build docs
         shell: bash
         run: |
-          make html
+          cat "$GITHUB_PATH"
+          echo "$PATH"
+          ls -la "$HOME/.local/bin"
+          PATH="$PATH:$(python3 -m site --user-base)/bin" make html
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
