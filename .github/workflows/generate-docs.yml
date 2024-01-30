@@ -27,14 +27,13 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-        run: |
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Build docs
         shell: bash
         run: |
           cat "$GITHUB_PATH"
           echo "$PATH"
           ls -la "$HOME/.local/bin"
+          pip show --files sphinx | grep 'bin'
           PATH="$PATH:$(python3 -m site --user-base)/bin" make html
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
