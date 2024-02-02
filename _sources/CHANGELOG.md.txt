@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/pysan3/pathlib.nvim/compare/v0.4.0...v0.4.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* **iterdir:** optimize fs_iterdir performance ([69d313a](https://github.com/pysan3/pathlib.nvim/commit/69d313ab70c75833d8e854641ff96d883584bed9))
+
 ## [0.4.0](https://github.com/pysan3/pathlib.nvim/compare/v0.3.2...v0.4.0) (2024-01-30)
 
 
