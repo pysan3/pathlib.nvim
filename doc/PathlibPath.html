@@ -684,30 +684,6 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
-<dt class="sig sig-object lua" id="PathlibPath.iterdir">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.iterdir" title="Link to this definition">#</a></dt>
-<dd><p>Alias to <cite>vim.fs.dir</cite> but returns PathlibPath objects.</p>
-<p>depth: integer|nil How deep the traverse (default 1)
-skip: (fun(dir_name: string): boolean)|nil Predicate
-to control traversal. Return false to stop searching the current directory.
-Only useful when depth &gt; 1</p>
-<p>“path” is the PathlibPath object.
-“type” is one of the following:
-“file”, “directory”, “link”, “fifo”, “socket”, “char”, “block”, “unknown”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>opts</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – Optional keyword arguments:</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p># items in {self}. Each iteration yields two values: “path” and “type”.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun():PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span> <span class="pre">or</span> <span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.glob">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">glob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pattern</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.glob" title="Link to this definition">#</a></dt>
 <dd><p>Run <cite>vim.fn.globpath</cite> on this path.</p>
@@ -1183,17 +1159,18 @@ Only useful when depth &gt; 1</p>
 </dd></dl>
 
 <dl class="lua method">
-<dt class="sig sig-object lua" id="PathlibPath.iterdir_async">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">iterdir_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">callback</span></em>, <em class="sig-param"><span class="pre">on_error</span></em>, <em class="sig-param"><span class="pre">on_exit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.iterdir_async" title="Link to this definition">#</a></dt>
-<dd><p>Iterate directory with callback receiving PathlibPath objects</p>
-<p>When <cite>callback</cite> returns <cite>false</cite> the iteration will break out.</p>
+<dt class="sig sig-object lua" id="PathlibPath.fs_iterdir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em>, <em class="sig-param"><span class="pre">depth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_iterdir" title="Link to this definition">#</a></dt>
+<dd><p>Iterate dir with <cite>luv.fs_scandir</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>callback</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(PathlibPath,</span> <span class="pre">uv.aliases.fs_stat_types):boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called for each child in directory</p></li>
-<li><p><strong>on_error</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(str)</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called when <cite>luv.fs_scandir</cite> fails</p></li>
-<li><p><strong>on_exit</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun(integer)</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # function called after the scan has finished. <cite>count</cite> gives the number of children</p></li>
+<li><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, resolves hyperlinks and go into the linked directory.</p></li>
+<li><p><strong>depth</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # How deep the traverse. If nil or &lt;1, scans everything.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">function</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1284,6 +1261,47 @@ Only useful when depth &gt; 1</p>
 <li><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Name of the callback to check existence. If nil, calls all watchers.</p></li>
 <li><p><strong>args</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibWatcherArgs</span></code></span>) – </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.iterdir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.iterdir" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <cite>vim.fs.dir</cite> but returns PathlibPath objects.</p>
+<p>depth: integer|nil How deep the traverse (default 1)
+skip: (fun(dir_name: string): boolean)|nil Predicate
+to control traversal. Return false to stop searching the current directory.
+Only useful when depth &gt; 1</p>
+<p>“path” is the PathlibPath object.
+“type” is one of the following:
+“file”, “directory”, “link”, “fifo”, “socket”, “char”, “block”, “unknown”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>opts</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – Optional keyword arguments:</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p># items in {self}. Each iteration yields two values: “path” and “type”.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">fun():PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span> <span class="pre">or</span> <span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.fs_opendir">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_opendir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em>, <em class="sig-param"><span class="pre">depth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_opendir" title="Link to this definition">#</a></dt>
+<dd><p>Iterate dir with <cite>luv.fs_opendir</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, resolves hyperlinks and go into the linked directory.</p></li>
+<li><p><strong>depth</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # How deep the traverse. If nil or &lt;1, scans everything.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">function</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>

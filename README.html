@@ -500,7 +500,7 @@ document.write(`
 <section id="scan-directories">
 <h2><span class="section-number">3.3. </span>Scan Directories<a class="headerlink" href="#scan-directories" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Continue from above</span>
-<span class="kr">for</span> <span class="n">path</span> <span class="kr">in</span> <span class="n">new_file</span><span class="p">:</span><span class="n">parent</span><span class="p">():</span><span class="n">iterdir</span><span class="p">()</span> <span class="kr">do</span>
+<span class="kr">for</span> <span class="n">path</span> <span class="kr">in</span> <span class="n">new_file</span><span class="p">:</span><span class="n">parent</span><span class="p">():</span><span class="n">fs_iterdir</span><span class="p">()</span> <span class="kr">do</span>
   <span class="c1">-- loop: [Path(&quot;./new/folder/foo.txt&quot;), Path(&quot;./new/folder/bar.txt&quot;), Path(&quot;./new/folder/baz.txt&quot;)]</span>
 <span class="kr">end</span>
 </pre></div>
