@@ -345,28 +345,6 @@ function Path:resolve_copy()
   return new
 end
 
----Alias to `vim.fs.dir` but returns PathlibPath objects.
----@param opts table|nil Optional keyword arguments:
----             - depth: integer|nil How deep the traverse (default 1)
----             - skip: (fun(dir_name: string): boolean)|nil Predicate
----               to control traversal. Return false to stop searching the current directory.
----               Only useful when depth > 1
----
----@return fun(): PathlibPath|nil, string|nil # items in {self}. Each iteration yields two values: "path" and "type".
----        "path" is the PathlibPath object.
----        "type" is one of the following:
----        "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
-function Path:iterdir(opts)
-  local generator = fs.dir(self:tostring(), opts)
-  return function()
-    local name, fs_type = generator()
-    if name ~= nil then
-      return self:new_descendant(unpack(vim.split(name:gsub("\\", "/"), "/", { plain = true, trimempty = false }))),
-        fs_type
-    end
-  end
-end
-
 ---Run `vim.fn.globpath` on this path.
 ---@param pattern string # glob pattern expression
 ---@return fun(): PathlibPath # iterator of results.
@@ -718,34 +696,47 @@ function Path:io_write_bytes(data)
   return true
 end
 
----Iterate directory with callback receiving PathlibPath objects
----@param callback fun(path: PathlibPath, fs_type: uv.aliases.fs_stat_types): boolean|nil # function called for each child in directory
----  When `callback` returns `false` the iteration will break out.
----@param on_error fun(err: string)|nil # function called when `luv.fs_scandir` fails
----@param on_exit fun(count: integer)|nil # function called after the scan has finished. `count` gives the number of children
-function Path:iterdir_async(callback, on_error, on_exit)
-  vim.loop.fs_scandir(self:tostring(), function(e, handler)
-    if e or not handler then
-      if on_error and e then
-        on_error(e)
-      end
-      return
+---Iterate dir with `luv.fs_scandir`.
+---@param follow_symlinks boolean|nil # If true, resolves hyperlinks and go into the linked directory.
+---@param depth integer|nil # How deep the traverse. If nil or <1, scans everything.
+---@return function
+function Path:fs_iterdir(follow_symlinks, depth)
+  depth = depth or -1
+  ---@type uv_fs_t|nil
+  local handler = nil
+  local current, i_dir, last_index = self, 1, 1
+  local paths = { self }
+  local depths = { 1 }
+  local function next_file()
+    current = paths[i_dir]
+    if not current then
+      return nil
     end
-    local counter = 0
-    while true do
-      local name, fs_type = vim.loop.fs_scandir_next(handler)
-      if not name or not fs_type then
-        break
-      end
-      counter = counter + 1
-      if callback(self:child(name), fs_type) == false then
-        break
+    if not handler then
+      handler = self.nuv.fs_scandir(current:tostring())
+      if not handler then
+        return handler
       end
     end
-    if on_exit then
-      on_exit(counter)
+    local name, fs_type = vim.loop.fs_scandir_next(handler)
+    if not name then
+      handler = nil
+      i_dir = i_dir + 1
+      return next_file()
     end
-  end)
+    local child = current:child(name)
+    if follow_symlinks and fs_type == "link" then
+      child = child:realpath() or child
+      fs_type = (child:lstat() or { type = "file" }).type
+    end
+    if fs_type == "directory" and (depth < 0 or depths[i_dir] < depth) then
+      last_index = last_index + 1
+      paths[last_index] = child
+      depths[last_index] = depths[i_dir] + 1
+    end
+    return child
+  end
+  return next_file
 end
 
 --          ╭─────────────────────────────────────────────────────────╮          --
@@ -937,5 +928,83 @@ end
 ---@alias PathlibPointer string # A unique id to each path object
 ---@alias PathlibAbsPath PathlibPath
 ---@alias PathlibRelPath PathlibPath
+
+--          ╭─────────────────────────────────────────────────────────╮          --
+--          │                    Deprecated Methods                   │          --
+--          ╰─────────────────────────────────────────────────────────╯          --
+
+---Alias to `vim.fs.dir` but returns PathlibPath objects.
+---@deprecated # Use `self:fs_iterdir()` for better performance.
+---@param opts table|nil Optional keyword arguments:
+---             - depth: integer|nil How deep the traverse (default 1)
+---             - skip: (fun(dir_name: string): boolean)|nil Predicate
+---               to control traversal. Return false to stop searching the current directory.
+---               Only useful when depth > 1
+---
+---@return fun(): PathlibPath|nil, string|nil # items in {self}. Each iteration yields two values: "path" and "type".
+---        "path" is the PathlibPath object.
+---        "type" is one of the following:
+---        "file", "directory", "link", "fifo", "socket", "char", "block", "unknown".
+function Path:iterdir(opts)
+  local generator = fs.dir(self:tostring(), opts)
+  return function()
+    local name, fs_type = generator()
+    if name ~= nil then
+      return self:new_descendant(unpack(vim.split(name:gsub("\\", "/"), "/", { plain = true, trimempty = false }))),
+        fs_type
+    end
+  end
+end
+
+---Iterate dir with `luv.fs_opendir`.
+---@deprecated # Use `self:fs_scandir` instead for better performance.
+---@param follow_symlinks boolean|nil # If true, resolves hyperlinks and go into the linked directory.
+---@param depth integer|nil # How deep the traverse. If nil or <1, scans everything.
+---@return function
+function Path:fs_opendir(follow_symlinks, depth)
+  depth = depth or -1
+  ---@type (uv.aliases.fs_readdir_entries[]|nil)
+  local entries = nil
+  ---@type luv_dir_t|nil
+  local handler = nil
+  local current_dir, i_dir, i_ent = nil, 1, 0
+  local dirs = { paths = { self }, depths = { 1 }, last_index = 1 }
+  local function next_file()
+    current_dir = dirs.paths[i_dir]
+    if not current_dir then
+      return nil
+    end
+    if not handler then
+      handler = self.nuv.fs_opendir(current_dir:tostring(), nil, 100) --[[@as luv_dir_t]] ---@diagnostic disable-line
+      entries, i_ent = nil, 0
+      return handler and next_file()
+    end
+    if not entries or not entries[i_ent] then
+      if i_ent == 1 then
+        self.nuv.fs_closedir(handler)
+        handler = nil
+        i_dir = i_dir + 1
+      else
+        entries = self.nuv.fs_readdir(handler) ---@diagnostic disable-line
+      end
+      i_ent = 1
+      return next_file()
+    end
+    local entry = entries[i_ent]
+    i_ent = i_ent + 1
+    local child = current_dir:child(entry.name)
+    if follow_symlinks and entry.type == "link" then
+      child = child:realpath() or child
+      entry.type = (child:lstat() or { type = "file" }).type
+    end
+    if entry.type == "directory" and (depth < 0 or dirs.depths[i_dir] < depth) then
+      dirs.last_index = dirs.last_index + 1
+      dirs.paths[dirs.last_index] = child
+      dirs.depths[dirs.last_index] = dirs.depths[i_dir] + 1
+    end
+    return child
+  end
+  return next_file
+end
 
 return Path

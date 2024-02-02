@@ -1,3 +1,4 @@
+---@diagnostic disable
 local nio = require("nio")
 local Path = require("pathlib")
 local git = require("pathlib.git")
@@ -33,17 +34,21 @@ local function scan_sync_depth(dir, array, cb)
 end
 
 local function scan_async_iterdir(dir, array, cb)
-  local function _iterdir_cb(path, fs_type)
-    if fs_type == "directory" then
-      scan_async_iterdir(path, array, cb)
-    end
+  for path in dir:fs_iterdir(true, -1) do
     array[#array + 1] = path
   end
-  dir:iterdir_async(_iterdir_cb, nil, function(_)
-    if cb then
-      cb(array)
-    end
-  end)
+  if cb then
+    cb(array)
+  end
+end
+
+local function scan_async_opendir(dir, array, cb)
+  for path in dir:fs_opendir(true, -1) do
+    array[#array + 1] = path
+  end
+  if cb then
+    cb(array)
+  end
 end
 
 local function scan_async_nuv(dir, array, cb)
@@ -71,7 +76,7 @@ local function scan_async_nuv(dir, array, cb)
 end
 
 local function time_it(name, dir, func, times)
-  d.pf("==== Start %s (%s times) ====", name, times)
+  -- d.pf("==== Start %s (%s times) ====", name, times)
   times = times or 1
   local start = os.clock()
   local counter = 0
@@ -86,11 +91,13 @@ local function time_it(name, dir, func, times)
       end
     end)
   end
-  run_func()
+  local suc, res = pcall(run_func)
+  assert(suc, res)
 end
 
 d.p(vim.loop.os_homedir())
 local linux = Path("~/Documents/linux"):absolute()
+-- local linux = Path.cwd()
 d.pf([[linux: %s]], linux)
 
 local url = [[https://github.com/torvalds/linux]]
@@ -103,22 +110,32 @@ d.pf([[TREE: %s]], num_lines - 3) -- files detected with `tree` command (uncount
 local test_times = 5
 -- local test_times = 1
 
-nio.run(function()
-  time_it("scan_sync_rec", linux, scan_sync_rec, test_times)
-  time_it("scan_sync_depth", linux, scan_sync_depth, test_times)
-  -- time_it("scan_async_iterdir", linux, scan_async_iterdir, test_times)
-  time_it("scan_async_nuv", linux, scan_async_nuv, test_times)
-end)
+local function time_it_all(prefix)
+  -- time_it(prefix .. "scan_sync_rec          ", linux:deep_copy(), scan_sync_rec, test_times)
+  -- time_it(prefix .. "scan_sync_depth        ", linux:deep_copy(), scan_sync_depth, test_times)
+  -- time_it(prefix .. "scan_async_nuv         ", linux:deep_copy(), scan_async_nuv, test_times)
+  time_it(prefix .. "scan_async_iterdir     ", linux:deep_copy(), scan_async_iterdir, test_times)
+  -- time_it(prefix .. "scan_async_opendir     ", linux:deep_copy(), scan_async_opendir, test_times)
+end
 
-local array = {}
-scan_async_nuv(linux, array)
-d.pf("scan_async_nuv done. %s files.", #array)
-git.fill_git_state_in_root(array, linux)
-local dot_git = linux:child(".git")
-for _, path in ipairs(array) do
-  if not path.git_state.ignored and not vim.startswith(path:tostring(), dot_git:tostring()) then
-    d.pp(path, d.g(path.git_state))
+for i = 0, 9 do
+  time_it_all(i .. " : Sync : ")
+end
+
+for i = 0, 9 do
+  nio.run(function()
+    time_it_all(i .. " : ASYN : ")
+  end)
+end
+
+local function scan_git(_, _, cb)
+  local array = {}
+  scan_async_nuv(linux, array)
+  d.pf("scan_async_nuv done. %s files.", #array)
+  git.fill_git_state_in_root(array, linux)
+  if cb then
+    cb(array)
   end
 end
 
-vim.loop.fs_close(fd)
+-- time_it("scan_git", linux, scan_git, 5)

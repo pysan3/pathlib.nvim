@@ -144,7 +144,7 @@ new_file:symlink_to(new_file .. "baz.txt") -- create symlink of `foo.txt` named 
 
 ``` lua
 -- Continue from above
-for path in new_file:parent():iterdir() do
+for path in new_file:parent():fs_iterdir() do
   -- loop: [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
 end
 ```

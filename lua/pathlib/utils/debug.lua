@@ -47,7 +47,7 @@ end
 
 ---@param dir PathlibPath
 function d.rmdir(dir)
-  for _p in dir:iterdir() do
+  for _p in dir:fs_iterdir() do
     if _p:is_dir(true) then
       d.rmdir(_p)
       _p:rmdir()
