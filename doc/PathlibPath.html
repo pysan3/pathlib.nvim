@@ -589,6 +589,17 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.parent_string">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">parent_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parent_string" title="Link to this definition">#</a></dt>
+<dd><p>Return parent directory’s <cite>:tostring()</cite> if exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibString</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.parents">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parents" title="Link to this definition">#</a></dt>
 <dd><p>Return iterator of parents.</p>
@@ -1169,9 +1180,6 @@ document.write(`
 <li><p><strong>depth</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # How deep the traverse. If nil or &lt;1, scans everything.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">function</span></code></span></p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -1240,7 +1248,7 @@ document.write(`
 <dd><p>Unregister fs_event watcher for <cite>self</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # Name of the callback registered with <cite>self:register(func_name, …)</cite></p>
+<dd class="field-odd"><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Name of the callback registered with <cite>self:register(func_name, …)</cite>. If nil removes all.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>succeess</p>
