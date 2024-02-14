@@ -21,8 +21,14 @@ jobs:
           repository: "folke/neodev.nvim"
           path: "deps/neodev.nvim"
 
+      - name: Checkout dependency nio
+        uses: actions/checkout@v3
+        with:
+          repository: "nvim-neotest/nvim-nio"
+          path: "deps/nvim-nio"
+
       - name: Print Filetree
-        run: ls -la && ls -la deps
+        run: echo $PWD && ls -la && ls -la deps
 
       - name: Type Check Code Base
         uses: mrcjkb/lua-typecheck-action@v0
