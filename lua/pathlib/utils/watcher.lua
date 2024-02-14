@@ -54,7 +54,7 @@ function M.register_dir(dir, recursive)
       if err then
         return
       end
-      nio.run(function()
+      require("pathlib.utils.nuv").run(function()
         local child = watcher.children[filename]
         for _, _p in pairs(child or watcher.dir_callbacks) do
           _p:execute_watchers(nil, { filename = filename, events = events, dir = dir })

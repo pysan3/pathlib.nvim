@@ -233,6 +233,13 @@ function Path:parent()
   return self.__parent_cache
 end
 
+---Return parent directory's `:tostring()` if exists.
+---@return PathlibString|nil
+function Path:parent_string()
+  local parent = self:parent()
+  return parent and parent:tostring()
+end
+
 ---Return iterator of parents.
 function Path:parents()
   local current = self
@@ -699,8 +706,8 @@ end
 ---Iterate dir with `luv.fs_scandir`.
 ---@param follow_symlinks boolean|nil # If true, resolves hyperlinks and go into the linked directory.
 ---@param depth integer|nil # How deep the traverse. If nil or <1, scans everything.
----@return function
-function Path:fs_iterdir(follow_symlinks, depth)
+---@param skip_dir (fun(dir: PathlibPath): boolean)|nil # Function to decide whether to dig in a directory.
+function Path:fs_iterdir(follow_symlinks, depth, skip_dir)
   depth = depth or -1
   ---@type uv_fs_t|nil
   local handler = nil
@@ -729,7 +736,7 @@ function Path:fs_iterdir(follow_symlinks, depth)
       child = child:realpath() or child
       fs_type = (child:lstat() or { type = "file" }).type
     end
-    if fs_type == "directory" and (depth < 0 or depths[i_dir] < depth) then
+    if fs_type == "directory" and (depth < 0 or depths[i_dir] < depth) and (skip_dir and not skip_dir(child)) then
       last_index = last_index + 1
       paths[last_index] = child
       depths[last_index] = depths[i_dir] + 1
@@ -887,16 +894,19 @@ function Path:register_watcher(func_name, callback)
 end
 
 ---Unregister fs_event watcher for `self`.
----@param func_name string # Name of the callback registered with `self:register(func_name, ...)`
+---@param func_name string|nil # Name of the callback registered with `self:register(func_name, ...)`. If nil removes all.
 ---@return boolean succeess
 function Path:unregister_watcher(func_name)
   if not self.__fs_event_callbacks then
     return true
   end
-  self.__fs_event_callbacks[func_name] = nil
-  for _, _ in pairs(self.__fs_event_callbacks) do
-    return true -- still has other callbacks
+  if func_name then
+    self.__fs_event_callbacks[func_name] = nil
+    for _, _ in pairs(self.__fs_event_callbacks) do
+      return true -- still has other callbacks
+    end
   end
+  self.__fs_event_callbacks = nil
   local suc, err_msg = watcher.unregister(self)
   if suc ~= nil then
     return true

@@ -1,14 +1,30 @@
 {
-  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-  "runtime.version": "LuaJIT",
-  "runtime.path": [
-    "lua/?.lua",
-    "lua/?/init.lua"
-  ],
-  "workspace.library": [
-    "/github/workspace/deps/neodev.nvim/types/stable",
-    "${3rd}/busted/library"
-  ],
-  "diagnostics.libraryFiles": "Disable",
-  "workspace.checkThirdParty": "Disable"
+    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "runtime.version": "LuaJIT",
+    "runtime.path": [
+        "lua/?.lua",
+        "lua/?/init.lua",
+        "${3rd}/busted/library/?.lua",
+        "${3rd}/busted/library/?/init.lua"
+    ],
+    "workspace.library": [
+        "/home/runner/work/pathlib.nvim/pathlib.nvim/deps/neodev.nvim/types/stable",
+        "/home/runner/work/pathlib.nvim/pathlib.nvim/deps/nvim-nio/lua",
+        "${3rd}/busted/library",
+        "${3rd}/luassert/library"
+    ],
+    "diagnostics.globals": [
+        "describe",
+        "assert",
+        "it",
+        "vim",
+        "setup",
+        "teardown"
+    ],
+    "runtime.special": {
+        "luassert": "loadfile"
+    },
+    "workspace.maxPreload": 100000,
+    "diagnostics.libraryFiles": "Disable",
+    "workspace.checkThirdParty": false
 }

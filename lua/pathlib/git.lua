@@ -248,7 +248,7 @@ function M.fill_git_state_in_root(paths, git_root)
     path:to_absolute()
     path.git_state.is_ready = true
     path.git_state.git_root = git_root
-    path.git_state.state = status[path:tostring()]
+    path.git_state.state = status[path:tostring()] or {}
   end
   M.fill_git_ignore(paths, git_root)
 end
@@ -264,7 +264,7 @@ function M.fill_git_state(paths)
       if not check_list[root:tostring()] then
         check_list[root:tostring()] = { root = root }
       end
-      table.insert(check_list[path:tostring()], path)
+      table.insert(check_list[root:tostring()], path)
     end
   end
   for _, path_list in pairs(check_list) do
