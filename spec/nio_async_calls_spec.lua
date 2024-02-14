@@ -26,7 +26,7 @@ describe("nvim-nio async calls;", function()
 
       event.set()
       nio.sleep(10)
-      assert.equals(10, notified)
+      assert.equal(10, notified)
     end)
   end)
 
@@ -41,7 +41,7 @@ describe("nvim-nio async calls;", function()
       assert.is_not.is_nil(path:fs_write(file_content))
       local read = path:fs_read()
       assert.is_not.is_nil(read)
-      assert.is_equal(file_content, read)
+      assert.are.equal(file_content, read)
     end)
   end)
 
@@ -60,7 +60,7 @@ describe("nvim-nio async calls;", function()
       assert.is_nil(path:fs_open("w"))
       assert.is_not.is_nil(path.error_msg)
       assert.is_true(path.error_msg:len() > 0)
-      assert.is_not.is_equal(file_content, path.error_msg) -- error_msg is updated
+      assert.are_not.equal(file_content, path.error_msg) -- error_msg is updated
     end)
   end)
 end)
