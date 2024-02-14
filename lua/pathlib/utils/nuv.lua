@@ -1,7 +1,7 @@
 local M = {
   _has_nio = nil,
   ---@module "nio"
-  nio = nil,
+  nio = nil, ---@diagnostic disable-line
 }
 
 function M.check_nio_install()
@@ -24,11 +24,10 @@ function M.current_task()
     return false
   end
   if not M.nio.current_task then
-    M.nio.current_task = function()
-      return require("nio.tasks").current_task()
-    end
+    return require("nio.tasks").current_task()
+  else
+    return M.nio.current_task()
   end
-  return M.nio.current_task()
 end
 
 ---@param self PathlibPath
@@ -48,7 +47,7 @@ function M.generate_nuv(self)
         -- is inside async task or is passed a `callback`
         if key == "fs_opendir" then
           local args = { ... }
-          result = { M.nio.uv.fs_opendir(args[1], args[3], args[2]) }
+          result = { M.nio.uv.fs_opendir(args[1], args[3], args[2]) } ---@diagnostic disable-line
         else
           result = { M.nio.uv[key](...) }
         end
