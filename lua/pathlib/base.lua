@@ -279,14 +279,16 @@ function Path:is_relative()
   return not self:is_absolute()
 end
 
----Compute a version of this path relative to the path represented by other.
+---Compute a version of this path relative to the path represented by `other`.
 ---If it’s impossible, nil is returned and `self.error_msg` is modified.
----When `walk_up == false` (the default), the path must start with other.
----When the argument is true, `../` entries may be added to form the relative path
----but this function DOES NOT check the actual filesystem for file existence.
----In all other cases, such as the paths referencing different drives, nil is returned and `self.error_msg` is modified.
----If only one of `self` or `other` is relative, return nil and `self.error_msg` is modified.
----```lua
+---
+---When `walk_up == false` (the default), the path MUST start with `other`.
+---When the argument is true, '`../`' entries may be added to form a relative path
+---but this function DOES NOT check the actual filesystem for file existence whatsoever.
+---
+---If the paths referencing different drives or if only one of `self` or `other` is relative,
+---nil is returned and `self.error_msg` is modified.
+---
 --->>> p = Path("/etc/passwd")
 --->>> p:relative_to(Path("/"))
 ---Path.new("etc/passwd")
@@ -296,7 +298,7 @@ end
 ---nil; p.error_msg = "'%s' is not on the same disk as '%s'."
 --->>> p:relative_to(Path("./foo"))
 ---nil; p.error_msg = "Only one path is relative: '%s', '%s'."
----```
+---
 ---@param other PathlibPath
 ---@param walk_up boolean|nil # If true, uses `../` to make relative path.
 function Path:relative_to(other, walk_up)
@@ -334,15 +336,17 @@ end
 ---Return whether or not this path is relative to the `other` path.
 ---This is a wrapper of `vim.startswith(tostring(self), tostring(other))` and nothing else.
 ---It neither accesses the filesystem nor treats “..” segments specially.
+---
 ---Use `self:absolute()` or `self:to_absolute()` beforehand if needed.
+---
 ---`other` may be a string, but MUST use the same path separators.
----```lua
+---
 --->>> p = Path("/etc/passwd")
 --->>> p:is_relative_to("/etc") -- Must be [[\etc]] on Windows.
 ---true
 --->>> p:is_relative_to(Path("/usr"))
 ---false
----```
+---
 ---@param other PathlibPath|PathlibString
 function Path:is_relative_to(other)
   return vim.startswith(tostring(self), tostring(other))
@@ -360,7 +364,9 @@ function Path:as_posix()
 end
 
 ---Returns a new path object with absolute path.
+---
 ---Use `self:to_absolute()` instead to modify the object itself which does not need a deepcopy.
+---
 ---If `self` is already an absolute path, returns itself.
 ---@param cwd PathlibPath|nil # If passed, this is used instead of `vim.fn.getcwd()`.
 ---@return PathlibPath
@@ -373,7 +379,9 @@ function Path:absolute(cwd)
 end
 
 ---Modifies itself to point to an absolute path.
+---
 ---Use `self:absolute()` instead to return a new path object without modifying self.
+---
 ---If `self` is already an absolute path, does nothing.
 ---@param cwd PathlibPath|nil # If passed, this is used instead of `vim.fn.getcwd()`.
 function Path:to_absolute(cwd)
