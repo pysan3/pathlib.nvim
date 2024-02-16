@@ -279,6 +279,75 @@ function Path:is_relative()
   return not self:is_absolute()
 end
 
+---Compute a version of this path relative to the path represented by other.
+---If it’s impossible, nil is returned and `self.error_msg` is modified.
+---When `walk_up == false` (the default), the path must start with other.
+---When the argument is true, `../` entries may be added to form the relative path
+---but this function DOES NOT check the actual filesystem for file existence.
+---In all other cases, such as the paths referencing different drives, nil is returned and `self.error_msg` is modified.
+---If only one of `self` or `other` is relative, return nil and `self.error_msg` is modified.
+---```lua
+--->>> p = Path("/etc/passwd")
+--->>> p:relative_to(Path("/"))
+---Path.new("etc/passwd")
+--->>> p:relative_to(Path("/usr"))
+---nil; p.error_msg = "'%s' is not in the subpath of '%s'."
+--->>> p:relative_to(Path("C:/foo"))
+---nil; p.error_msg = "'%s' is not on the same disk as '%s'."
+--->>> p:relative_to(Path("./foo"))
+---nil; p.error_msg = "Only one path is relative: '%s', '%s'."
+---```
+---@param other PathlibPath
+---@param walk_up boolean|nil # If true, uses `../` to make relative path.
+function Path:relative_to(other, walk_up)
+  if self:is_absolute() and other:is_absolute() then
+    if self._drive_name ~= other._drive_name then
+      self.error_msg = string.format("'%s' is not on the same disk as '%s'.", self, other)
+      return nil
+    end
+  elseif self:is_relative() and other:is_relative() then
+  else
+    self.error_msg = string.format("Only one path is relative: '%s', '%s'.", self, other)
+    return nil
+  end
+  if not walk_up and not self:is_relative_to(other) then
+    self.error_msg = string.format("'%s' is not in the subpath of '%s'.", self, other)
+    return nil
+  end
+  local result = self:deep_copy()
+  result._raw_paths:clear()
+  result._drive_name = ""
+  local index = other:len()
+  while index > 0 and self._raw_paths[index] ~= other._raw_paths[index] do
+    result._raw_paths:append("..")
+    index = index - 1
+  end
+  for i = index + 1, self:len() do
+    if self._raw_paths[i] and self._raw_paths[i]:len() > 0 then
+      result._raw_paths:append(self._raw_paths[i])
+    end
+  end
+  self:__clean_paths_list()
+  return result
+end
+
+---Return whether or not this path is relative to the `other` path.
+---This is a wrapper of `vim.startswith(tostring(self), tostring(other))` and nothing else.
+---It neither accesses the filesystem nor treats “..” segments specially.
+---Use `self:absolute()` or `self:to_absolute()` beforehand if needed.
+---`other` may be a string, but MUST use the same path separators.
+---```lua
+--->>> p = Path("/etc/passwd")
+--->>> p:is_relative_to("/etc") -- Must be [[\etc]] on Windows.
+---true
+--->>> p:is_relative_to(Path("/usr"))
+---false
+---```
+---@param other PathlibPath|PathlibString
+function Path:is_relative_to(other)
+  return vim.startswith(tostring(self), tostring(other))
+end
+
 function Path:as_posix()
   if not utils.tables.is_type_of(self, const.path_module_enum.PathlibWindows) then
     return self:tostring()
@@ -290,19 +359,28 @@ function Path:as_posix()
   return (self:tostring():gsub(self.sep_str .. "+", require("pathlib.posix").sep_str))
 end
 
-function Path:absolute()
+---Returns a new path object with absolute path.
+---Use `self:to_absolute()` instead to modify the object itself which does not need a deepcopy.
+---If `self` is already an absolute path, returns itself.
+---@param cwd PathlibPath|nil # If passed, this is used instead of `vim.fn.getcwd()`.
+---@return PathlibPath
+function Path:absolute(cwd)
   if self:is_absolute() then
     return self
   else
-    return self.new(vim.fn.getcwd(), self)
+    return self.new(cwd or vim.fn.getcwd(), self)
   end
 end
 
-function Path:to_absolute()
+---Modifies itself to point to an absolute path.
+---Use `self:absolute()` instead to return a new path object without modifying self.
+---If `self` is already an absolute path, does nothing.
+---@param cwd PathlibPath|nil # If passed, this is used instead of `vim.fn.getcwd()`.
+function Path:to_absolute(cwd)
   if self:is_absolute() then
     return
   end
-  local new = self.new(vim.fn.getcwd(), self)
+  local new = self.new(cwd or vim.fn.getcwd(), self)
   self._raw_paths:clear()
   self:copy_all_from(new)
 end
