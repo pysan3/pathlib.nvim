@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/pysan3/pathlib.nvim/compare/v0.5.0...v0.5.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* **base:** fix docstring to render correctly in docs ([72e5167](https://github.com/pysan3/pathlib.nvim/commit/72e5167b3040d4f4725f5b95f5129a50a2a94e34))
+
 ## [0.5.0](https://github.com/pysan3/pathlib.nvim/compare/v0.4.2...v0.5.0) (2024-02-16)
 
 
