@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/pysan3/pathlib.nvim/compare/v0.4.2...v0.5.0) (2024-02-16)
+
+
+### Features
+
+* **base:** add methods to calculate relativity ([d92854b](https://github.com/pysan3/pathlib.nvim/commit/d92854b004903d59c4bb8530d75ed2954ad73cbf))
+
 ## [0.4.2](https://github.com/pysan3/pathlib.nvim/compare/v0.4.1...v0.4.2) (2024-02-14)
 
 
