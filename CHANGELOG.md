@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.5.0](https://github.com/pysan3/pathlib.nvim/compare/v0.4.2...v0.5.0) (2024-02-16)
+
+
+### Features
+
+* **base:** add methods to calculate relativity ([d92854b](https://github.com/pysan3/pathlib.nvim/commit/d92854b004903d59c4bb8530d75ed2954ad73cbf))
+
+## [0.4.2](https://github.com/pysan3/pathlib.nvim/compare/v0.4.1...v0.4.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* **base:** add more convinient methods ([5c67e6d](https://github.com/pysan3/pathlib.nvim/commit/5c67e6d4a03fea9d19fa3c7f5dd9ccab5617290e))
+* **git:** fix code gathering git_roots of paths ([7921607](https://github.com/pysan3/pathlib.nvim/commit/7921607e9201f8d7a30ec2065657157adff18ad4))
+* **type:** add fake meta file for luassert type annotation ([f99b4c4](https://github.com/pysan3/pathlib.nvim/commit/f99b4c436dd684addfab138e6ecd4d19e1008004))
+
+## [0.4.1](https://github.com/pysan3/pathlib.nvim/compare/v0.4.0...v0.4.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* **iterdir:** optimize fs_iterdir performance ([69d313a](https://github.com/pysan3/pathlib.nvim/commit/69d313ab70c75833d8e854641ff96d883584bed9))
+
 ## [0.4.0](https://github.com/pysan3/pathlib.nvim/compare/v0.3.2...v0.4.0) (2024-01-30)
 
 
