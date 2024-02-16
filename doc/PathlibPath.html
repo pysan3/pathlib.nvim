@@ -645,19 +645,91 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.relative_to">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">relative_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">other</span></em>, <em class="sig-param"><span class="pre">walk_up</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.relative_to" title="Link to this definition">#</a></dt>
+<dd><p>Compute a version of this path relative to the path represented by other.</p>
+<p>If it’s impossible, nil is returned and <cite>self.error_msg</cite> is modified.
+When <cite>walk_up == false</cite> (the default), the path must start with other.
+When the argument is true, <cite>../</cite> entries may be added to form the relative path
+but this function DOES NOT check the actual filesystem for file existence.
+In all other cases, such as the paths referencing different drives, nil is returned and <cite>self.error_msg</cite> is modified.
+If only one of <cite>self</cite> or <cite>other</cite> is relative, return nil and <cite>self.error_msg</cite> is modified.
+<code class="docutils literal notranslate"><span class="pre">`lua</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p</span> <span class="pre">=</span> <span class="pre">Path(&quot;/etc/passwd&quot;)</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:relative_to(Path(&quot;/&quot;))</span>
+<span class="pre">Path.new(&quot;etc/passwd&quot;)</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:relative_to(Path(&quot;/usr&quot;))</span>
+<span class="pre">nil;</span> <span class="pre">p.error_msg</span> <span class="pre">=</span> <span class="pre">&quot;'%s'</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">subpath</span> <span class="pre">of</span> <span class="pre">'%s'.&quot;</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:relative_to(Path(&quot;C:/foo&quot;))</span>
+<span class="pre">nil;</span> <span class="pre">p.error_msg</span> <span class="pre">=</span> <span class="pre">&quot;'%s'</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">same</span> <span class="pre">disk</span> <span class="pre">as</span> <span class="pre">'%s'.&quot;</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:relative_to(Path(&quot;./foo&quot;))</span>
+<span class="pre">nil;</span> <span class="pre">p.error_msg</span> <span class="pre">=</span> <span class="pre">&quot;Only</span> <span class="pre">one</span> <span class="pre">path</span> <span class="pre">is</span> <span class="pre">relative:</span> <span class="pre">'%s',</span> <span class="pre">'%s'.&quot;</span>
+<span class="pre">`</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p></li>
+<li><p><strong>walk_up</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, uses <cite>../</cite> to make relative path.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.is_relative_to">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">is_relative_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_relative_to" title="Link to this definition">#</a></dt>
+<dd><p>Return whether or not this path is relative to the <cite>other</cite> path.</p>
+<p>This is a wrapper of <cite>vim.startswith(tostring(self), tostring(other))</cite> and nothing else.
+It neither accesses the filesystem nor treats “..” segments specially.
+Use <cite>self:absolute()</cite> or <cite>self:to_absolute()</cite> beforehand if needed.
+<cite>other</cite> may be a string, but MUST use the same path separators.
+<code class="docutils literal notranslate"><span class="pre">`lua</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p</span> <span class="pre">=</span> <span class="pre">Path(&quot;/etc/passwd&quot;)</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:is_relative_to(&quot;/etc&quot;)</span> <span class="pre">--</span> <span class="pre">Must</span> <span class="pre">be</span> <span class="pre">[[\etc]]</span> <span class="pre">on</span> <span class="pre">Windows.</span>
+<span class="pre">true</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">p:is_relative_to(Path(&quot;/usr&quot;))</span>
+<span class="pre">false</span>
+<span class="pre">`</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">PathlibString</span></code></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.as_posix">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">as_posix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.as_posix" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.absolute">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.absolute" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<em class="property"> </em><span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cwd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.absolute" title="Link to this definition">#</a></dt>
+<dd><p>Returns a new path object with absolute path.</p>
+<p>Use <cite>self:to_absolute()</cite> instead to modify the object itself which does not need a deepcopy.
+If <cite>self</cite> is already an absolute path, returns itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwd</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If passed, this is used instead of <cite>vim.fn.getcwd()</cite>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.to_absolute">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">to_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.to_absolute" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<em class="property"> </em><span class="sig-name descname"><span class="pre">to_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cwd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.to_absolute" title="Link to this definition">#</a></dt>
+<dd><p>Modifies itself to point to an absolute path.</p>
+<p>Use <cite>self:absolute()</cite> instead to return a new path object without modifying self.
+If <cite>self</cite> is already an absolute path, does nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwd</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If passed, this is used instead of <cite>vim.fn.getcwd()</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.modify">

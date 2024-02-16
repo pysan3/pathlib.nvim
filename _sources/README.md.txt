@@ -93,6 +93,11 @@ assert(foo                    == Path(folder, "foo.txt"))  -- Unpack any of them
 -- Create siblings (just like `./<foo>/../bar.txt`)
 local bar = foo .. "bar.txt"
 assert(tostring(bar)          == "folder/bar.txt")
+
+-- Calculate relativily
+assert(foo:is_relative_to(Path("./folder")))
+assert(not foo:is_relative_to(Path("./different folder")))
+assert(foo:relative_to(folder) == Path("foo.txt"))
 ```
 
 ### Path object is stored with `string[]`.

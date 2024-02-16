@@ -445,6 +445,11 @@ document.write(`
 <span class="c1">-- Create siblings (just like `./&lt;foo&gt;/../bar.txt`)</span>
 <span class="kd">local</span> <span class="n">bar</span> <span class="o">=</span> <span class="n">foo</span> <span class="o">..</span> <span class="s2">&quot;bar.txt&quot;</span>
 <span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>          <span class="o">==</span> <span class="s2">&quot;folder/bar.txt&quot;</span><span class="p">)</span>
+
+<span class="c1">-- Calculate relativily</span>
+<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder&quot;</span><span class="p">)))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./different folder&quot;</span><span class="p">)))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">relative_to</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <section id="path-object-is-stored-with-string">
