@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/pysan3/pathlib.nvim/compare/v0.5.3...v0.5.4) (2024-02-18)
+
+
+### Bug Fixes
+
+* **base:** fs_iterdir bug when skip_dir is nil ([da7f101](https://github.com/pysan3/pathlib.nvim/commit/da7f101f2c12d85fe7d45ec2a7f1301c207a13d8))
+
 ## [0.5.3](https://github.com/pysan3/pathlib.nvim/compare/v0.5.2...v0.5.3) (2024-02-18)
 
 
