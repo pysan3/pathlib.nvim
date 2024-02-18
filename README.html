@@ -447,7 +447,7 @@ document.write(`
 <span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>          <span class="o">==</span> <span class="s2">&quot;folder/bar.txt&quot;</span><span class="p">)</span>
 
 <span class="c1">-- Calculate relativily</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder&quot;</span><span class="p">)))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">)))</span>
 <span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./different folder&quot;</span><span class="p">)))</span>
 <span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">relative_to</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>
 </pre></div>
@@ -481,7 +481,7 @@ document.write(`
 
 <span class="c1">-- Create new folder</span>
 <span class="kd">local</span> <span class="n">new_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;./new/folder/foo.txt&quot;</span><span class="p">)</span>
-<span class="n">new_file</span><span class="p">:</span><span class="n">parent</span><span class="p">():</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">permission</span><span class="p">(</span><span class="s2">&quot;rwxr-xr-x&quot;</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span> <span class="c1">-- (permission, recursive)</span>
+<span class="n">new_file</span><span class="p">:</span><span class="n">parent_assert</span><span class="p">():</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">permission</span><span class="p">(</span><span class="s2">&quot;rwxr-xr-x&quot;</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span> <span class="c1">-- (permission, recursive)</span>
 
 <span class="c1">-- Create new file and write to it</span>
 <span class="kd">local</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">new_file</span><span class="p">:</span><span class="n">fs_open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">.</span><span class="n">permission</span><span class="p">(</span><span class="s2">&quot;rw-r--r--&quot;</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span>
@@ -505,7 +505,7 @@ document.write(`
 <section id="scan-directories">
 <h2><span class="section-number">3.3. </span>Scan Directories<a class="headerlink" href="#scan-directories" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Continue from above</span>
-<span class="kr">for</span> <span class="n">path</span> <span class="kr">in</span> <span class="n">new_file</span><span class="p">:</span><span class="n">parent</span><span class="p">():</span><span class="n">fs_iterdir</span><span class="p">()</span> <span class="kr">do</span>
+<span class="kr">for</span> <span class="n">path</span> <span class="kr">in</span> <span class="n">new_file</span><span class="p">:</span><span class="n">parent_assert</span><span class="p">():</span><span class="n">fs_iterdir</span><span class="p">()</span> <span class="kr">do</span>
   <span class="c1">-- loop: [Path(&quot;./new/folder/foo.txt&quot;), Path(&quot;./new/folder/bar.txt&quot;), Path(&quot;./new/folder/baz.txt&quot;)]</span>
 <span class="kr">end</span>
 </pre></div>

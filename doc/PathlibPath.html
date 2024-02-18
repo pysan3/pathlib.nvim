@@ -581,6 +581,8 @@ document.write(`
 <dt class="sig sig-object lua" id="PathlibPath.parent">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parent" title="Link to this definition">#</a></dt>
 <dd><p>Return parent directory of itself. If parent does not exist, returns nil.</p>
+<p>If you never want a nil, use <cite>self:parent_assert()</cite>. This will raise an error if parent not found.
+This could be used to chain methods: (<cite>self:parent_assert():tostring()</cite>, <cite>self:parent_assert():fs_iterdir()</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
@@ -589,12 +591,12 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
-<dt class="sig sig-object lua" id="PathlibPath.parent_string">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">parent_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parent_string" title="Link to this definition">#</a></dt>
-<dd><p>Return parent directory’s <cite>:tostring()</cite> if exists.</p>
+<dt class="sig sig-object lua" id="PathlibPath.parent_assert">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">parent_assert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.parent_assert" title="Link to this definition">#</a></dt>
+<dd><p>Return parent directory of itself. This will raise an error when parent is not found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibString</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+<dd class="field-odd"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1268,11 +1270,44 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 
 <dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.tostring">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">tostring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.tostring" title="Link to this definition">#</a></dt>
-<dd><p>Alias to <cite>tostring(self)</cite></p>
+<em class="property"> </em><span class="sig-name descname"><span class="pre">tostring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sep</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.tostring" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <cite>tostring(self)</cite>. Returns the string representation of <cite>self</cite>.</p>
+<p>If you pass string to <cite>vim.cmd</cite>, use <cite>self:cmd_string()</cite> instead to avoid weird results.</p>
+<p>If you pass string to <cite>vim.system</cite> and other shell commands, use <cite>self:shell_string()</cite> instead.</p>
+<p>If you compare against LSP filepath, convert the LSP result with <cite>Path.from_uri</cite> compare path objects to avoid mismatch with escape sequence (eg ‘%3A’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sep</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If not nil, this is used as a path separator.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.cmd_string">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">cmd_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.cmd_string" title="Link to this definition">#</a></dt>
+<dd><p>Returns a string representation that is safe to pass to <cite>vim.cmd</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+<dd class="field-odd"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibString</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.shell_string">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">shell_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">special</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.shell_string" title="Link to this definition">#</a></dt>
+<dd><p>Returns a string representation that is safe to shell.</p>
+<p>Use this for <cite>vim.fn.system</cite>, <cite>vim.system</cite> etc.</p>
+<p>If result is passed to the <cite>:!</cite> command, set <cite>special</cite> to true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>special</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, special items such as “!”, “%”, “#” and “&lt;cword&gt;” will be preceded by a backslash. The backslash will be removed again by the <a href="#id1"><span class="problematic" id="id2">|:!|</span></a> command. See <cite>:h shellescape</cite> for more details. The &lt;NL&gt; character is escaped.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibString</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
