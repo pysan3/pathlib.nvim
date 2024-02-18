@@ -920,27 +920,33 @@ end
 ---Convert path object to string
 ---@return string
 function Path:__tostring()
-  if not self.__string_cache then
-    self.__string_cache = table.concat(self._raw_paths, self.sep_str):gsub([[^%./]], ""):gsub([[//]], "/")
-    if self:is_absolute() then
-      if #self._raw_paths == 1 then
-        self.__string_cache = self.sep_str
-      end
-      if self._drive_name:len() > 0 then
-        self.__string_cache = self._drive_name .. self.__string_cache
-      end
-    end
-  end
-  if self.__string_cache:len() == 0 then
-    return "."
-  end
-  return self.__string_cache
+  return self:tostring()
 end
 
 ---Alias to `tostring(self)`
+---@param sep string|nil # If not nil, this is used as a path separator.
 ---@return string
-function Path:tostring()
-  return self:__tostring()
+function Path:tostring(sep)
+  local nocache = sep and sep ~= self.sep_str
+  if nocache or not self.__string_cache then
+    local s = table.concat(self._raw_paths, self.sep_str)
+    if self:is_absolute() then
+      if #self._raw_paths == 1 then
+        s = self.sep_str
+      end
+      if self._drive_name:len() > 0 then
+        s = self._drive_name .. s
+      end
+    end
+    if s:len() == 0 then
+      return "."
+    elseif nocache then
+      return s
+    else
+      self.__string_cache = s
+    end
+  end
+  return self.__string_cache
 end
 
 --          ╭─────────────────────────────────────────────────────────╮          --
