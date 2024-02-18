@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/pysan3/pathlib.nvim/compare/v0.5.2...v0.5.3) (2024-02-18)
+
+
+### Bug Fixes
+
+* **type:** add type annotation to Path() as a function call ([e463807](https://github.com/pysan3/pathlib.nvim/commit/e4638072f1b1677f91b139945df7b5cd93999b81))
+
 ## [0.5.2](https://github.com/pysan3/pathlib.nvim/compare/v0.5.1...v0.5.2) (2024-02-18)
 
 
