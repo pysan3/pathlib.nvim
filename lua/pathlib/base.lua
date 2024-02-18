@@ -10,6 +10,7 @@ local watcher = require("pathlib.utils.watcher")
 ---@field public error_msg string|nil
 ---@field public _raw_paths PathlibStrList
 ---@field public _drive_name string # Drive name for Windows path. ("C:", "D:", "\\127.0.0.1")
+---@field public _uri_protocol string|nil # URI protocol (without `:`) when object is created with `Path.from_uri` such as `file`, `sftp`.
 ---@field public __windows_panic boolean # Set to true when passed path might be a windows path. PathlibWindows ignores this.
 ---@field public __fs_event_callbacks table<string, PathlibWatcherCallback>|nil # List of functions called when a fs_event is triggered.
 ---@field public __string_cache string|nil # Cache result of `tostring(self)`.
@@ -93,6 +94,15 @@ function Path.stdpath(what, ...)
   return Path.new(vim.fn.stdpath(what), ...)
 end
 
+---Parse a uri and return its path. Protocol is saved at `self._uri_protocol`.
+---@param uri string
+function Path.from_uri(uri)
+  local protocol, file = require("pathlib.utils.uri").parse_uri(uri)
+  local result = Path.new(file)
+  result._uri_protocol = protocol
+  return result
+end
+
 --          ╭─────────────────────────────────────────────────────────╮          --
 --          │                     Object Methods                      │          --
 --          ╰─────────────────────────────────────────────────────────╯          --
@@ -148,6 +158,7 @@ function Path:to_empty()
   self.git_state = { is_ready = false }
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
+  self._uri_protocol = nil
   self.__windows_panic = false
   self.__string_cache = nil
   return self
@@ -157,6 +168,7 @@ end
 ---@param path PathlibPath
 function Path:copy_all_from(path)
   self._drive_name = path._drive_name
+  self._uri_protocol = path._uri_protocol
   self._raw_paths:extend(path._raw_paths)
   self.__string_cache = nil
   return self
@@ -259,10 +271,20 @@ function Path:parents()
   end
 end
 
-function Path:as_uri()
+---Returns a URI representation of `self`.
+---
+---This may not align with results from LSP, so convert LSP data with `Path.from_uri`
+---and compare the path objects to get a consistent result.
+---
+---Objects are comparable with `==` and `~=`.
+---
+---@param rfc "rfc2396"|"rfc2732"|"rfc3986"|nil
+---@return string encoded # URI representation of file path.
+function Path:as_uri(rfc)
   assert(self:is_absolute(), "Relative paths cannot be expressed as a file URI.")
   local path = self:is_absolute() and self or self:absolute()
-  return vim.uri_from_fname(path:tostring())
+  local encoded = vim.uri_encode(path:tostring("/"), rfc)
+  return (self._uri_protocol or "file") .. "://" .. encoded
 end
 
 ---Returns whether registered path is absolute

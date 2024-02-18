@@ -62,6 +62,15 @@ function WindowsPath.stdpath(what, ...)
   return WindowsPath.new(vim.fn.stdpath(what), ...)
 end
 
+---Parse a uri and return its path. Protocol is saved at `self._uri_protocol`.
+---@param uri string
+function WindowsPath.from_uri(uri)
+  local protocol, file = require("pathlib.utils.uri").parse_uri(uri)
+  local result = WindowsPath.new(file)
+  result._uri_protocol = protocol
+  return result
+end
+
 ---Returns whether registered path is absolute
 ---@return boolean
 function WindowsPath:is_absolute()
