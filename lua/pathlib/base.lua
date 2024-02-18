@@ -221,6 +221,10 @@ function Path:stem()
 end
 
 ---Return parent directory of itself. If parent does not exist, returns nil.
+---
+---If you never want a nil, use `self:parent_assert()`. This will raise an error if parent not found.
+---This could be used to chain methods: (`self:parent_assert():tostring()`, `self:parent_assert():fs_iterdir()`).
+---
 ---@return PathlibPath|nil
 function Path:parent()
   if not self.__parent_cache and #self._raw_paths >= 2 then
@@ -233,11 +237,12 @@ function Path:parent()
   return self.__parent_cache
 end
 
----Return parent directory's `:tostring()` if exists.
----@return PathlibString|nil
-function Path:parent_string()
+---Return parent directory of itself. This will raise an error when parent is not found.
+---@return PathlibPath
+function Path:parent_assert()
   local parent = self:parent()
-  return parent and parent:tostring()
+  assert(parent, string.format([[Parent for %s not found.]], self))
+  return parent
 end
 
 ---Return iterator of parents.

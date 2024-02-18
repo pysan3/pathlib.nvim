@@ -53,12 +53,12 @@ describe("Test Relative Path Detection and Generation", function()
       assert.is_not_true(absw:is_relative_to([[C:/foo/]]))
     end)
     it("vs parent posix absolute", function()
-      assert.is_true(absp:is_relative_to(absp:parent())) ---@diagnostic disable-line
-      assert.is_true(absp:is_relative_to(absp:parent_string())) ---@diagnostic disable-line
+      assert.is_true(absp:is_relative_to(absp:parent_assert()))
+      assert.is_true(absp:is_relative_to(absp:parent_assert():tostring()))
     end)
     it("vs parent windows absolute", function()
-      assert.is_true(absw:is_relative_to(absw:parent())) ---@diagnostic disable-line
-      assert.is_true(absw:is_relative_to(absw:parent_string())) ---@diagnostic disable-line
+      assert.is_true(absw:is_relative_to(absw:parent_assert()))
+      assert.is_true(absw:is_relative_to(absw:parent_assert():tostring()))
     end)
   end)
 

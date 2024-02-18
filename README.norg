@@ -4,7 +4,7 @@ description:
 authors: takuto
 categories:
 created: 2023-11-14
-updated: 2024-02-16T11:36:41+0900
+updated: 2024-02-18T12:33:58+0900
 version: 1.1.1
 @end
 
@@ -134,7 +134,7 @@ version: 1.1.1
 
    -- Create new folder
    local new_file = Path.new("./new/folder/foo.txt")
-   new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
+   new_file:parent_assert():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
 
    -- Create new file and write to it
    local fd = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
@@ -157,7 +157,7 @@ version: 1.1.1
 ** Scan Directories
    @code lua
    -- Continue from above
-   for path in new_file:parent():fs_iterdir() do
+   for path in new_file:parent_assert():fs_iterdir() do
      -- loop: [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
    end
    @end

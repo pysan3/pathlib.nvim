@@ -95,7 +95,7 @@ local bar = foo .. "bar.txt"
 assert(tostring(bar)          == "folder/bar.txt")
 
 -- Calculate relativily
-assert(foo:is_relative_to(Path("./folder")))
+assert(foo:is_relative_to(Path("folder")))
 assert(not foo:is_relative_to(Path("./different folder")))
 assert(foo:relative_to(folder) == Path("foo.txt"))
 ```
@@ -125,7 +125,7 @@ local Path = require("pathlib")
 
 -- Create new folder
 local new_file = Path.new("./new/folder/foo.txt")
-new_file:parent():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
+new_file:parent_assert():mkdir(Path.permission("rwxr-xr-x"), true) -- (permission, recursive)
 
 -- Create new file and write to it
 local fd = new_file:fs_open("w", Path.permission("rw-r--r--"), true)
@@ -149,7 +149,7 @@ new_file:symlink_to(new_file .. "baz.txt") -- create symlink of `foo.txt` named 
 
 ``` lua
 -- Continue from above
-for path in new_file:parent():fs_iterdir() do
+for path in new_file:parent_assert():fs_iterdir() do
   -- loop: [Path("./new/folder/foo.txt"), Path("./new/folder/bar.txt"), Path("./new/folder/baz.txt")]
 end
 ```
