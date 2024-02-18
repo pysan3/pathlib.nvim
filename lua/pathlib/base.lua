@@ -928,7 +928,14 @@ function Path:__tostring()
   return self:tostring()
 end
 
----Alias to `tostring(self)`
+---Alias to `tostring(self)`. Returns the string representation of `self`.
+---
+---If you pass string to `vim.cmd`, use `self:cmd_string()` instead to avoid weird results.
+---
+---If you pass string to `vim.system` and other shell commands, use `self:shell_string()` instead.
+---
+---If you compare against LSP filepath, convert the LSP result with `Path.from_uri` compare path objects to avoid mismatch with escape sequence (eg '%3A').
+---
 ---@param sep string|nil # If not nil, this is used as a path separator.
 ---@return string
 function Path:tostring(sep)
@@ -952,6 +959,43 @@ function Path:tostring(sep)
     end
   end
   return self.__string_cache
+end
+
+---Returns a string representation that is safe to pass to `vim.cmd`.
+---@return PathlibString
+function Path:cmd_string()
+  local s = table.concat(vim.tbl_map(vim.fn.fnameescape, self._raw_paths), "/")
+  if self._drive_name:len() > 0 then
+    s = self._drive_name .. s
+  end
+  if s:len() > 0 then
+    return "."
+  end
+  return s
+end
+
+---Returns a string representation that is safe to shell.
+---
+---Use this for `vim.fn.system`, `vim.system` etc.
+---
+---If result is passed to the `:!` command, set `special` to true.
+---
+---@param special boolean|nil # If true, special items such as "!", "%", "#" and "<cword>" will be preceded by a backslash. The backslash will be removed again by the |:!| command. See `:h shellescape` for more details. The <NL> character is escaped.
+---@return PathlibString
+function Path:shell_string(special)
+  local s = table.concat(
+    vim.tbl_map(function(t)
+      return vim.fn.shellescape(t, special)
+    end, self._raw_paths),
+    "/"
+  )
+  if self._drive_name:len() > 0 then
+    s = self._drive_name .. s
+  end
+  if s:len() > 0 then
+    return "."
+  end
+  return s
 end
 
 --          ╭─────────────────────────────────────────────────────────╮          --
