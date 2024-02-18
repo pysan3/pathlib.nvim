@@ -1002,7 +1002,7 @@ end
 ---
 ---If result is passed to the `:!` command, set `special` to true.
 ---
----@param special boolean|nil # If true, special items such as "!", "%", "#" and "<cword>" will be preceded by a backslash. The backslash will be removed again by the |:!| command. See `:h shellescape` for more details. The <NL> character is escaped.
+---@param special boolean|nil # If true, special items such as "!", "%", "#" and "<cword>" will be preceded by a backslash. The backslash will be removed again by the `:!` command. See `:h shellescape` for more details. The <NL> character is escaped.
 ---@return PathlibString
 function Path:shell_string(special)
   local s = table.concat(
