@@ -84,4 +84,7 @@ function PosixPath:is_hidden()
   return self:basename():sub(1, 1) == "."
 end
 
-return PosixPath
+---@type PathlibPosixPath|fun(...: PathlibPath|PathlibString): PathlibPosixPath
+local M = PosixPath
+
+return M

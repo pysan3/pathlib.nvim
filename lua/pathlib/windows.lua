@@ -90,4 +90,7 @@ function WindowsPath:is_hidden()
   return const.band(winapi.GetFileAttributesA(self:tostring()), FILE_ATTRIBUTE_HIDDEN) ~= 0
 end
 
-return WindowsPath
+---@type PathlibWindowsPath|fun(...: PathlibPath|PathlibString): PathlibWindowsPath
+local M = WindowsPath
+
+return M

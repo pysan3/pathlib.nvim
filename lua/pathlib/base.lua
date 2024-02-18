@@ -1180,4 +1180,7 @@ function Path:fs_opendir(follow_symlinks, depth)
   return next_file
 end
 
-return Path
+---@type PathlibPath|fun(...: PathlibPath|PathlibString): PathlibPath
+local M = Path
+
+return M
