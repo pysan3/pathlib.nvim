@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.2](https://github.com/pysan3/pathlib.nvim/compare/v0.5.1...v0.5.2) (2024-02-18)
+
+
+### Bug Fixes
+
+* **base:** add `cmd_string` and `shell_string` for special usecase ([4b6b503](https://github.com/pysan3/pathlib.nvim/commit/4b6b5035bfecf6b557658ad42e4fdaf2075c17da))
+* **base:** add `parent_assert` and deprecate `parent_string` ([6169fea](https://github.com/pysan3/pathlib.nvim/commit/6169feac2aa2482906898e8ad1ec9a8a5adbeb5c))
+* **base:** add ability to specify separator with `:tostring` ([0bf7423](https://github.com/pysan3/pathlib.nvim/commit/0bf7423e4f5a5afeac9287e2a2629c27e4d4e324))
+* **uri:** support uri path parsing with `Path.from_uri` ([1d60086](https://github.com/pysan3/pathlib.nvim/commit/1d600865ae4c821778d253101ff89b6f6514ce53))
+
 ## [0.5.1](https://github.com/pysan3/pathlib.nvim/compare/v0.5.0...v0.5.1) (2024-02-16)
 
 
