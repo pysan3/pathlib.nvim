@@ -835,7 +835,7 @@ function Path:fs_iterdir(follow_symlinks, depth, skip_dir)
     if not handler then
       handler = self.nuv.fs_scandir(current:tostring())
       if not handler then
-        return handler
+        return nil
       end
     end
     local name, fs_type = vim.loop.fs_scandir_next(handler)
@@ -849,7 +849,7 @@ function Path:fs_iterdir(follow_symlinks, depth, skip_dir)
       child = child:realpath() or child
       fs_type = (child:lstat() or { type = "file" }).type
     end
-    if fs_type == "directory" and (depth < 0 or depths[i_dir] < depth) and (skip_dir and not skip_dir(child)) then
+    if fs_type == "directory" and (depth < 0 or depths[i_dir] < depth) and (not skip_dir or not skip_dir(child)) then
       last_index = last_index + 1
       paths[last_index] = child
       depths[last_index] = depths[i_dir] + 1
