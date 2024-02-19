@@ -1,3 +1,5 @@
+local nuv = require("pathlib.utils.nuv")
+
 local M = {
   tables = require("pathlib.utils.tables"),
   lists = require("pathlib.utils.lists"),
@@ -14,6 +16,9 @@ end
 ---@return boolean success
 ---@return string[] result_lines # Each line of the output from the command.
 function M.execute_command(cmd, input)
+  if nuv.check_nio_install() and nuv.current_task() then
+    return nuv.execute_command(cmd, input)
+  end
   local result = vim.system(cmd, { stdin = input }):wait()
   if result.code == 0 then
     return true, vim.split(result.stdout or "", "\n", { plain = true, trimempty = false })

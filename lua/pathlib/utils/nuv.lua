@@ -30,6 +30,26 @@ function M.current_task()
   end
 end
 
+function M.execute_command(cmd, input)
+  local process, err_msg = M.nio.process.run({
+    cmd = cmd[1],
+    args = { unpack(cmd, 2) },
+  })
+  if not process then
+    return false, { err_msg }
+  end
+  for i, value in ipairs(input or {}) do
+    local err = process.stdin.write(value .. "\n")
+    assert(not err, ([[ERROR cmd: '%s', input(%s): '%s', error: %s]]):format(table.concat(cmd, " "), i, value, err))
+  end
+  process.stdin.close()
+  if process.result() == 0 then
+    return true, vim.split(process.stdout.read() or "", "\n", { plain = true, trimempty = false })
+  else
+    return false, {}
+  end
+end
+
 ---@param self PathlibPath
 function M.generate_nuv(self)
   return setmetatable({}, {
