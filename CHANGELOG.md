@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/pysan3/pathlib.nvim/compare/v0.5.4...v0.6.0) (2024-02-19)
+
+
+### Features
+
+* **git:** use nio.process to fetch git state inside nio job ([#32](https://github.com/pysan3/pathlib.nvim/issues/32)) ([f754df5](https://github.com/pysan3/pathlib.nvim/commit/f754df5748b612283dc6f0d3c929cab96661dd5a))
+
 ## [0.5.4](https://github.com/pysan3/pathlib.nvim/compare/v0.5.3...v0.5.4) (2024-02-18)
 
 
