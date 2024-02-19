@@ -395,7 +395,7 @@ document.write(`
 <section id="git-integration">
 <h2><span class="section-number">2.2. </span>📋 Git Integration<a class="headerlink" href="#git-integration" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">git_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/git/workdir&quot;</span><span class="p">)</span>
-<span class="c1">-- assert(git_root:child(&quot;.git&quot;):exists(), string.format(&quot;%s is not a git repo.&quot;, git_root))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="n">git_root</span><span class="p">:</span><span class="n">child</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">):</span><span class="n">exists</span><span class="p">(),</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;%s is not a git repo.&quot;</span><span class="p">,</span> <span class="n">git_root</span><span class="p">))</span>
 
 <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib.git&quot;</span><span class="p">).</span><span class="n">fill_git_state</span><span class="p">({</span> <span class="n">file_a</span><span class="p">,</span> <span class="n">file_b</span><span class="p">,</span> <span class="p">...</span> <span class="p">})</span>
 
@@ -540,9 +540,28 @@ document.write(`
 <section id="todo">
 <h1><span class="section-number">4. </span>TODO<a class="headerlink" href="#todo" title="Link to this heading">#</a></h1>
 <ul class="simple">
-<li><p>[ ] API documentation.</p></li>
-<li><p>[ ] Git operation integration.</p></li>
-<li><p>[ ] Windows implementation, test environment.</p></li>
+<li><p>[ ] API documentation.</p>
+<ul>
+<li><p>[x] PathlibPath</p></li>
+<li><p>[x] PathlibPosixPath</p></li>
+<li><p>[x] PathlibWindowsPath</p></li>
+<li><p>[ ] Git</p></li>
+</ul>
+</li>
+<li><p>[x] Git operation integration.</p></li>
+<li><p>[ ] Git test suite.</p>
+<ul>
+<li><p>[ ] List out every possible git state: ignored, staged etc.</p></li>
+<li><p>[ ] Create file for each state.</p></li>
+<li><p>[ ] Add docs for each state: <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">git-diff</span> <span class="pre">-&gt;</span> <span class="pre">RAW</span> <span class="pre">OUTPUT</span> <span class="pre">FORMAT</span></code></p></li>
+</ul>
+</li>
+<li><p>[ ] Windows implementation, test environment.</p>
+<ul>
+<li><p>[ ] Create a CI/CD action to run on windows.</p></li>
+<li><p>[ ] Prepare windows specific test suite.</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="contributions">

@@ -43,7 +43,7 @@ print(foo:parent()) -- "/home/user/Documents"
 
 ``` lua
 local git_root = Path("/path/to/git/workdir")
--- assert(git_root:child(".git"):exists(), string.format("%s is not a git repo.", git_root))
+assert(git_root:child(".git"):exists(), string.format("%s is not a git repo.", git_root))
 
 require("pathlib.git").fill_git_state({ file_a, file_b, ... })
 
@@ -185,8 +185,18 @@ end)
 # TODO
 
 - [ ] API documentation.
-- [ ] Git operation integration.
+  - [x] PathlibPath
+  - [x] PathlibPosixPath
+  - [x] PathlibWindowsPath
+  - [ ] Git
+- [x] Git operation integration.
+- [ ] Git test suite.
+  - [ ] List out every possible git state: ignored, staged etc.
+  - [ ] Create file for each state.
+  - [ ] Add docs for each state: `man git-diff -> RAW OUTPUT FORMAT`
 - [ ] Windows implementation, test environment.
+  - [ ] Create a CI/CD action to run on windows.
+  - [ ] Prepare windows specific test suite.
 
 # Contributions
 
