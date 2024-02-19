@@ -54,7 +54,7 @@ file_a.git_state.git_root -- root directory of the repo
 
 ## ⏱️ Sync / Async Operations
 
-The API is designed so it is very easy to switch between sync and async operations. Call them inside [nvim-nio task](https://github.com/nvim-neotest/nvim-nio) without any change, and the operations are converted to be async (does not block the main thread).
+The API is designed so it is very easy to switch between sync and async operations. Call them inside a [nvim-nio async context](https://github.com/nvim-neotest/nvim-nio) without any change, and the operations are converted to be async (does not block the main thread).
 
 ``` lua
 local foo = Path("~/Documents/foo.txt")
@@ -156,7 +156,7 @@ end
 
 ## Async Execution
 
-This library uses [nvim-nio](https://github.com/nvim-neotest/nvim-nio) under the hood to run async calls. Supported methods will turn into async calls inside a `nio.run` environment and has the **EXACT SAME INTERFACE**.
+This library uses [nvim-nio](https://github.com/nvim-neotest/nvim-nio) under the hood to run async calls. Supported methods will turn into async calls inside a `nio.run` async context and has the **EXACT SAME INTERFACE**.
 
 ``` lua
 local nio = require("nio")
@@ -200,7 +200,7 @@ end)
 
 # Contributions
 
-I am not thinking of merging any PRs yet but feel free to give me your opinions with an issue.
+I'm heading towards the first major release. I'll happily accept any [feature request](https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&labels=feature&projects=&template=feature_request.yml) from now on. Feel free to ask for any functionality :)
 
 # Other Projects
 

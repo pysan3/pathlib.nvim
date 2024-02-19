@@ -4,7 +4,7 @@ description:
 authors: takuto
 categories:
 created: 2023-11-14
-updated: 2024-02-19T08:41:11+0900
+updated: 2024-02-19T17:54:39+0900
 version: 1.1.1
 @end
 
@@ -69,7 +69,7 @@ version: 1.1.1
 
 ** ⏱️ Sync / Async Operations
    The API is designed so it is very easy to switch between sync and async operations.
-   Call them inside {https://github.com/nvim-neotest/nvim-nio}[nvim-nio task] without any change,
+   Call them inside a {https://github.com/nvim-neotest/nvim-nio}[nvim-nio async context] without any change,
    and the operations are converted to be async (does not block the main thread).
    @code lua
    local foo = Path("~/Documents/foo.txt")
@@ -164,7 +164,7 @@ version: 1.1.1
 
 ** Async Execution
    This library uses {https://github.com/nvim-neotest/nvim-nio}[nvim-nio] under the hood to run async calls.
-   Supported methods will turn into async calls inside a `nio.run` environment
+   Supported methods will turn into async calls inside a `nio.run` async context
    and has the *EXACT SAME INTERFACE*.
 
    @code lua
@@ -209,7 +209,9 @@ version: 1.1.1
   -- ( ) Prepare windows specific test suite.
 
 * Contributions
-  I am not thinking of merging any PRs yet but feel free to give me your opinions with an issue.
+  I'm heading towards the first major release.
+  I'll happily accept any {https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&labels=feature&projects=&template=feature_request.yml}[feature request]
+  from now on. Feel free to ask for any functionality :)
 
 * Other Projects
   - Python `pathlib`
