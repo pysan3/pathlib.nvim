@@ -407,7 +407,7 @@ document.write(`
 </section>
 <section id="sync-async-operations">
 <h2><span class="section-number">2.3. </span>⏱️ Sync / Async Operations<a class="headerlink" href="#sync-async-operations" title="Link to this heading">#</a></h2>
-<p>The API is designed so it is very easy to switch between sync and async operations. Call them inside <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio task</a> without any change, and the operations are converted to be async (does not block the main thread).</p>
+<p>The API is designed so it is very easy to switch between sync and async operations. Call them inside a <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio async context</a> without any change, and the operations are converted to be async (does not block the main thread).</p>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~/Documents/foo.txt&quot;</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span>
 
@@ -513,7 +513,7 @@ document.write(`
 </section>
 <section id="async-execution">
 <h2><span class="section-number">3.4. </span>Async Execution<a class="headerlink" href="#async-execution" title="Link to this heading">#</a></h2>
-<p>This library uses <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio</a> under the hood to run async calls. Supported methods will turn into async calls inside a <code class="docutils literal notranslate"><span class="pre">nio.run</span></code> environment and has the <strong>EXACT SAME INTERFACE</strong>.</p>
+<p>This library uses <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio</a> under the hood to run async calls. Supported methods will turn into async calls inside a <code class="docutils literal notranslate"><span class="pre">nio.run</span></code> async context and has the <strong>EXACT SAME INTERFACE</strong>.</p>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">nio</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;nio&quot;</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">)</span>
 <span class="n">nio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span> <span class="c1">-- async run (does not block the main thread)</span>
@@ -566,7 +566,7 @@ document.write(`
 </section>
 <section id="contributions">
 <h1><span class="section-number">5. </span>Contributions<a class="headerlink" href="#contributions" title="Link to this heading">#</a></h1>
-<p>I am not thinking of merging any PRs yet but feel free to give me your opinions with an issue.</p>
+<p>I’m heading towards the first major release. I’ll happily accept any <a class="reference external" href="https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&amp;amp;labels=feature&amp;amp;projects=&amp;amp;template=feature_request.yml">feature request</a> from now on. Feel free to ask for any functionality :)</p>
 </section>
 <section id="other-projects">
 <h1><span class="section-number">6. </span>Other Projects<a class="headerlink" href="#other-projects" title="Link to this heading">#</a></h1>
