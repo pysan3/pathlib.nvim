@@ -207,34 +207,54 @@ function M.status(root_dir, update_parent_dir_state, commit_base)
   return git_status, git_root
 end
 
----Fill in all `path.git_state.ignored`
+---Fill in all `path.git_state.ignored`.
 ---@param paths PathlibAbsPath[]
 ---@param git_root PathlibPath
-function M.fill_git_ignore(paths, git_root)
+---@param from integer # Index in paths to start scanning from.
+---@param to integer # Index in paths to end scanning. Inclusive.
+local function fill_git_ignore_batch(paths, git_root, from, to)
   if not git_root then
     return
   end
+  if to > #paths then
+    to = #paths
+  end
   local cmd = { "git", "-C", git_root:tostring(), "check-ignore", "--stdin" }
   local path_strs = {}
-  for _, path in ipairs(paths) do
-    path_strs[#path_strs + 1] = path:tostring()
+  for i = from, to do
+    path_strs[i] = paths[i]:tostring()
   end
   local success, result = utils.execute_command(cmd, path_strs)
   if not success then
     return
   end
-  local counter = 1
+  local counter = from
   for _, line in ipairs(result) do
     local line_path = git_root.new(M.octal_to_utf8(line))
-    while counter <= #paths and paths[counter] ~= line_path do
+    while counter <= to and paths[counter] ~= line_path do
       paths[counter].git_state.ignored = false
       counter = counter + 1
     end
-    if counter > #paths then
+    if counter > to then
       break
     end
     paths[counter].git_state.ignored = true
     counter = counter + 1
+  end
+end
+
+---Fill in all `path.git_state.ignored`
+---@param paths PathlibAbsPath[]
+---@param git_root PathlibPath
+---@param batch_size integer|nil # Do not change this value unless you know what you are doing.
+function M.fill_git_ignore(paths, git_root, batch_size)
+  if not git_root then
+    return
+  end
+  batch_size = batch_size or 200 -- MacOS `ulimit -n` defaults to 256, so default to 200 to have a bit of margin.
+  local num_paths = #paths
+  for i = 1, num_paths, batch_size do
+    fill_git_ignore_batch(paths, git_root, i, math.min(num_paths, i + batch_size - 1))
   end
 end
 
