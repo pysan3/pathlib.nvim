@@ -14,12 +14,12 @@ local M = {
   __known_git_roots = {},
 }
 
-M.gitScheduler = Scheduler(function(elapsed_ms, item_len)
-  return item_len * 10 < elapsed_ms or item_len >= 190
-end, function(items, key)
+M.gitScheduler = Scheduler(function(items, key)
   M.fill_git_state_in_root(items, require("pathlib").new(key))
   return true
-end)
+end, function(elapsed_ms, item_len)
+  return item_len * 10 <= elapsed_ms or item_len >= 190
+end, 10)
 
 ---Find closest directory that contains `.git` directory, meaning that it's a root of a git repository
 ---@param current_focus PathlibPath|nil

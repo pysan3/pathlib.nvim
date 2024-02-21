@@ -10,6 +10,7 @@ local nio = require("nio")
 
 ---@class PathlibScheduler
 ---@field storage table<string, PathlibEventStorage>
+---@field minimum_debounce_ms integer
 ---@field monitor PathlibScheduler.monitor
 ---@field executor PathlibScheduler.executor
 local _Scheduler = setmetatable({}, {
@@ -23,11 +24,15 @@ local _Scheduler = setmetatable({}, {
 })
 _Scheduler.__index = _Scheduler
 
----@param monitor PathlibScheduler.monitor
 ---@param executor PathlibScheduler.executor
-function _Scheduler:init(monitor, executor)
-  self.monitor = monitor
+---@param monitor PathlibScheduler.monitor|nil
+---@param minimum_debounce_ms integer|nil
+function _Scheduler:init(executor, monitor, minimum_debounce_ms)
   self.executor = executor
+  self.minimum_debounce_ms = minimum_debounce_ms or 10
+  self.monitor = monitor or function(elapsed_ms)
+    return elapsed_ms >= self.minimum_debounce_ms
+  end
 end
 
 ---Append a new item to `key` schedule.
@@ -44,6 +49,12 @@ function _Scheduler:add(key, item)
   else
     table.insert(self.storage[key].items, item)
   end
+  nio.run(function()
+    if self.minimum_debounce_ms > 0 then
+      nio.sleep(self.minimum_debounce_ms + 1)
+    end
+    self:check_and_trigger(key)
+  end)
   return self.storage[key].future
 end
 
@@ -52,7 +63,8 @@ end
 function _Scheduler:check_and_trigger(key)
   return nio.run(function()
     local info = self.storage[key]
-    if self.monitor(os.clock() - info.start, #info.items, key) then
+    local elapsed = os.clock() - info.start
+    if elapsed >= self.minimum_debounce_ms and self.monitor(elapsed, #info.items, key) then
       self:trigger(key)
     end
   end)
@@ -83,7 +95,7 @@ function _Scheduler:clear(key)
   end)
 end
 
----@alias PathlibScheduler.init fun(monitor: PathlibScheduler.monitor, executor: PathlibScheduler.executor): PathlibScheduler
+---@alias PathlibScheduler.init fun(executor: PathlibScheduler.executor, monitor: PathlibScheduler.monitor|nil, minimum_debounce_ms: integer|nil): PathlibScheduler
 ---@type PathlibScheduler|PathlibScheduler.init
 local Scheduler = _Scheduler
 
