@@ -705,9 +705,9 @@ end
 
 ---Call `luv.fs_open`.
 ---@param flags uv.aliases.fs_access_flags|integer
----@param mode integer|nil # permission. You may use `Path.permission()` to convert from "rwxrwxrwx".
+---@param mode integer|nil # permission. You may use `Path.permission()` to convert from "rwxrwxrwx". Default to 0o644.
 ---@param ensure_dir integer|boolean|nil # if not nil, runs `mkdir -p self:parent()` with permission to ensure parent exists.
----  `true` will default to 755.
+---  `true` will default to 0o755.
 ---@return integer|nil fd
 ---@nodiscard
 function Path:fs_open(flags, mode, ensure_dir)
