@@ -27,4 +27,11 @@ function M.execute_command(cmd, input)
   end
 end
 
+---Check if a future is already done or dead.
+---@param future nio.control.Future|nil
+---@return boolean overwritable
+function M.is_done(future)
+  return future == nil or future.is_set()
+end
+
 return M

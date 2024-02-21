@@ -1,8 +1,9 @@
 local const = require("pathlib.const")
 local utils = require("pathlib.utils")
+local Scheduler = require("pathlib.utils.scheduler")
 
 ---@class PathlibGitState
----@field public is_ready boolean # true if the git status is up to date.
+---@field public is_ready nio.control.Future|nil # `:wait()` until git state is ready.
 ---@field public ignored boolean|nil
 ---@field public git_root PathlibPath|nil
 ---@field public state PathlibGitStatus|nil
@@ -12,6 +13,13 @@ local M = {
   ---@type table<PathlibString, PathlibPath>
   __known_git_roots = {},
 }
+
+M.gitScheduler = Scheduler(function(elapsed_ms, item_len)
+  return item_len * 10 < elapsed_ms or item_len >= 190
+end, function(items, key)
+  M.fill_git_state_in_root(items, require("pathlib").new(key))
+  return true
+end)
 
 ---Find closest directory that contains `.git` directory, meaning that it's a root of a git repository
 ---@param current_focus PathlibPath|nil
@@ -263,14 +271,18 @@ end
 ---@param paths PathlibPath[] # List of paths to check git ignored or not. Overwrites `path.git_ignored`.
 ---@param git_root PathlibPath # The git root dir.
 function M.fill_git_state_in_root(paths, git_root)
+  local future = require("nio.control").future()
   local status, _ = M.status(git_root, true)
   for _, path in ipairs(paths) do
     path:to_absolute()
-    path.git_state.is_ready = true
     path.git_state.git_root = git_root
     path.git_state.state = status[path:tostring()] or {}
+    if utils.is_done(path.git_state.is_ready) then
+      path.git_state.is_ready = future
+    end
   end
   M.fill_git_ignore(paths, git_root)
+  future.set()
 end
 
 ---Fill in all `path.git_state` by asking git cli.
@@ -295,24 +307,16 @@ end
 ---Callback to update `PathlibPath.git_state` on fs_event
 ---@param path PathlibPath
 ---@param args PathlibWatcherArgs
-function M.update_git_state_callback(path, args)
+function M.request_git_status_update(path, args)
   if path:is_dir(true) then
     return
   end
-  path.git_state.is_ready = false
-  if not path.git_state.git_root then
-    path.git_state.git_root = M.find_root(path)
+  if not utils.is_done(path.git_state.is_ready) then
+    pcall(path.git_state.is_ready.wait)
   end
-  local cmd = { "git", "-C", path.git_state.git_root:tostring(), "check-ignore", path:tostring() }
-  local suc, result = utils.execute_command(cmd)
-  if suc then
-    path.git_state.ignored = #result > 0
-  end
-  if not path.git_state.ignored then
-    -- TODO: request status update cycle via debounce
-    local status, _ = M.status(path.git_state.git_root, false)
-    path.git_state.state = status[path:tostring()]
-  end
+  path.git_state.is_ready = nil
+  local future = M.gitScheduler:add(path.git_state.git_root:tostring(), path)
+  path.git_state.is_ready = future
 end
 
 return M
