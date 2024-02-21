@@ -211,7 +211,7 @@ end
 ---@param paths PathlibAbsPath[]
 ---@param git_root PathlibPath
 ---@param from integer # Index in paths to start scanning from.
----@param to integer # Index in paths to end scanning. Inclusive.
+---@param to integer # Index in paths to end scanning. Inclusive, trucated when exceeds `#paths`.
 local function fill_git_ignore_batch(paths, git_root, from, to)
   if not git_root then
     return
