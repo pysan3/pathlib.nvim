@@ -1138,12 +1138,12 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dt class="sig sig-object lua" id="PathlibPath.fs_open">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">fs_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flags</span></em>, <em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">ensure_dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_open" title="Link to this definition">#</a></dt>
 <dd><p>Call <cite>luv.fs_open</cite>.</p>
-<p><cite>true</cite> will default to 755.</p>
+<p><cite>true</cite> will default to 0o755.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>flags</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_access_flags</span> <span class="pre">or</span> <span class="pre">integer</span></code></span>) – </p></li>
-<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”.</p></li>
+<li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”. Default to 0o644.</p></li>
 <li><p><strong>ensure_dir</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # if not nil, runs <cite>mkdir -p self:parent()</cite> with permission to ensure parent exists.</p></li>
 </ul>
 </dd>
