@@ -155,7 +155,7 @@ function Path:_init(...)
 end
 
 function Path:to_empty()
-  self.git_state = { is_ready = false }
+  self.git_state = {}
   self._raw_paths = utils.lists.str_list.new()
   self._drive_name = ""
   self._uri_protocol = nil
