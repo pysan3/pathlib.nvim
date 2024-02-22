@@ -1329,7 +1329,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dt class="sig sig-object lua" id="PathlibPath.shell_string">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">shell_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">special</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.shell_string" title="Link to this definition">#</a></dt>
 <dd><p>Returns a string representation that is safe to shell.</p>
-<p>Use this for <cite>vim.fn.system</cite>, <cite>vim.system</cite> etc.</p>
+<p>Use this for <cite>vim.fn.system</cite>, <cite>:!</cite> etc. However, use <cite>self:cmd_string()</cite> for <cite>vim.system</cite>.</p>
 <p>If result is passed to the <cite>:!</cite> command, set <cite>special</cite> to true.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
