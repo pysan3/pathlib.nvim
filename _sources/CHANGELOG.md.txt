@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.3](https://github.com/pysan3/pathlib.nvim/compare/v0.6.2...v0.6.3) (2024-02-22)
+
+
+### Bug Fixes
+
+* **base:** fix shellescape to work on Windows ([b82db08](https://github.com/pysan3/pathlib.nvim/commit/b82db08e3889dc3d93e204f169cc09cb40c38182))
+* **base:** update document for shellescape to be correct ([c13bd05](https://github.com/pysan3/pathlib.nvim/commit/c13bd05b9775b18e5fddbb96b76f3b80c9d5148d))
+
 ## [0.6.2](https://github.com/pysan3/pathlib.nvim/compare/v0.6.1...v0.6.2) (2024-02-22)
 
 
