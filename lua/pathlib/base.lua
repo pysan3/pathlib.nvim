@@ -1005,12 +1005,16 @@ end
 ---@param special boolean|nil # If true, special items such as "!", "%", "#" and "<cword>" will be preceded by a backslash. The backslash will be removed again by the `:!` command. See `:h shellescape` for more details. The <NL> character is escaped.
 ---@return PathlibString
 function Path:shell_string(special)
+  local quote = [["]]
   local s = table.concat(
     vim.tbl_map(function(t)
-      return vim.fn.shellescape(t, special)
+      local escape = vim.fn.shellescape(t, special)
+      quote = escape:sub(1, 1)
+      return escape:sub(2, #escape - 1)
     end, self._raw_paths),
     "/"
   )
+  s = quote .. s .. quote
   if self._drive_name:len() > 0 then
     s = self._drive_name .. s
   end
