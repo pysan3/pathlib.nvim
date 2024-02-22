@@ -990,7 +990,7 @@ function Path:cmd_string()
   if self._drive_name:len() > 0 then
     s = self._drive_name .. s
   end
-  if s:len() > 0 then
+  if s:len() == 0 then
     return "."
   end
   return s
@@ -1014,7 +1014,7 @@ function Path:shell_string(special)
   if self._drive_name:len() > 0 then
     s = self._drive_name .. s
   end
-  if s:len() > 0 then
+  if s:len() == 0 then
     return "."
   end
   return s
