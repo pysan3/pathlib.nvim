@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.1](https://github.com/pysan3/pathlib.nvim/compare/v0.6.0...v0.6.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* **base:** fix type issue and wrong initialization ([3e95f11](https://github.com/pysan3/pathlib.nvim/commit/3e95f11a35fd0f5bdc619622c00583d5d986759f))
+* **git:** add scheduler to debounce git status checks ([a27ce38](https://github.com/pysan3/pathlib.nvim/commit/a27ce38ce8f42716c6e615cf757c8a7437320a25))
+* **git:** make sure scheduler is always triggered at least once ([5f3cbe4](https://github.com/pysan3/pathlib.nvim/commit/5f3cbe48ad61c36180f77cffa35167b8083a1582))
+* **git:** process git ignore checks in batches to avoid error ([c9a8812](https://github.com/pysan3/pathlib.nvim/commit/c9a88123c4bb54b126c491037a41c33761d7ce38))
+
 ## [0.6.0](https://github.com/pysan3/pathlib.nvim/compare/v0.5.4...v0.6.0) (2024-02-19)
 
 
