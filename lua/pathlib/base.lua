@@ -998,7 +998,7 @@ end
 
 ---Returns a string representation that is safe to shell.
 ---
----Use this for `vim.fn.system`, `vim.system` etc.
+---Use this for `vim.fn.system`, `:!` etc. However, use `self:cmd_string()` for `vim.system`.
 ---
 ---If result is passed to the `:!` command, set `special` to true.
 ---
