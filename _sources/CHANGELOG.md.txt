@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/pysan3/pathlib.nvim/compare/v0.6.1...v0.6.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **base:** fix wrong comparison in string generation ([9d384f3](https://github.com/pysan3/pathlib.nvim/commit/9d384f38548dfc6159131897da98a7dd162e4cbb))
+
 ## [0.6.1](https://github.com/pysan3/pathlib.nvim/compare/v0.6.0...v0.6.1) (2024-02-21)
 
 
