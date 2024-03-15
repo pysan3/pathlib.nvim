@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/pysan3/pathlib.nvim/compare/v0.6.3...v0.6.4) (2024-03-15)
+
+
+### Bug Fixes
+
+* **git:** allow path to not have `git_state` to request ([fb7f23b](https://github.com/pysan3/pathlib.nvim/commit/fb7f23b56ea3cea340e1b627c4216bd42570fc47))
+
 ## [0.6.3](https://github.com/pysan3/pathlib.nvim/compare/v0.6.2...v0.6.3) (2024-02-22)
 
 
