@@ -5,7 +5,7 @@ local nio = require("nio")
 ---@field future nio.control.Future
 ---@field start integer
 
----@alias PathlibScheduler.monitor fun(elapsed_ms: integer, item_len: integer, key: string): boolean # A function to decide whether to trigger the debounce_fn.
+---@alias PathlibScheduler.monitor fun(elapsed_ms: integer, item_len: integer, key: string): integer # A function to decide whether to trigger the debounce_fn. Triggers if value is negative.
 ---@alias PathlibScheduler.executor fun(items: PathlibPath[], key: string): (boolean, string|nil) # Executed when should_run_fn returns true. Return values are (success, error_msg?).
 
 ---@class PathlibScheduler
@@ -44,7 +44,7 @@ function _Scheduler:add(key, item)
     self.storage[key] = {
       items = { item },
       future = nio.control.future(),
-      start = os.clock(),
+      start = vim.loop.hrtime(),
     }
   else
     table.insert(self.storage[key].items, item)
@@ -63,10 +63,24 @@ end
 function _Scheduler:check_and_trigger(key)
   return nio.run(function()
     local info = self.storage[key]
-    local elapsed = os.clock() - info.start
-    if elapsed >= self.minimum_debounce_ms and self.monitor(elapsed, #info.items, key) then
-      self:trigger(key)
+    if not info then
+      return
     end
+    nio.sleep(self.minimum_debounce_ms)
+    local start, iter = info.start, 0
+    while true do
+      info = self.storage[key]
+      if not info or info.start ~= start then
+        return -- some other process triggered the task
+      end
+      local wait_ms = self.monitor((vim.loop.hrtime() - start) / 1000 / 1000, #info.items, key)
+      if wait_ms <= 0 then
+        break
+      end
+      nio.sleep(math.min(self.minimum_debounce_ms, wait_ms + iter))
+      iter = iter + self.minimum_debounce_ms
+    end
+    self:trigger(key)
   end)
 end
 
@@ -74,6 +88,9 @@ end
 ---@param key string
 function _Scheduler:trigger(key)
   local info = self.storage[key]
+  if not info then
+    return
+  end
   self.storage[key] = nil
   nio.run(function()
     local suc, err = self.executor(info.items, key)
@@ -89,6 +106,9 @@ end
 ---@param key string
 function _Scheduler:clear(key)
   local info = self.storage[key]
+  if not info then
+    return
+  end
   self.storage[key] = nil
   nio.run(function()
     info.future.set_error(debug.traceback("Manually Cleared"))

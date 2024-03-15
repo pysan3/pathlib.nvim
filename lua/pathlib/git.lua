@@ -18,7 +18,10 @@ M.gitScheduler = Scheduler(function(items, key)
   M.fill_git_state_in_root(items, require("pathlib").new(key))
   return true
 end, function(elapsed_ms, item_len)
-  return item_len * 10 <= elapsed_ms or item_len >= 190
+  if item_len >= 190 then
+    return -1
+  end
+  return item_len * 10 - elapsed_ms
 end, 10)
 
 ---Find closest directory that contains `.git` directory, meaning that it's a root of a git repository
@@ -325,6 +328,7 @@ function M.request_git_status_update(path, args)
   path.git_state.is_ready = nil
   local future = M.gitScheduler:add(path.git_state.git_root:tostring(), path)
   path.git_state.is_ready = future
+  return future
 end
 
 return M
