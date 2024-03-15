@@ -311,6 +311,14 @@ function M.request_git_status_update(path, args)
   if path:is_dir(true) then
     return
   end
+  if not path.git_state or not path.git_state.git_root then
+    local root = M.find_root(path)
+    if not root then
+      return
+    end
+    path.git_state = path.git_state or {}
+    path.git_state.git_root = root
+  end
   if not utils.is_done(path.git_state.is_ready) then
     pcall(path.git_state.is_ready.wait)
   end
