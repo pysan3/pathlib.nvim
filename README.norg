@@ -4,7 +4,7 @@ description:
 authors: takuto
 categories:
 created: 2023-11-14
-updated: 2024-02-19T17:54:39+0900
+updated: 2024-03-18T23:39:25+0000
 version: 1.1.1
 @end
 
@@ -18,8 +18,6 @@ version: 1.1.1
   </p>
 </div>
 @end
-
-  ❗ *This is still very WIP. Will be available in February at the earliest.*
 
   {https://neovim.io/}[!{https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white}[Neovim]]
   {https://www.lua.org/}[!{https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white}[Lua]]
@@ -194,11 +192,11 @@ version: 1.1.1
    @end
 
 * TODO
-  - (-) API documentation.
+  - (x) API documentation.
   -- (x) PathlibPath
   -- (x) PathlibPosixPath
   -- (x) PathlibWindowsPath
-  -- ( ) Git
+  -- (x) Git
   - (x) Git operation integration.
   - ( ) Git test suite.
   -- ( ) List out every possible git state: ignored, staged etc.
@@ -209,9 +207,8 @@ version: 1.1.1
   -- ( ) Prepare windows specific test suite.
 
 * Contributions
-  I'm heading towards the first major release.
   I'll happily accept any {https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&labels=feature&projects=&template=feature_request.yml}[feature request]
-  from now on. Feel free to ask for any functionality :)
+  Feel free to ask for any functionality :)
 
 * Other Projects
   - Python `pathlib`

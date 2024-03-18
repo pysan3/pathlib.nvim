@@ -4,12 +4,12 @@ version = "scm-1"
 
 dependencies = {
   "lua >= 5.1",
-  "nvim-nio >= 1.2.0",
+  "nvim-nio >= 1.8.0",
 }
 
 test_dependencies = {
   "lua >= 5.1",
-  "nvim-nio >= 1.2.0",
+  "nvim-nio >= 1.8.0",
 }
 
 source = {
