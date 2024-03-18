@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.5](https://github.com/pysan3/pathlib.nvim/compare/v0.6.4...v0.6.5) (2024-03-15)
+
+
+### Bug Fixes
+
+* **scheduler:** make sure to sleep more than enough to trigger the task ([3a65f03](https://github.com/pysan3/pathlib.nvim/commit/3a65f03f8748552a08ac03aebf8e437c0c48b091))
+
 ## [0.6.4](https://github.com/pysan3/pathlib.nvim/compare/v0.6.3...v0.6.4) (2024-03-15)
 
 
