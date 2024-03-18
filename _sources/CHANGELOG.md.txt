@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.0](https://github.com/pysan3/pathlib.nvim/compare/v0.6.5...v1.0.0) (2024-03-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* release first major version
+* release first major version
+
+### Features
+
+* release first major version ([44e3a10](https://github.com/pysan3/pathlib.nvim/commit/44e3a10ece63a145530bc2b7c8603eaf7a7152f5))
+* release first major version ([1a5b9c5](https://github.com/pysan3/pathlib.nvim/commit/1a5b9c5dc3f00c15d8f33eb1642618952588e804))
+
 ## [0.6.5](https://github.com/pysan3/pathlib.nvim/compare/v0.6.4...v0.6.5) (2024-03-15)
 
 
