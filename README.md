@@ -7,8 +7,6 @@
   </p>
 </div>
 
-❗ **This is still very WIP. Will be available in February at the earliest.**
-
 [![Neovim](https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io/) [![Lua](https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white)](https://www.lua.org/)
 
 [![MLP-2.0](https://img.shields.io/github/license/pysan3/pathlib.nvim.svg?style=for-the-badge)](https://github.com/pysan3/pathlib.nvim/blob/master/LICENSE) [![Issues](https://img.shields.io/github/issues/pysan3/pathlib.nvim.svg?style=for-the-badge)](https://github.com/pysan3/pathlib.nvim/issues) [![Build Status](https://img.shields.io/github/actions/workflow/status/pysan3/pathlib.nvim/lua_ls-typecheck.yml?style=for-the-badge)](https://github.com/pysan3/pathlib.nvim/actions/workflows/lua_ls-typecheck.yml) [![LuaRocks](https://img.shields.io/luarocks/v/pysan3/pathlib.nvim?logo=lua&color=purple&style=for-the-badge)](https://luarocks.org/modules/pysan3/pathlib.nvim)
@@ -184,11 +182,11 @@ end)
 
 # TODO
 
-- [ ] API documentation.
+- [x] API documentation.
   - [x] PathlibPath
   - [x] PathlibPosixPath
   - [x] PathlibWindowsPath
-  - [ ] Git
+  - [x] Git
 - [x] Git operation integration.
 - [ ] Git test suite.
   - [ ] List out every possible git state: ignored, staged etc.
@@ -200,7 +198,7 @@ end)
 
 # Contributions
 
-I'm heading towards the first major release. I'll happily accept any [feature request](https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&labels=feature&projects=&template=feature_request.yml) from now on. Feel free to ask for any functionality :)
+I'll happily accept any [feature request](https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&labels=feature&projects=&template=feature_request.yml) Feel free to ask for any functionality :)
 
 # Other Projects
 
