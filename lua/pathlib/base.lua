@@ -192,9 +192,17 @@ function Path:child(name)
 end
 
 ---Create a new Path object as self's descentant. Use `self:child` if new path is a direct child of the dir.
+---@deprecated Use `self:descentant` instead.
 ---@param ... string
 ---@return PathlibPath
 function Path:new_descendant(...)
+  return self:descendant(...)
+end
+
+---Create a new Path object as self's descentant. Use `self:child` if new path is a direct child of the dir.
+---@param ... string
+---@return PathlibPath
+function Path:descendant(...)
   local new = self:deep_copy()
   local args = { ... }
   new._raw_paths:extend(args)
@@ -203,10 +211,18 @@ function Path:new_descendant(...)
 end
 
 ---Unpack name and return a new self's grandchild, where `name` contains more than one `/`.
+---@deprecated Use `self:child_unpack` instead.
 ---@param name string
 ---@return PathlibPath
 function Path:new_child_unpack(name)
-  return self:new_descendant(unpack(vim.split(name, "[/\\]", { plain = false, trimempty = true })))
+  return self:child_unpack(name)
+end
+
+---Unpack name and return a new self's grandchild, where `name` contains more than one `/`.
+---@param name string
+---@return PathlibPath
+function Path:child_unpack(name)
+  return self:descendant(unpack(vim.split(name, "[/\\]", { plain = false, trimempty = true })))
 end
 
 function Path:__clean_paths_list()
