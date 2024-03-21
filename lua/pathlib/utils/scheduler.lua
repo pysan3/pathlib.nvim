@@ -1,18 +1,18 @@
 local nio = require("nio")
 
 ---@class PathlibEventStorage
----@field items PathlibPath[]
----@field future nio.control.Future
----@field start integer
+---@field public items PathlibPath[]
+---@field public future nio.control.Future
+---@field public start integer
 
 ---@alias PathlibScheduler.monitor fun(elapsed_ms: integer, item_len: integer, key: string): integer # A function to decide whether to trigger the debounce_fn. Triggers if value is negative.
 ---@alias PathlibScheduler.executor fun(items: PathlibPath[], key: string): (boolean, string|nil) # Executed when should_run_fn returns true. Return values are (success, error_msg?).
 
 ---@class PathlibScheduler
----@field storage table<string, PathlibEventStorage>
----@field minimum_debounce_ms integer
----@field monitor PathlibScheduler.monitor
----@field executor PathlibScheduler.executor
+---@field public storage table<string, PathlibEventStorage>
+---@field public minimum_debounce_ms integer
+---@field public monitor PathlibScheduler.monitor
+---@field public executor PathlibScheduler.executor
 local _Scheduler = setmetatable({}, {
   __call = function(cls, ...)
     local self = setmetatable({
