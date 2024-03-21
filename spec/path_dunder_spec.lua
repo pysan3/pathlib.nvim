@@ -82,6 +82,14 @@ describe("Test Dunder Methods of Path Object;", function()
       assert.are.equal(foo, sibling_file .. Posix.new("./foo.txt"))
     end)
 
+    it("backwards compat", function()
+      local path = Posix.new("./folder")
+      assert.are.equal(foo, path .. "/foo.txt")
+      assert.are.equal(foo, path .. "/" .. "foo.txt")
+      assert.are.equal(foo, path .. "/" .. "./foo.txt")
+      assert.are_not.equal(foo, path .. "foo.txt")
+    end)
+
     it("raise error", function()
       assert.has_error(function()
         return Posix.new(".") / {}
