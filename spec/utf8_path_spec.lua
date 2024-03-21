@@ -65,8 +65,8 @@ describe("Utf8 Filename Manipulation;", function()
 
   describe("iterdir", function()
     it("()", function()
-      foo:copy(foo .. "ｂａｒ.ｔｘｔ")
-      foo:symlink_to(foo .. "ｂａｚ.ｔｘｔ")
+      foo:copy(foo:with_basename("ｂａｒ.ｔｘｔ"))
+      foo:symlink_to(foo:with_basename("ｂａｚ.ｔｘｔ"))
       local accum = {}
       for path in parent:iterdir() do
         table.insert(accum, path)

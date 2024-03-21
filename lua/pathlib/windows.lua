@@ -9,8 +9,8 @@ local function load_winapi()
 end
 
 ---@class PathlibWindowsPath : PathlibPath
----@operator div(PathlibWindowsPath|string): PathlibWindowsPath
----@operator concat(PathlibWindowsPath|string): PathlibWindowsPath
+---@operator div(PathlibPath|string): PathlibWindowsPath
+---@operator concat(PathlibPath|string): string
 local WindowsPath = setmetatable({
   mytype = const.path_module_enum.PathlibWindows,
   sep_str = "\\",

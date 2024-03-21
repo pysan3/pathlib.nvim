@@ -88,15 +88,6 @@ assert(tostring(foo:parent()) == "folder")
 assert(foo                    == Path("./folder/foo.txt")) -- Path object can be created with arguments
 assert(foo                    == Path(folder, "foo.txt"))  -- Unpack any of them if you want!
 
--- Create siblings mode (just like `./<foo>/../bar.txt`)
-local bar = foo .. "bar.txt"
-assert(tostring(bar)          == "folder/bar.txt")
--- Mimic string concat mode (to work with your old code).
--- This makes old code with string paths work mostly as expected.
--- This is enabled only if rhs starts with "/" or "\\".
-local old_path = folder .. "/" .. "old-way" .. "/to/make/path.txt"
-assert(old_path               == Path("folder/old-way/to/make/path.txt"))
-
 -- Calculate relativily
 assert(foo:is_relative_to(Path("folder")))
 assert(not foo:is_relative_to(Path("./different folder")))
@@ -144,8 +135,8 @@ assert(content == "File Content\n")
 -- SHORTHAND: write to file
 new_file:io_write("File Content\n")
 
-new_file:copy(new_file .. "bar.txt") -- copy `foo.txt` to `bar.txt`
-new_file:symlink_to(new_file .. "baz.txt") -- create symlink of `foo.txt` named `baz.txt`
+new_file:copy(new_file:with_basename("bar.txt")) -- copy `foo.txt` to `bar.txt`
+new_file:symlink_to(new_file:with_basename("baz.txt")) -- create symlink of `foo.txt` named `baz.txt`
 ```
 
 ## Scan Directories
