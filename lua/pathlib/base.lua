@@ -414,11 +414,12 @@ end
 ---@param cwd PathlibPath|nil # If passed, this is used instead of `vim.fn.getcwd()`.
 function Path:to_absolute(cwd)
   if self:is_absolute() then
-    return
+    return self
   end
   local new = self.new(cwd or vim.fn.getcwd(), self)
   self._raw_paths:clear()
   self:copy_all_from(new)
+  return self
 end
 
 ---Get the path being modified with `filename-modifiers`
