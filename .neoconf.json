@@ -3,7 +3,8 @@
     "library": {
       "enabled": true,
       "plugins": [
-        "neodev.nvim"
+        "neodev.nvim",
+        "nvim-nio"
       ]
     }
   },

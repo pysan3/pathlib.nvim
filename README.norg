@@ -101,9 +101,14 @@ version: 1.1.1
   assert(foo                    == Path("./folder/foo.txt")) -- Path object can be created with arguments
   assert(foo                    == Path(folder, "foo.txt"))  -- Unpack any of them if you want!
 
-  -- Create siblings (just like `./<foo>/../bar.txt`)
+  -- Create siblings mode (just like `./<foo>/../bar.txt`)
   local bar = foo .. "bar.txt"
   assert(tostring(bar)          == "folder/bar.txt")
+  -- Mimic string concat mode (to work with your old code).
+  -- This makes old code with string paths work mostly as expected.
+  -- This is enabled only if rhs starts with "/" or "\\".
+  local old_path = folder .. "/" .. "old-way" .. "/to/make/path.txt"
+  assert(old_path               == Path("folder/old-way/to/make/path.txt"))
 
   -- Calculate relativily
   assert(foo:is_relative_to(Path("folder")))
