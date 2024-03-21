@@ -33,7 +33,10 @@ jobs:
           luarocks install --only-deps ./pathlib.nvim-scm-1.rockspec
 
       - name: Print Filetree
-        run: echo $PWD && ls -la && ls -la deps
+        run: |
+          echo $PWD && ls -la && ls -la deps
+          ls -la lua_modules
+          ls -la lua_modules/*
 
       - name: Type Check Code Base
         uses: mrcjkb/lua-typecheck-action@v0
