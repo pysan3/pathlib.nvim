@@ -221,16 +221,55 @@ function Path:basename()
   return self._raw_paths[#self._raw_paths]
 end
 
+---Return new object with new name. You can also use this to create siblings.
+---
+---This does not check if `name` contains invalid path separators like `"/"` so be careful.
+---
+--->>> Path("./folder/foo.txt"):with_basename("bar.png")
+---Path("./folder/bar.png")
+---
+---@param name string
+---@return PathlibPath
+function Path:with_basename(name)
+  local parent = self:parent()
+  if parent then
+    return parent:child(name)
+  else
+    return self.new_empty():child(name)
+  end
+end
+
 ---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
 ---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
 function Path:suffix()
   return self:basename():sub(self:stem():len() + 1)
 end
 
+---Return new object with new suffix.
+---
+--->>> Path("./folder/foo.txt"):with_suffix("png")
+---Path("./folder/foo.png")
+---
+function Path:with_suffix(suffix)
+  local name = self:stem() .. suffix
+  return self:with_basename(name)
+end
+
 ---Return the group name of the file GID. Same as `self:modify(":t:r")`.
 ---@return string # stem of path. (src/version.c -> "version")
 function Path:stem()
   return (self:basename():gsub("([^.])%.[^.]+$", "%1", 1))
+end
+
+---Return new object with new stem.
+---
+--->>> Path("./folder/foo.txt"):with_stem("bar")
+---Path("./folder/bar.txt")
+---
+---@param stem string
+function Path:with_stem(stem)
+  local name = stem .. self:suffix()
+  return self:with_basename(name)
 end
 
 ---Return parent directory of itself. If parent does not exist, returns nil.
