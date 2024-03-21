@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/pysan3/pathlib.nvim/compare/v1.0.0...v1.0.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* **base:** add string concat mode to make it work with old code ([#40](https://github.com/pysan3/pathlib.nvim/issues/40)) ([6e7219f](https://github.com/pysan3/pathlib.nvim/commit/6e7219fcaf5956fa5acfaffd1ff59876d1b001e8))
+* **base:** return self from `to_absolute` for easier chaining ([#42](https://github.com/pysan3/pathlib.nvim/issues/42)) ([b8d3184](https://github.com/pysan3/pathlib.nvim/commit/b8d3184a55806472ee303b263658b40524dd8c1b))
+
 ## [1.0.0](https://github.com/pysan3/pathlib.nvim/compare/v0.6.5...v1.0.0) (2024-03-18)
 
 
