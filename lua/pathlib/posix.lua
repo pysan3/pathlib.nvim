@@ -3,8 +3,8 @@ local const = require("pathlib.const")
 local err = require("pathlib.utils.errors")
 
 ---@class PathlibPosixPath : PathlibPath
----@operator div(PathlibPosixPath|string): PathlibPosixPath
----@operator concat(PathlibPosixPath|string): PathlibPosixPath
+---@operator div(PathlibPath|string): PathlibPosixPath
+---@operator concat(PathlibPath|string): string
 local PosixPath = setmetatable({
   mytype = const.path_module_enum.PathlibPosixPath,
 }, {

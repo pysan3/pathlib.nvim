@@ -15,9 +15,8 @@ local watcher = require("pathlib.utils.watcher")
 ---@field public __fs_event_callbacks table<string, PathlibWatcherCallback>|nil # List of functions called when a fs_event is triggered.
 ---@field public __string_cache string|nil # Cache result of `tostring(self)`.
 ---@field public __parent_cache PathlibPath|nil # Cache reference to parent object.
----@field public __concat_dir_mode boolean|nil # If the object was created with `Path() .. "/"`, next string concat will append as a file.
 ---@operator div(PathlibPath|string): PathlibPath
----@operator concat(PathlibPath|string): PathlibPath
+---@operator concat(PathlibPath|string): string
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
@@ -981,7 +980,7 @@ function Path:len()
 end
 
 ---Concatenate paths. `Path.cwd() / "foo" / "bar.txt" == "./foo/bar.txt"`
----@param other PathlibPath | string
+---@param other PathlibPath|string
 ---@return PathlibPath
 function Path:__div(other)
   if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
@@ -991,35 +990,17 @@ function Path:__div(other)
   return self.new(self, other)
 end
 
----Concatenate paths with the parent of lhs. `Path("./foo/foo.txt") .. "bar.txt" == "./foo/bar.txt"`
----
----To keep backwards compatibility, when rhs is a string and starts with "[/\\]", it behaves as like a string.
----
---->>> Path("./foo/foo.txt") .. "bar.txt" -- sibling mode
----Path("./foo/bar.txt")
----
---->>> Path("./foo") .. "/" .. "bar.txt" -- mimic string concat mode
----Path("./foo/bar.txt")
----
----@param other PathlibPath | string
----@return PathlibPath
+---@param other PathlibPath|string
+---@return string
 function Path:__concat(other)
-  if not utils.tables.is_path_module(self) and not utils.tables.is_path_module(other) then
+  if type(self) == "table" and not utils.tables.is_path_module(self) then
+    -- one of objects must be a path object
+    errs.value_error("__concat", self)
+  elseif type(other) == "table" and not utils.tables.is_path_module(other) then
     -- one of objects must be a path object
     errs.value_error("__concat", other)
-  elseif utils.tables.is_path_module(self) and type(other) == "string" then
-    if self.__concat_dir_mode then
-      other = "/" .. other
-    end
-    local first_letter = other:sub(1, 1)
-    local last_letter = other:sub(#other)
-    if first_letter == "/" or first_letter == "\\" then
-      local new = self.new(self, other)
-      new.__concat_dir_mode = last_letter == "/" or last_letter == "\\"
-      return new
-    end
   end
-  return self.new(self:parent(), other)
+  return tostring(self) .. tostring(other)
 end
 
 ---Convert path object to string

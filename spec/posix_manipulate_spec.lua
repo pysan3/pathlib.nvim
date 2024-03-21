@@ -70,8 +70,8 @@ describe("Posix File Manipulation;", function()
 
   describe("iterdir", function()
     it("()", function()
-      foo:copy(foo .. "bar.txt")
-      foo:symlink_to(foo .. "baz.txt")
+      foo:copy(foo:with_basename("bar.txt"))
+      foo:symlink_to(foo:with_basename("baz.txt"))
       local accum = {}
       for path in parent:iterdir() do
         table.insert(accum, path)

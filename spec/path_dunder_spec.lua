@@ -76,23 +76,14 @@ describe("Test Dunder Methods of Path Object;", function()
 
   describe("__concat", function()
     it("()", function()
-      local sibling_file = Posix.new("./folder/baz.txt")
-      assert.are.equal(foo, sibling_file .. "foo.txt")
-      assert.are.equal(foo, sibling_file .. "./foo.txt")
-      assert.are.equal(foo, sibling_file .. Posix.new("./foo.txt"))
-    end)
-
-    it("backwards compat", function()
-      local path = Posix.new("./folder")
-      assert.are.equal(foo, path .. "/foo.txt")
-      assert.are.equal(foo, path .. "/" .. "foo.txt")
-      assert.are.equal(foo, path .. "/" .. "./foo.txt")
-      assert.are_not.equal(foo, path .. "foo.txt")
+      local file = Posix.new("./folder")
+      assert.are.equal("folder/foo/bar", file .. "/foo/bar")
+      assert.are.equal(tostring(file) .. "/foo/bar", file .. "/foo/bar")
     end)
 
     it("raise error", function()
       assert.has_error(function()
-        return Posix.new(".") / {}
+        return Posix.new(".") .. {}
       end)
     end)
   end)
