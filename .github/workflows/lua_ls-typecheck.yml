@@ -37,6 +37,8 @@ jobs:
           echo $PWD && ls -la && ls -la deps
           ls -la lua_modules
           ls -la lua_modules/*
+          ls -la lua_modules/share/*
+          ls -la lua_modules/share/lua/*
 
       - name: Type Check Code Base
         uses: mrcjkb/lua-typecheck-action@v0
