@@ -441,15 +441,6 @@ document.write(`
 <span class="nb">assert</span><span class="p">(</span><span class="n">foo</span>                    <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">))</span> <span class="c1">-- Path object can be created with arguments</span>
 <span class="nb">assert</span><span class="p">(</span><span class="n">foo</span>                    <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>  <span class="c1">-- Unpack any of them if you want!</span>
 
-<span class="c1">-- Create siblings mode (just like `./&lt;foo&gt;/../bar.txt`)</span>
-<span class="kd">local</span> <span class="n">bar</span> <span class="o">=</span> <span class="n">foo</span> <span class="o">..</span> <span class="s2">&quot;bar.txt&quot;</span>
-<span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>          <span class="o">==</span> <span class="s2">&quot;folder/bar.txt&quot;</span><span class="p">)</span>
-<span class="c1">-- Mimic string concat mode (to work with your old code).</span>
-<span class="c1">-- This makes old code with string paths work mostly as expected.</span>
-<span class="c1">-- This is enabled only if rhs starts with &quot;/&quot; or &quot;\\&quot;.</span>
-<span class="kd">local</span> <span class="n">old_path</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">..</span> <span class="s2">&quot;/&quot;</span> <span class="o">..</span> <span class="s2">&quot;old-way&quot;</span> <span class="o">..</span> <span class="s2">&quot;/to/make/path.txt&quot;</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">old_path</span>               <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/old-way/to/make/path.txt&quot;</span><span class="p">))</span>
-
 <span class="c1">-- Calculate relativily</span>
 <span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">)))</span>
 <span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./different folder&quot;</span><span class="p">)))</span>
@@ -501,8 +492,8 @@ document.write(`
 <span class="c1">-- SHORTHAND: write to file</span>
 <span class="n">new_file</span><span class="p">:</span><span class="n">io_write</span><span class="p">(</span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">new_file</span><span class="p">:</span><span class="n">copy</span><span class="p">(</span><span class="n">new_file</span> <span class="o">..</span> <span class="s2">&quot;bar.txt&quot;</span><span class="p">)</span> <span class="c1">-- copy `foo.txt` to `bar.txt`</span>
-<span class="n">new_file</span><span class="p">:</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">new_file</span> <span class="o">..</span> <span class="s2">&quot;baz.txt&quot;</span><span class="p">)</span> <span class="c1">-- create symlink of `foo.txt` named `baz.txt`</span>
+<span class="n">new_file</span><span class="p">:</span><span class="n">copy</span><span class="p">(</span><span class="n">new_file</span><span class="p">:</span><span class="n">with_basename</span><span class="p">(</span><span class="s2">&quot;bar.txt&quot;</span><span class="p">))</span> <span class="c1">-- copy `foo.txt` to `bar.txt`</span>
+<span class="n">new_file</span><span class="p">:</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">new_file</span><span class="p">:</span><span class="n">with_basename</span><span class="p">(</span><span class="s2">&quot;baz.txt&quot;</span><span class="p">))</span> <span class="c1">-- create symlink of `foo.txt` named `baz.txt`</span>
 </pre></div>
 </div>
 </section>

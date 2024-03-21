@@ -411,12 +411,6 @@ document.write(`
 <dd><p># Cache reference to parent object.</p>
 </dd></dl>
 
-<dl class="lua attribute">
-<dt class="sig sig-object lua" id="PathlibPath.__concat_dir_mode">
-<span class="sig-name descname"><span class="pre">__concat_dir_mode</span></span><em class="property"><span class="pre">:</span> </em><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span><a class="headerlink" href="#PathlibPath.__concat_dir_mode" title="Link to this definition">#</a></dt>
-<dd><p># If the object was created with <cite>Path() .. “/”</cite>, next string concat will append as a file.</p>
-</dd></dl>
-
 <dl class="lua staticmethod">
 <dt class="sig sig-object lua" id="PathlibPath.new">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.new" title="Link to this definition">#</a></dt>
@@ -547,8 +541,36 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.descendant">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">descendant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.descendant" title="Link to this definition">#</a></dt>
+<dd><p>Create a new Path object as self’s descentant. Use <cite>self:child</cite> if new path is a direct child of the dir.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.new_child_unpack">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">new_child_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.new_child_unpack" title="Link to this definition">#</a></dt>
+<dd><p>Unpack name and return a new self’s grandchild, where <cite>name</cite> contains more than one <cite>/</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.child_unpack">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">child_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.child_unpack" title="Link to this definition">#</a></dt>
 <dd><p>Unpack name and return a new self’s grandchild, where <cite>name</cite> contains more than one <cite>/</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -573,6 +595,25 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.with_basename">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">with_basename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.with_basename" title="Link to this definition">#</a></dt>
+<dd><p>Return new object with new name. You can also use this to create siblings.</p>
+<p>This does not check if <cite>name</cite> contains invalid path separators like <cite>“/”</cite> so be careful.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">with_basename</span><span class="p">(</span><span class="s2">&quot;bar.png&quot;</span><span class="p">)</span>
+<span class="go">Path(&quot;./folder/bar.png&quot;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.suffix">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">suffix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.suffix" title="Link to this definition">#</a></dt>
 <dd><p>Return the group name of the file GID. Same as <cite>str(self) minus self:modify(“:r”)</cite>.</p>
@@ -587,6 +628,20 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.with_suffix">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">with_suffix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">suffix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.with_suffix" title="Link to this definition">#</a></dt>
+<dd><p>Return new object with new suffix.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;png&quot;</span><span class="p">)</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>suffix</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.stem">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">stem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.stem" title="Link to this definition">#</a></dt>
 <dd><p>Return the group name of the file GID. Same as <cite>self:modify(“:t:r”)</cite>.</p>
@@ -596,6 +651,21 @@ document.write(`
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.with_stem">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">with_stem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">stem</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.with_stem" title="Link to this definition">#</a></dt>
+<dd><p>Return new object with new stem.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">with_stem</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+<span class="go">Path(&quot;./folder/bar.txt&quot;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stem</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1280,13 +1350,14 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 
 <dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.fs_iterdir">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em>, <em class="sig-param"><span class="pre">depth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_iterdir" title="Link to this definition">#</a></dt>
+<em class="property"> </em><span class="sig-name descname"><span class="pre">fs_iterdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em>, <em class="sig-param"><span class="pre">depth</span></em>, <em class="sig-param"><span class="pre">skip_dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.fs_iterdir" title="Link to this definition">#</a></dt>
 <dd><p>Iterate dir with <cite>luv.fs_scandir</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, resolves hyperlinks and go into the linked directory.</p></li>
 <li><p><strong>depth</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # How deep the traverse. If nil or &lt;1, scans everything.</p></li>
+<li><p><strong>skip_dir</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">nil</span> <span class="pre">or</span> <span class="pre">fun(PathlibPath):boolean</span></code></span>) – # Function to decide whether to dig in a directory.</p></li>
 </ul>
 </dd>
 </dl>
