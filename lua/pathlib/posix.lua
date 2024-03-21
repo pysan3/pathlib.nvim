@@ -3,8 +3,9 @@ local const = require("pathlib.const")
 local err = require("pathlib.utils.errors")
 
 ---@class PathlibPosixPath : PathlibPath
----@overload fun(...: string|PathlibPath): PathlibPosixPath
-local PosixPath = setmetatable({ ---@diagnostic disable-line
+---@operator div(PathlibPosixPath|string): PathlibPosixPath
+---@operator concat(PathlibPosixPath|string): PathlibPosixPath
+local PosixPath = setmetatable({
   mytype = const.path_module_enum.PathlibPosixPath,
 }, {
   __index = Path,
@@ -39,7 +40,7 @@ end
 
 function PosixPath.new_empty()
   ---@type PathlibPosixPath
-  local self = setmetatable({}, PosixPath) ---@diagnostic disable-line
+  local self = setmetatable({}, PosixPath)
   self:to_empty()
   return self
 end

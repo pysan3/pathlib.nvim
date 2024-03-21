@@ -9,8 +9,9 @@ local function load_winapi()
 end
 
 ---@class PathlibWindowsPath : PathlibPath
----@overload fun(...: string|PathlibPath): PathlibWindowsPath
-local WindowsPath = setmetatable({ ---@diagnostic disable-line
+---@operator div(PathlibWindowsPath|string): PathlibWindowsPath
+---@operator concat(PathlibWindowsPath|string): PathlibWindowsPath
+local WindowsPath = setmetatable({
   mytype = const.path_module_enum.PathlibWindows,
   sep_str = "\\",
 }, {
@@ -40,7 +41,7 @@ end
 
 function WindowsPath.new_empty()
   ---@type PathlibWindowsPath
-  local self = setmetatable({}, WindowsPath) ---@diagnostic disable-line
+  local self = setmetatable({}, WindowsPath)
   self:to_empty()
   return self
 end

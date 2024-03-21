@@ -16,6 +16,8 @@ local watcher = require("pathlib.utils.watcher")
 ---@field public __string_cache string|nil # Cache result of `tostring(self)`.
 ---@field public __parent_cache PathlibPath|nil # Cache reference to parent object.
 ---@field public __concat_dir_mode boolean|nil # If the object was created with `Path() .. "/"`, next string concat will append as a file.
+---@operator div(PathlibPath|string): PathlibPath
+---@operator concat(PathlibPath|string): PathlibPath
 local Path = setmetatable({
   mytype = const.path_module_enum.PathlibPath,
   sep_str = "/",
@@ -876,7 +878,7 @@ end
 ---Iterate dir with `luv.fs_scandir`.
 ---@param follow_symlinks boolean|nil # If true, resolves hyperlinks and go into the linked directory.
 ---@param depth integer|nil # How deep the traverse. If nil or <1, scans everything.
----@param skip_dir (fun(dir: PathlibPath): boolean)|nil # Function to decide whether to dig in a directory.
+---@param skip_dir nil|fun(dir: PathlibPath): boolean # Function to decide whether to dig in a directory.
 function Path:fs_iterdir(follow_symlinks, depth, skip_dir)
   depth = depth or -1
   ---@type uv_fs_t|nil
@@ -1203,8 +1205,7 @@ function Path:iterdir(opts)
   return function()
     local name, fs_type = generator()
     if name ~= nil then
-      return self:new_descendant(unpack(vim.split(name:gsub("\\", "/"), "/", { plain = true, trimempty = false }))),
-        fs_type
+      return self:descendant(unpack(vim.split(name:gsub("\\", "/"), "/", { plain = true, trimempty = false }))), fs_type
     end
   end
 end
@@ -1216,7 +1217,7 @@ end
 ---@return function
 function Path:fs_opendir(follow_symlinks, depth)
   depth = depth or -1
-  ---@type (uv.aliases.fs_readdir_entries[]|nil)
+  ---@type uv.aliases.fs_readdir_entries[]|nil
   local entries = nil
   ---@type luv_dir_t|nil
   local handler = nil
