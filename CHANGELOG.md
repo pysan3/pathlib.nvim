@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.2](https://github.com/pysan3/pathlib.nvim/compare/v1.0.1...v1.0.2) (2024-03-21)
+
+
+### Bug Fixes
+
+* **base:** add `with_stem` variants ([f912333](https://github.com/pysan3/pathlib.nvim/commit/f912333cb7c9e07e26ab1309381c469446208b08))
+* **base:** deprecate siblings with concat ([47b0cd9](https://github.com/pysan3/pathlib.nvim/commit/47b0cd9964fc821b22b2cbc7d289291ed99d4381))
+* **base:** rename `new_descendant` to `descendant` for simplicity ([f8b8281](https://github.com/pysan3/pathlib.nvim/commit/f8b8281f97e90c753552b2ba8c6e28e9cf5dba19))
+* **types:** add type annotations for operator overload ([d194dc2](https://github.com/pysan3/pathlib.nvim/commit/d194dc2af8aee76ac1d1bbd6164eb6cd0dc0d23d))
+
 ## [1.0.1](https://github.com/pysan3/pathlib.nvim/compare/v1.0.0...v1.0.1) (2024-03-21)
 
 
