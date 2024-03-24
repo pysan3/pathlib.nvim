@@ -231,6 +231,40 @@ function Path:__clean_paths_list()
   self.__string_cache = nil
 end
 
+---Fetch one part of the path.
+---
+---If index == 0: returns drive_name,
+---elseif index > 0: gets the n-th element in the path starting from 1.
+---  When path is absolute, `self:peek(1)` is always an empty string ("").
+---elseif index < 0: gets the (-n)-th element counting from leaf.
+---  `self:peek(-1) == self:basename()`.
+---
+--->>> Path("folder/foo.txt"):peek(1)
+---"folder"
+--->>> Path("folder/foo.txt"):peek(2)
+---"foo.txt"
+--->>> Path("folder/foo.txt"):peek(-1)
+---"foo.txt"
+---
+--->>> Path("/etc/passwd"):peek(0)
+---"" -- drive name is empty in posix paths
+--->>> Path("/etc/passwd"):peek(1)
+---"" -- first element of absolute path is always empty
+--->>> Path("/etc/passwd"):peek(2)
+---"etc"
+---
+---@param index integer
+---@return string|nil
+function Path:peek(index)
+  if index == 0 then
+    return self._drive_name
+  elseif index > 0 then
+    return self._raw_paths[index]
+  else
+    return self._raw_paths[self:len() + index + 1]
+  end
+end
+
 ---Return the basename of `self`.
 ---Eg: foo/bar/baz.txt -> baz.txt
 ---@return string
