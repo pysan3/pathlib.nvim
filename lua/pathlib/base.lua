@@ -572,6 +572,60 @@ function Path:glob(pattern)
   end
 end
 
+--          ╭─────────────────────────────────────────────────────────╮
+--          │                   String Manipulation                   │
+--          ╰─────────────────────────────────────────────────────────╯
+
+---@see string.byte
+function Path:byte(...)
+  return self:tostring():byte(...)
+end
+
+---@see string.find
+function Path:find(...)
+  return self:tostring():find(...)
+end
+
+---@see string.gmatch
+function Path:gmatch(...)
+  return self:tostring():gmatch(...)
+end
+
+---@see string.gsub
+function Path:gsub(...)
+  return self:tostring():gsub(...)
+end
+
+---@see string.lower
+function Path:lower()
+  return self:tostring():lower()
+end
+
+---@see string.match
+function Path:match(...)
+  return self:tostring():match(...)
+end
+
+---@see string.rep
+function Path:rep(...)
+  return self:tostring():rep(...)
+end
+
+---@see string.reverse
+function Path:reverse()
+  return self:tostring():reverse()
+end
+
+---@see string.sub
+function Path:sub(...)
+  return self:tostring():sub(...)
+end
+
+---@see string.upper
+function Path:upper()
+  return self:tostring():upper()
+end
+
 --          ╭─────────────────────────────────────────────────────────╮          --
 --          │                  UV Filesystem Methods                  │          --
 --          ╰─────────────────────────────────────────────────────────╯          --
