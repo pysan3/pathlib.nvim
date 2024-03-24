@@ -583,6 +583,41 @@ document.write(`
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.peek">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">peek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.peek" title="Link to this definition">#</a></dt>
+<dd><p>Fetch one part of the path.</p>
+<p>If index == 0: returns drive_name,
+elseif index &gt; 0: gets the n-th element in the path starting from 1.
+When path is absolute, <cite>self:peek(1)</cite> is always an empty string (“”).
+elseif index &lt; 0: gets the (-n)-th element counting from leaf.
+<cite>self:peek(-1) == self:basename()</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&quot;folder&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&quot;foo.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&quot;foo.txt&quot;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/etc/passwd&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&quot;&quot; -- drive name is empty in posix paths</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/etc/passwd&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&quot;&quot; -- first element of absolute path is always empty</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/etc/passwd&quot;</span><span class="p">):</span><span class="n">peek</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&quot;etc&quot;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.basename">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">basename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.basename" title="Link to this definition">#</a></dt>
 <dd><p>Return the basename of <cite>self</cite>.</p>
