@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/pysan3/pathlib.nvim/compare/v1.0.2...v1.1.0) (2024-03-25)
+
+
+### Features
+
+* **base:** add peek to get specific part in path ([#45](https://github.com/pysan3/pathlib.nvim/issues/45)) ([5511eb3](https://github.com/pysan3/pathlib.nvim/commit/5511eb3b077e53a310bce9a3192d7817b702f160))
+* **base:** make path object inherit string manipulation functions ([fe5cd85](https://github.com/pysan3/pathlib.nvim/commit/fe5cd85a509c6756cd98fcf0fd59d5f0d0c636c2))
+
 ## [1.0.2](https://github.com/pysan3/pathlib.nvim/compare/v1.0.1...v1.0.2) (2024-03-21)
 
 
