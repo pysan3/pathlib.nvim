@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/pysan3/pathlib.nvim/compare/v1.1.1...v2.0.0) (2024-03-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **base:** move Path.len -> depth to make path align with string.len ([#50](https://github.com/pysan3/pathlib.nvim/issues/50))
+
+### Features
+
+* **base:** move Path.len -&gt; depth to make path align with string.len ([#50](https://github.com/pysan3/pathlib.nvim/issues/50)) ([43cc27c](https://github.com/pysan3/pathlib.nvim/commit/43cc27c2868c9dd0afe5a4c651d520a505bf3b4a))
+
 ## [1.1.1](https://github.com/pysan3/pathlib.nvim/compare/v1.1.0...v1.1.1) (2024-03-26)
 
 
