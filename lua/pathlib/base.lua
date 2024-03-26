@@ -265,7 +265,7 @@ function Path:peek(index)
   elseif index > 0 then
     return self._raw_paths[index]
   else
-    return self._raw_paths[self:len() + index + 1]
+    return self._raw_paths[self:depth() + index + 1]
   end
 end
 
@@ -441,12 +441,12 @@ function Path:relative_to(other, walk_up)
   local result = self:deep_copy()
   result._raw_paths:clear()
   result._drive_name = ""
-  local index = other:len()
+  local index = other:depth()
   while index > 0 and self._raw_paths[index] ~= other._raw_paths[index] do
     result._raw_paths:append("..")
     index = index - 1
   end
-  for i = index + 1, self:len() do
+  for i = index + 1, self:depth() do
     if self._raw_paths[i] and self._raw_paths[i]:len() > 0 then
       result._raw_paths:append(self._raw_paths[i])
     end
@@ -526,7 +526,7 @@ end
 ---Resolves path. Eliminates `../` representation.
 ---Changes internal. (See `Path:resolve_copy` to create new object)
 function Path:resolve()
-  local accum, length = 1, self:len()
+  local accum, length = 1, self:depth()
   for _, value in ipairs(self._raw_paths) do
     if value == ".." and accum > 1 then
       accum = accum - 1
@@ -545,7 +545,7 @@ end
 ---Resolves path. Eliminates `../` representation and returns a new object. `self` is not changed.
 ---@return PathlibPath
 function Path:resolve_copy()
-  local accum, length, new = 1, self:len(), self:deep_copy()
+  local accum, length, new = 1, self:depth(), self:deep_copy()
   for _, value in ipairs(self._raw_paths) do
     if value == ".." and accum > 1 then
       accum = accum - 1
@@ -598,6 +598,19 @@ end
 ---@see string.gsub
 function Path:gsub(...)
   return self:tostring():gsub(...)
+end
+
+---@see string.len
+-- WARN: `self:len()` used to return the length of `self._raw_paths`.
+--       Use `self:depth()` instead.
+---
+---Return the length of the string representation.
+---
+--->>> Path("foo/bar.txt"):len() == string.len("foo/bar.txt")
+---true
+---
+function Path:len()
+  return self:tostring():len()
 end
 
 ---@see string.lower
@@ -1067,7 +1080,7 @@ end
 
 ---Get length of `self._raw_paths`. `/foo/bar.txt ==> 3: { "", "foo", "bar.txt" } (root dir counts as 1!!)`
 ---@return integer
-function Path:len()
+function Path:depth()
   return #self._raw_paths
 end
 
