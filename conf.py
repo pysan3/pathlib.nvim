@@ -9,7 +9,7 @@
 project = 'pathlib.nvim'
 copyright = '2023, pysan3'
 author = 'pysan3'
-release = '1.0.2' # x-release-please-version
+release = '1.1.0' # x-release-please-version
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
