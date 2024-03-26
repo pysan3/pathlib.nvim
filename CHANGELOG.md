@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/pysan3/pathlib.nvim/compare/v1.1.0...v1.1.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **base:** fix `self:child` when self:len() == 0 returns wrong string cache ([4664793](https://github.com/pysan3/pathlib.nvim/commit/466479340e21c2a6d7c3459cf2d958b0551d692a))
+* **init:** trick type annotations ([48f9d2b](https://github.com/pysan3/pathlib.nvim/commit/48f9d2b35e60f7b3fa66b6071360e47483ba587e))
+
 ## [1.1.0](https://github.com/pysan3/pathlib.nvim/compare/v1.0.2...v1.1.0) (2024-03-25)
 
 
