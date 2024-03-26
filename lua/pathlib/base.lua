@@ -186,8 +186,12 @@ end
 ---@return PathlibPath
 function Path:child(name)
   local new = self.deep_copy(self)
+  if self:tostring() ~= "." then
+    new.__string_cache = self:tostring() .. self.sep_str .. name
+  else
+    new.__string_cache = name
+  end
   new._raw_paths:append(name)
-  new.__string_cache = self:tostring() .. self.sep_str .. name
   new.__parent_cache = self
   return new
 end
