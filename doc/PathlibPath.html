@@ -966,6 +966,12 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.len">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.len" title="Link to this definition">#</a></dt>
+<dd><p>Return the length of the string representation.  &gt;&gt;&gt; Path(“foo/bar.txt”):len() == string.len(“foo/bar.txt”) true</p>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.lower">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.lower" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1484,8 +1490,8 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 </dd></dl>
 
 <dl class="lua method">
-<dt class="sig sig-object lua" id="PathlibPath.len">
-<em class="property"> </em><span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.len" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object lua" id="PathlibPath.depth">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">depth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.depth" title="Link to this definition">#</a></dt>
 <dd><p>Get length of <cite>self._raw_paths</cite>. <cite>/foo/bar.txt ==&gt; 3: { “”, “foo”, “bar.txt” } (root dir counts as 1!!)</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
