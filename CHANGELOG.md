@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.1](https://github.com/pysan3/pathlib.nvim/compare/v1.1.0...v1.1.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **base:** fix `self:child` when self:len() == 0 returns wrong string cache ([4664793](https://github.com/pysan3/pathlib.nvim/commit/466479340e21c2a6d7c3459cf2d958b0551d692a))
+* **init:** trick type annotations ([48f9d2b](https://github.com/pysan3/pathlib.nvim/commit/48f9d2b35e60f7b3fa66b6071360e47483ba587e))
+
+## [1.1.0](https://github.com/pysan3/pathlib.nvim/compare/v1.0.2...v1.1.0) (2024-03-25)
+
+
+### Features
+
+* **base:** add peek to get specific part in path ([#45](https://github.com/pysan3/pathlib.nvim/issues/45)) ([5511eb3](https://github.com/pysan3/pathlib.nvim/commit/5511eb3b077e53a310bce9a3192d7817b702f160))
+* **base:** make path object inherit string manipulation functions ([fe5cd85](https://github.com/pysan3/pathlib.nvim/commit/fe5cd85a509c6756cd98fcf0fd59d5f0d0c636c2))
+
 ## [1.0.2](https://github.com/pysan3/pathlib.nvim/compare/v1.0.1...v1.0.2) (2024-03-21)
 
 
