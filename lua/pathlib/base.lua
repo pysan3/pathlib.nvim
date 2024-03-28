@@ -345,6 +345,23 @@ function Path:add_suffix(suffix, force)
   return self:with_basename(basename)
 end
 
+---Remove `suffix` if and only if path ends with the given `suffix`.
+---
+--->>> Path("./folder/foo.tar.gz"):remove_suffix(".tar.gz")
+---Path("./folder/foo")
+---
+--->>> Path("./folder/foo.txt"):remove_suffix(".bak")
+---Path("./folder/foo.txt") -- is already not ".bak", so no change applied
+---
+---@param suffix string # Remove this suffix from path.
+function Path:remove_suffix(suffix)
+  local basename = self:basename()
+  if basename:sub(-suffix:len()) == suffix then
+    basename = basename:sub(1, -suffix:len() - 1)
+  end
+  return self:with_basename(basename)
+end
+
 ---Return the group name of the file GID. Same as `self:modify(":t:r")`.
 ---@return string # stem of path. (src/version.c -> "version")
 function Path:stem()
