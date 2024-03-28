@@ -298,6 +298,16 @@ function Path:with_basename(name)
 end
 
 ---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
+---
+--->>> Path("folder/foo.txt"):suffix()
+---"foo"
+--->>> Path("folder/no-extension"):suffix()
+---""
+--->>> Path("folder/.bashrc"):suffix()
+---".bashrc"
+--->>> Path("folder/archive.tar.gz"):suffix()
+---"archive.tar"
+---
 ---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
 function Path:suffix()
   local s, counter = self:basename():gsub("^.*(%.[^.]+)$", "%1", 1)
@@ -306,9 +316,10 @@ end
 
 ---Return new object with new suffix.
 ---
---->>> Path("./folder/foo.txt"):with_suffix("png")
+--->>> Path("./folder/foo.txt"):with_suffix(".png")
 ---Path("./folder/foo.png")
 ---
+---@see PathlibPath.add_suffix as well
 ---@param suffix string # New suffix
 function Path:with_suffix(suffix)
   local name = self:stem() .. suffix
@@ -316,15 +327,16 @@ function Path:with_suffix(suffix)
 end
 
 ---Append given `suffix` to path, if suffix is not as same as given.
+---@see PathlibPath.with_suffix as well
 ---
---->>> Path("./folder/foo.tar"):add_suffix("gz")
+--->>> Path("./folder/foo.tar"):add_suffix(".gz")
 ---Path("./folder/foo.tar.gz")
 ---
---->>> Path("./folder/foo.txt.bak"):add_suffix("bak")
+--->>> Path("./folder/foo.txt.bak"):add_suffix(".bak")
 ---Path("./folder/foo.txt.bak") -- is already ".bak", so no change applied
 ---
 ---@param suffix string # Append this suffix to path, if suffix is not already equal.
----@param force boolean|nil # If true, always append given suffix. Result will become `foo.txt.bak.bak` in above expample.
+---@param force boolean|nil # If true, always append given suffix. Result will be `foo.txt.bak.bak` in above expample.
 function Path:add_suffix(suffix, force)
   local basename = self:basename()
   if force or basename:sub(-suffix:len()) ~= suffix then
