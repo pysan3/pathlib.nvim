@@ -710,6 +710,25 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.remove_suffix">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">remove_suffix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">suffix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.remove_suffix" title="Link to this definition">#</a></dt>
+<dd><p>Remove <cite>suffix</cite> if and only if path ends with the given <cite>suffix</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.tar.gz&quot;</span><span class="p">):</span><span class="n">remove_suffix</span><span class="p">(</span><span class="s2">&quot;.tar.gz&quot;</span><span class="p">)</span>
+<span class="go">Path(&quot;./folder/foo&quot;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">remove_suffix</span><span class="p">(</span><span class="s2">&quot;.bak&quot;</span><span class="p">)</span>
+<span class="go">Path(&quot;./folder/foo.txt&quot;) -- is already not &quot;.bak&quot;, so no change applied</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>suffix</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # Remove this suffix from path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.stem">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">stem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.stem" title="Link to this definition">#</a></dt>
 <dd><p>Return the group name of the file GID. Same as <cite>self:modify(“:t:r”)</cite>.</p>
