@@ -300,7 +300,8 @@ end
 ---Return the group name of the file GID. Same as `str(self) minus self:modify(":r")`.
 ---@return string # extension of path including the dot (`.`): `.py`, `.lua` etc
 function Path:suffix()
-  return self:basename():sub(self:stem():len() + 1)
+  local s, counter = self:basename():gsub("^.*(%.[^.]+)$", "%1", 1)
+  return counter > 0 and s or ""
 end
 
 ---Return new object with new suffix.
@@ -308,15 +309,34 @@ end
 --->>> Path("./folder/foo.txt"):with_suffix("png")
 ---Path("./folder/foo.png")
 ---
+---@param suffix string # New suffix
 function Path:with_suffix(suffix)
   local name = self:stem() .. suffix
   return self:with_basename(name)
 end
 
+---Append given `suffix` to path, if suffix is not as same as given.
+---
+--->>> Path("./folder/foo.tar"):add_suffix("gz")
+---Path("./folder/foo.tar.gz")
+---
+--->>> Path("./folder/foo.txt.bak"):add_suffix("bak")
+---Path("./folder/foo.txt.bak") -- is already ".bak", so no change applied
+---
+---@param suffix string # Append this suffix to path, if suffix is not already equal.
+---@param force boolean|nil # If true, always append given suffix. Result will become `foo.txt.bak.bak` in above expample.
+function Path:add_suffix(suffix, force)
+  local basename = self:basename()
+  if force or basename:sub(-suffix:len()) ~= suffix then
+    basename = basename .. suffix
+  end
+  return self:with_basename(basename)
+end
+
 ---Return the group name of the file GID. Same as `self:modify(":t:r")`.
 ---@return string # stem of path. (src/version.c -> "version")
 function Path:stem()
-  return (self:basename():gsub("([^.])%.[^.]+$", "%1", 1))
+  return (self:basename():sub(1, -self:suffix():len() - 1))
 end
 
 ---Return new object with new stem.
