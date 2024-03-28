@@ -121,6 +121,9 @@ function Path:_init(...)
         self:copy_all_from(s)
       else
         assert(not s:is_absolute(), ("new: invalid root path object in %sth argument: %s"):format(i, s))
+        if s:peek(1) == ".." then
+          run_resolve = true
+        end
         self._raw_paths:extend(s._raw_paths)
       end
     elseif type(s) == "string" then
@@ -525,11 +528,18 @@ end
 
 ---Resolves path. Eliminates `../` representation.
 ---Changes internal. (See `Path:resolve_copy` to create new object)
-function Path:resolve()
+---@param allow_abs2rel boolean|nil # Allow absolute path to be converted to relative path when there are too many '../'
+function Path:resolve(allow_abs2rel)
   local accum, length = 1, self:depth()
-  for _, value in ipairs(self._raw_paths) do
-    if value == ".." and accum > 1 then
-      accum = accum - 1
+  local negatives, was_absolute = 0, self:is_absolute()
+  local raw_path = table.concat(self._raw_paths, self.sep_str)
+  for _, value in ipairs(vim.tbl_values(self._raw_paths)) do
+    if value == ".." then
+      if accum > 1 then
+        accum = accum - 1
+      else
+        negatives = negatives + 1
+      end
     else
       self._raw_paths[accum] = value
       accum = accum + 1
@@ -538,27 +548,24 @@ function Path:resolve()
   for i = accum, length do
     self._raw_paths[i] = nil
   end
+  if not allow_abs2rel and was_absolute ~= self:is_absolute() then
+    errs.assert_function("Path:resolve", function()
+      return was_absolute == self:is_absolute()
+    end, string.format("'%s' was absolute but too many ../ included in path to resolve -> %s", raw_path, self))
+  end
+  for _ = 1, negatives do
+    table.insert(self._raw_paths, 1, "..")
+  end
   self.__string_cache = nil
   return self
 end
 
 ---Resolves path. Eliminates `../` representation and returns a new object. `self` is not changed.
+---@param allow_abs2rel boolean|nil # Allow absolute path to be converted to relative path when there are too many '../'
 ---@return PathlibPath
-function Path:resolve_copy()
-  local accum, length, new = 1, self:depth(), self:deep_copy()
-  for _, value in ipairs(self._raw_paths) do
-    if value == ".." and accum > 1 then
-      accum = accum - 1
-    else
-      new._raw_paths[accum] = value
-      accum = accum + 1
-    end
-  end
-  for i = accum, length do
-    new._raw_paths[i] = nil
-  end
-  new.__string_cache = nil
-  return new
+function Path:resolve_copy(allow_abs2rel)
+  local new = self:deep_copy()
+  return new:resolve(allow_abs2rel)
 end
 
 ---Run `vim.fn.globpath` on this path.
