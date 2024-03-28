@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/pysan3/pathlib.nvim/compare/v2.0.0...v2.0.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* **base:** fix resolving multiple `../` and add test ([#52](https://github.com/pysan3/pathlib.nvim/issues/52)) ([6fb37e0](https://github.com/pysan3/pathlib.nvim/commit/6fb37e0fbd0df1fb3cd81942d9992ef6fc2406b3))
+
 ## [2.0.0](https://github.com/pysan3/pathlib.nvim/compare/v1.1.1...v2.0.0) (2024-03-26)
 
 
