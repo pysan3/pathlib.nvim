@@ -652,6 +652,16 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 <dt class="sig sig-object lua" id="PathlibPath.suffix">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">suffix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.suffix" title="Link to this definition">#</a></dt>
 <dd><p>Return the group name of the file GID. Same as <cite>str(self) minus self:modify(“:r”)</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">):</span><span class="n">suffix</span><span class="p">()</span>
+<span class="go">&quot;foo&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/no-extension&quot;</span><span class="p">):</span><span class="n">suffix</span><span class="p">()</span>
+<span class="go">&quot;&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/.bashrc&quot;</span><span class="p">):</span><span class="n">suffix</span><span class="p">()</span>
+<span class="go">&quot;.bashrc&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder/archive.tar.gz&quot;</span><span class="p">):</span><span class="n">suffix</span><span class="p">()</span>
+<span class="go">&quot;archive.tar&quot;</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p># extension of path including the dot (<cite>.</cite>): <cite>.py</cite>, <cite>.lua</cite> etc</p>
@@ -666,7 +676,7 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 <dt class="sig sig-object lua" id="PathlibPath.with_suffix">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">with_suffix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">suffix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.with_suffix" title="Link to this definition">#</a></dt>
 <dd><p>Return new object with new suffix.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;png&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">):</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span>
 <span class="go">Path(&quot;./folder/foo.png&quot;)</span>
 </pre></div>
 </div>
@@ -681,11 +691,11 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 <dt class="sig sig-object lua" id="PathlibPath.add_suffix">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">add_suffix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">suffix</span></em>, <em class="sig-param"><span class="pre">force</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.add_suffix" title="Link to this definition">#</a></dt>
 <dd><p>Append given <cite>suffix</cite> to path, if suffix is not as same as given.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.tar&quot;</span><span class="p">):</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.tar&quot;</span><span class="p">):</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">)</span>
 <span class="go">Path(&quot;./folder/foo.tar.gz&quot;)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt.bak&quot;</span><span class="p">):</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;bak&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt.bak&quot;</span><span class="p">):</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;.bak&quot;</span><span class="p">)</span>
 <span class="go">Path(&quot;./folder/foo.txt.bak&quot;) -- is already &quot;.bak&quot;, so no change applied</span>
 </pre></div>
 </div>
@@ -693,7 +703,7 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>suffix</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – # Append this suffix to path, if suffix is not already equal.</p></li>
-<li><p><strong>force</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, always append given suffix. Result will become <cite>foo.txt.bak.bak</cite> in above expample.</p></li>
+<li><p><strong>force</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, always append given suffix. Result will be <cite>foo.txt.bak.bak</cite> in above expample.</p></li>
 </ul>
 </dd>
 </dl>
