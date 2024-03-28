@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/pysan3/pathlib.nvim/compare/v2.0.1...v2.1.0) (2024-03-28)
+
+
+### Bug Fixes
+
+* **base:** fix suffix detection and add tests ([#54](https://github.com/pysan3/pathlib.nvim/issues/54)) ([25d2123](https://github.com/pysan3/pathlib.nvim/commit/25d2123fd3c4e0548b7c7678ad54fed5a9b7be78))
+
+
+### Documentation
+
+* **base:** fix and improve docs for `self:with_suffix` ([7a5be95](https://github.com/pysan3/pathlib.nvim/commit/7a5be954bb950ec7b3dbacd05c75e7a38287a817))
+
 ## [2.0.1](https://github.com/pysan3/pathlib.nvim/compare/v2.0.0...v2.0.1) (2024-03-28)
 
 
