@@ -356,8 +356,9 @@ end
 ---@param suffix string # Remove this suffix from path.
 function Path:remove_suffix(suffix)
   local basename = self:basename()
-  if basename:sub(-suffix:len()) == suffix then
-    basename = basename:sub(1, -suffix:len() - 1)
+  local suffix_length = suffix:len()
+  if suffix_length > 0 and basename:sub(-suffix_length) == suffix then
+    basename = basename:sub(1, -suffix_length - 1)
   end
   return self:with_basename(basename)
 end

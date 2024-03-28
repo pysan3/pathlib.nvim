@@ -159,9 +159,35 @@ describe("Stem / Suffix Test", function()
     }
     for _, test in ipairs(test_table) do
       local a, suffix, b = unpack(test)
-      it(string.format("%s - '%s' -> %s", a, suffix, b), function()
+      it(string.format("add: %s - '%s' -> %s", a, suffix, b), function()
         assert.are_equal(Posix(b), Posix(a):add_suffix(suffix))
         assert.are_equal(Windows(b), Windows(a):add_suffix(suffix))
+      end)
+    end
+  end)
+
+  describe("add_suffix", function()
+    local test_table = { -- from, suffix, to
+      { "folder/foo.txt", ".png", "folder/foo.txt.png" },
+      { "folder/foo.txt", ".txt", "folder/foo.txt.txt" },
+      { "foo.txt", ".bak", "foo.txt.bak" },
+      { "foo.tar", ".zip", "foo.tar.zip" },
+      { "foo.tar.gz", ".zip", "foo.tar.gz.zip" },
+      { "foo.png", ".tar.gz", "foo.png.tar.gz" },
+      { ".bashrc", ".zshrc", ".bashrc.zshrc" },
+      { "", ".zshrc", ".zshrc" },
+      { "foo", ".zip", "foo.zip" },
+      { "foo.txt", "", "foo.txt" },
+      { "my.awesome.file.png", "", "my.awesome.file.png" },
+      { "my.awesome.file.", "", "my.awesome.file." },
+      { "my.awesome.file.png", ".txt", "my.awesome.file.png.txt" },
+      { "my.awesome.file..", ".png", "my.awesome.file...png" },
+    }
+    for _, test in ipairs(test_table) do
+      local a, suffix, b = unpack(test)
+      it(string.format("remove: %s - '%s' -> %s", b, suffix, a), function()
+        assert.are_equal(Posix(a), Posix(b):remove_suffix(suffix))
+        assert.are_equal(Windows(a), Windows(b):remove_suffix(suffix))
       end)
     end
   end)
