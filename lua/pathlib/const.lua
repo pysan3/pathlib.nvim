@@ -151,6 +151,15 @@ end
 M.o755 = M.permission_from_string("rwxr-xr-x")
 M.o644 = M.permission_from_string("rw-r--r--")
 
+---@enum PathlibRegexEscape
+M.regex_charset = {
+  ["bre"] = [[.⦋⦌⧵*^$]], -- basic regex (sed, grep)
+  ["ere"] = [[.⦋⦌()⧵*^$+?{}|]], -- extended regex (grep -E)
+  ["rust"] = [[\.+*?()|[]{}^$#&-~]],
+  ["lua"] = [[^$()%.[]*+-?]],
+  ["vimscript"] = [[^$.*?/\[]~]],
+}
+
 ---@enum PathlibGitStatusEnum
 M.git_status = {
   UNMODIFIED = " ",

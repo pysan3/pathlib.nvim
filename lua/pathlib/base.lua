@@ -1245,6 +1245,84 @@ function Path:shell_string(special)
   return s
 end
 
+---Return a string representation that is safe to pass to regex search.
+---
+---Use this when passing path to shell commands with regex search.
+--->>> local path = Path("./⦋evil⦌/$folder$/")
+--->>> local find = nio.process.run({ cmd = "find", args = { ".", "-type", "f" } })
+--->>> local grep = nio.process.run({
+--->>>   cmd = "grep",
+--->>>   args = { "-V", path:regex_string("/", Path.const.regex_charset.bre) },
+--->>>   stdin = find.stdout,
+--->>> })
+---grep.stdout.read() => _files that are not under_ `./[evil]/$folder$/`
+---
+---There are presets you can use for well known languages.
+---They are defined at `Path.const.regex_charset.*`.
+---- "bre"       = `.⦋⦌⧵*^$`            : basic regex (sed, grep)
+---- "ere"       = `.⦋⦌()⧵*^$+?{}|`     : extended regex (grep -E)
+---- "rust"      = `⧵.+*?()|⦋⦌{}^$#&-~`
+---- "lua"       = `^$()%.⦋⦌*+-?`
+---- "vimscript" = `^$.*?/⧵⦋⦌~`
+---
+-- WARN: **The examples below might appear inaccurate due to wrong escape behaviors.**
+---
+--->>> Path("⦋a-z⦌.txt"):regex_string(nil, Path.const.regex_charset.rust)
+---`⧵⦋a-z⧵⦌⧵.txt`
+--->>> Path("⦋a-z⦌.txt"):regex_string(nil, Path.const.regex_charset.lua, "%")
+---`%⦋a-z%⦌%.txt`
+---
+---Windows users should pass an escaped separator when needed.
+--->>> Windows(⦋⦋C:⧵folder⧵foo.txt⦌⦌):regex_string("⧵⧵⧵⧵", Path.const.regex_charset.rust)
+---`C:⧵⧵folder⧵⧵foo⧵.txt`
+--->>> Windows(⦋⦋C:⧵folder⧵foo.txt⦌⦌):regex_string(nil, Path.const.regex_charset.lua, "%") -- no need to escape \\ in lua
+---`C:⧵folder⧵foo%.txt`
+---
+---If you want search multiple path separators (e.g. search for both "/" and "\\"),
+---pass a regex that matches both separators to `sep`.
+--->>> local separators = "⦋/⧵⧵⦌"
+--->>> Path("folder/foo.txt"):regex_string(separators, Path.const.regex_charset.lua, "%")
+---`folder⦋/⧵⦌foo%.txt` -- matches both folder/foo.txt and folder⧵foo.txt
+---
+---You may also provide your own set of chars.
+--->>> Path("abc.txt"):regex_string(nil, "abc")
+---`⧵a⧵b⧵c.txt`
+---
+---@param sep string|nil # If not nil, this is used as a path separator.
+---@param charset PathlibRegexEscape|string # Charset that must be escaped.
+---@param escape_with string|nil # Escaped with. Defaults to "\\" (backslash)
+function Path:regex_string(sep, charset, escape_with)
+  sep = sep or self.sep_str
+  charset = charset or ""
+  escape_with = escape_with or "\\"
+  local s = table.concat(
+    vim.tbl_map(function(e)
+      return charset:len() > 0 and vim.fn.escape(charset, escape_with) or e
+    end, self._raw_paths),
+    sep
+  )
+  if self._drive_name:len() > 0 then
+    s = self._drive_name .. s
+  end
+  if s:len() == 0 then
+    return "."
+  end
+  return s
+end
+
+---Return a string representation where `charset` in each path segment is escaped using `escape_with`.
+---Path separator is not escaped.
+---
+---@deprecated Use `self:regex_string` instead, exact same arguments, output.
+---@see PathlibPath.regex_string
+---
+---@param sep string|nil # If not nil, this is used as a path separator.
+---@param charset PathlibRegexEscape|string # Charset that must be escaped.
+---@param escape_with string|nil # Escaped with. Defaults to "\\" (backslash)
+function Path:escaped_string(sep, charset, escape_with)
+  return self:regex_string(sep, charset, escape_with)
+end
+
 --          ╭─────────────────────────────────────────────────────────╮          --
 --          │                     Watcher Methods                     │          --
 --          ╰─────────────────────────────────────────────────────────╯          --
