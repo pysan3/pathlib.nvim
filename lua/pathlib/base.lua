@@ -832,7 +832,7 @@ end
 ---@param recursive boolean # if true, creates parent directories as well
 ---@return boolean|nil success
 function Path:touch(mode, recursive)
-  local fd = self:fs_open("w", mode, recursive)
+  local fd = self:fs_open("a", mode, recursive)
   if fd ~= nil then
     self.nuv.fs_close(fd)
     return true
