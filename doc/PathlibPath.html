@@ -1605,6 +1605,72 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 </dd></dl>
 
 <dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.regex_string">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">regex_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sep</span></em>, <em class="sig-param"><span class="pre">charset</span></em>, <em class="sig-param"><span class="pre">escape_with</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.regex_string" title="Link to this definition">#</a></dt>
+<dd><p>Return a string representation that is safe to pass to regex search.</p>
+<p>Use this when passing path to shell commands with regex search.
+&gt;&gt;&gt; local path = Path(“./⦋evil⦌/$folder$/”)
+&gt;&gt;&gt; local find = nio.process.run({ cmd = “find”, args = { “.”, “-type”, “f” } })
+&gt;&gt;&gt; local grep = nio.process.run({
+&gt;&gt;&gt;   cmd = “grep”,
+&gt;&gt;&gt;   args = { “-V”, path:regex_string(“/”, Path.const.regex_charset.bre) },
+&gt;&gt;&gt;   stdin = find.stdout,
+&gt;&gt;&gt; })
+grep.stdout.read() =&gt; _files that are not <a href="#id1"><span class="problematic" id="id2">under_</span></a> <cite>./[evil]/$folder$/</cite></p>
+<p>There are presets you can use for well known languages.
+They are defined at <cite>Path.const.regex_charset.*</cite>.
+“bre”       = <cite>.⦋⦌⧵*^$</cite>            : basic regex (sed, grep)
+“ere”       = <cite>.⦋⦌()⧵*^$+?{}|</cite>     : extended regex (grep -E)
+“rust”      = <cite>⧵.+*?()|⦋⦌{}^$#&amp;-~</cite>
+“lua”       = <cite>^$()%.⦋⦌*+-?</cite>
+“vimscript” = <cite>^$.*?/⧵⦋⦌~</cite></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;⦋a-z⦌.txt&quot;</span><span class="p">):</span><span class="n">regex_string</span><span class="p">(</span><span class="n">nil</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">const</span><span class="o">.</span><span class="n">regex_charset</span><span class="o">.</span><span class="n">rust</span><span class="p">)</span>
+<span class="go">`⧵⦋a-z⧵⦌⧵.txt`</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;⦋a-z⦌.txt&quot;</span><span class="p">):</span><span class="n">regex_string</span><span class="p">(</span><span class="n">nil</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">const</span><span class="o">.</span><span class="n">regex_charset</span><span class="o">.</span><span class="n">lua</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span>
+<span class="go">`%⦋a-z%⦌%.txt`</span>
+</pre></div>
+</div>
+<p>Windows users should pass an escaped separator when needed.
+&gt;&gt;&gt; Windows(⦋⦋C:⧵folder⧵foo.txt⦌⦌):regex_string(”⧵⧵⧵⧵”, Path.const.regex_charset.rust)
+<cite>C:⧵⧵folder⧵⧵foo⧵.txt</cite>
+&gt;&gt;&gt; Windows(⦋⦋C:⧵folder⧵foo.txt⦌⦌):regex_string(nil, Path.const.regex_charset.lua, “%”) – no need to escape \ in lua
+<cite>C:⧵folder⧵foo%.txt</cite></p>
+<p>If you want search multiple path separators (e.g. search for both “/” and “\”),
+pass a regex that matches both separators to <cite>sep</cite>.
+&gt;&gt;&gt; local separators = “⦋/⧵⧵⦌”
+&gt;&gt;&gt; Path(“folder/foo.txt”):regex_string(separators, Path.const.regex_charset.lua, “%”)
+<cite>folder⦋/⧵⦌foo%.txt</cite> – matches both folder/foo.txt and folder⧵foo.txt</p>
+<p>You may also provide your own set of chars.
+&gt;&gt;&gt; Path(“abc.txt”):regex_string(nil, “abc”)
+<cite>⧵a⧵b⧵c.txt</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sep</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If not nil, this is used as a path separator.</p></li>
+<li><p><strong>charset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibRegexEscape</span> <span class="pre">or</span> <span class="pre">str</span></code></span>) – # Charset that must be escaped.</p></li>
+<li><p><strong>escape_with</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Escaped with. Defaults to “\” (backslash)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
+<dt class="sig sig-object lua" id="PathlibPath.escaped_string">
+<em class="property"> </em><span class="sig-name descname"><span class="pre">escaped_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sep</span></em>, <em class="sig-param"><span class="pre">charset</span></em>, <em class="sig-param"><span class="pre">escape_with</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.escaped_string" title="Link to this definition">#</a></dt>
+<dd><p>Return a string representation where <cite>charset</cite> in each path segment is escaped using <cite>escape_with</cite>.</p>
+<p>Path separator is not escaped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sep</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If not nil, this is used as a path separator.</p></li>
+<li><p><strong>charset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibRegexEscape</span> <span class="pre">or</span> <span class="pre">str</span></code></span>) – # Charset that must be escaped.</p></li>
+<li><p><strong>escape_with</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Escaped with. Defaults to “\” (backslash)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="lua method">
 <dt class="sig sig-object lua" id="PathlibPath.has_watcher">
 <em class="property"> </em><span class="sig-name descname"><span class="pre">has_watcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.has_watcher" title="Link to this definition">#</a></dt>
 <dd><p>Register fs_event watcher for <cite>self</cite>.</p>
