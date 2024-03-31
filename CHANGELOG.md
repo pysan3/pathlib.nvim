@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/pysan3/pathlib.nvim/compare/v2.1.0...v2.1.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* **base:** add tests for `self:remove_suffix` ([d39ff55](https://github.com/pysan3/pathlib.nvim/commit/d39ff556bb1ecbec1225c7c1cb41bab0707f58d8))
+* **base:** fix `self:remove_suffix` ([26fa1f2](https://github.com/pysan3/pathlib.nvim/commit/26fa1f253951410bbf5219a97f96c26ce7289819))
+
 ## [2.1.0](https://github.com/pysan3/pathlib.nvim/compare/v2.0.1...v2.1.0) (2024-03-28)
 
 
