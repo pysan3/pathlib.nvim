@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/pysan3/pathlib.nvim/compare/v2.1.1...v2.2.0) (2024-03-31)
+
+
+### Features
+
+* **base:** `path:regex_string` which returns regex-safe string ([de8c6b3](https://github.com/pysan3/pathlib.nvim/commit/de8c6b3d976fd5f66c58722a638f8f3454001bad))
+
+
+### Bug Fixes
+
+* **base:** don't overwrite file with touch ([7bba29c](https://github.com/pysan3/pathlib.nvim/commit/7bba29c8952df04ad1f208d209af5e84e31f0a33))
+
 ## [2.1.1](https://github.com/pysan3/pathlib.nvim/compare/v2.1.0...v2.1.1) (2024-03-28)
 
 
