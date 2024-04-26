@@ -36,7 +36,7 @@
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="../_static/documentation_options.js?v=b21de401"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'doc/PathlibPath';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -453,7 +453,7 @@ document.write(`
 <dd><p>Calculate permission integer from “rwxrwxrwx” notation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mode_string</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>mode_string</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span></p>
@@ -485,7 +485,7 @@ document.write(`
 <dd><p>Parse a uri and return its path. Protocol is saved at <cite>self._uri_protocol</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>uri</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>uri</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,7 +501,7 @@ document.write(`
 <dd><p>Copy all attributes from <cite>path</cite> to self</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>path</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -518,7 +518,7 @@ document.write(`
 <dd><p>Create a new Path object as self’s child. <cite>name</cite> cannot be a grandchild.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -532,7 +532,7 @@ document.write(`
 <dd><p>Create a new Path object as self’s descentant. Use <cite>self:child</cite> if new path is a direct child of the dir.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -546,7 +546,7 @@ document.write(`
 <dd><p>Create a new Path object as self’s descentant. Use <cite>self:child</cite> if new path is a direct child of the dir.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -560,7 +560,7 @@ document.write(`
 <dd><p>Unpack name and return a new self’s grandchild, where <cite>name</cite> contains more than one <cite>/</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -574,7 +574,7 @@ document.write(`
 <dd><p>Unpack name and return a new self’s grandchild, where <cite>name</cite> contains more than one <cite>/</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -609,7 +609,7 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>index</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>index</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span></p>
@@ -640,7 +640,7 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span></p>
@@ -752,7 +752,7 @@ elseif index &lt; 0: gets the (-n)-th element counting from leaf.
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stem</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>stem</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -862,7 +862,7 @@ nil is returned and <cite>self.error_msg</cite> is modified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p></li>
+<li><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p></li>
 <li><p><strong>walk_up</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # If true, uses <cite>../</cite> to make relative path.</p></li>
 </ul>
 </dd>
@@ -886,7 +886,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">PathlibString</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>other</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span> <span class="pre">or</span> <span class="pre">PathlibString</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -990,7 +990,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">byte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.byte" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1000,7 +1000,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.find" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1010,7 +1010,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">gmatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.gmatch" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1020,7 +1020,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">gsub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.gsub" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1041,7 +1041,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.match" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1051,7 +1051,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">rep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.rep" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1066,7 +1066,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">...</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.sub" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>vararg</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1120,7 +1120,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.exists" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1135,7 +1135,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">is_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_dir" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1145,7 +1145,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">is_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">follow_symlinks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.is_file" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>) – </p>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">any</span></code></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1200,7 +1200,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dd><p>Return whether <cite>other</cite> is the same file or not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>other</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">boolean</span></code></span></p>
@@ -1276,7 +1276,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dd><p>Create a simlink named <cite>self</cite> pointing to <cite>target</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>success # whether operation succeeded</p>
@@ -1293,7 +1293,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dd><p>Create a hardlink named <cite>self</cite> pointing to <cite>target</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>success # whether operation succeeded</p>
@@ -1310,7 +1310,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dd><p>Rename <cite>self</cite> to <cite>target</cite>. If <cite>target</cite> exists, fails with false. Ref: <cite>Path:move</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>success # whether operation succeeded</p>
@@ -1327,7 +1327,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dd><p>Move <cite>self</cite> to <cite>target</cite>. Overwrites <cite>target</cite> if exists. Ref: <cite>Path:rename</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>success # whether operation succeeded</p>
@@ -1343,7 +1343,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <em class="property"> </em><span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PathlibPath.replace" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>) – </p>
+<dd class="field-odd"><p><strong>target</strong> (<span><a class="reference internal" href="#PathlibPath" title="PathlibPath"><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibPath</span></code></a></span>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1404,7 +1404,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>flags</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_access_flags</span> <span class="pre">or</span> <span class="pre">integer</span></code></span>) – </p></li>
+<li><p><strong>flags</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.fs_access_flags</span> <span class="pre">or</span> <span class="pre">integer</span></code></span>)</p></li>
 <li><p><strong>mode</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # permission. You may use <cite>Path.permission()</cite> to convert from “rwxrwxrwx”. Default to 0o644.</p></li>
 <li><p><strong>ensure_dir</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">boolean</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # if not nil, runs <cite>mkdir -p self:parent()</cite> with permission to ensure parent exists.</p></li>
 </ul>
@@ -1426,7 +1426,7 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>size</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # if nil, uses <cite>self:stat().size</cite></p></li>
-<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1445,8 +1445,8 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>) – </p></li>
-<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>)</p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1465,8 +1465,8 @@ It neither accesses the filesystem nor treats “..” segments specially.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>) – </p></li>
-<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – </p></li>
+<li><p><strong>data</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">uv.aliases.buffer</span></code></span>)</p></li>
+<li><p><strong>offset</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">integer</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1732,7 +1732,7 @@ pass a regex that matches both separators to <cite>sep</cite>.
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func_name</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">str</span> <span class="pre">or</span> <span class="pre">nil</span></code></span>) – # Name of the callback to check existence. If nil, calls all watchers.</p></li>
-<li><p><strong>args</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibWatcherArgs</span></code></span>) – </p></li>
+<li><p><strong>args</strong> (<span><code class="xref lua lua-class docutils literal notranslate"><span class="pre">PathlibWatcherArgs</span></code></span>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -1864,7 +1864,7 @@ Only useful when depth &gt; 1</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
