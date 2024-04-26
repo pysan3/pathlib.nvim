@@ -629,7 +629,9 @@ function Path:glob(pattern)
   local result, i = vim.fn.globpath(str, pattern, false, true), 0 ---@diagnostic disable-line
   return function()
     i = i + 1
-    return self.new(result[i])
+    if i <= #result then
+      return self.new(result[i])
+    end
   end
 end
 
