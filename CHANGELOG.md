@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/pysan3/pathlib.nvim/compare/v2.2.0...v2.2.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* **base:** Path.glob return nil when finished ([fd9dee0](https://github.com/pysan3/pathlib.nvim/commit/fd9dee05380b668530898c643b916891df7ec71b))
+
 ## [2.2.0](https://github.com/pysan3/pathlib.nvim/compare/v2.1.1...v2.2.0) (2024-03-31)
 
 
