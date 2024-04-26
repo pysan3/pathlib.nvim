@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/pysan3/pathlib.nvim/compare/v2.2.1...v2.2.2) (2024-04-26)
+
+
+### Bug Fixes
+
+* **base:** fix type annotations ([1c56f55](https://github.com/pysan3/pathlib.nvim/commit/1c56f55e89a66654df47e5ed2a35885bfb79d90d))
+
 ## [2.2.1](https://github.com/pysan3/pathlib.nvim/compare/v2.2.0...v2.2.1) (2024-04-26)
 
 
