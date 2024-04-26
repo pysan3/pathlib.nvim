@@ -620,7 +620,7 @@ end
 
 ---Run `vim.fn.globpath` on this path.
 ---@param pattern string # glob pattern expression
----@return fun(): PathlibPath # iterator of results.
+---@return fun(): PathlibPath|nil # iterator of results.
 function Path:glob(pattern)
   local str = self:tostring()
   errs.assert_function("Path:glob", function()
