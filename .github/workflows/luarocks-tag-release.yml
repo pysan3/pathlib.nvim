@@ -23,7 +23,6 @@ jobs:
           detailed_description: |
             This plugin aims to decrease the difficulties of path management across mutliple OSs in neovim.
             The plugin API is heavily inspired by Python's `pathlib.Path` with tweaks to fit neovim usage.
-            It is mainly used in neo-tree.nvim but it is so simple that you can use it in your own configs!
           version: ${{ env.LUAROCKS_VERSION }}
           dependencies: |
             nvim-nio >= 1.8.0

@@ -12,8 +12,6 @@
 
 This plugin aims to decrease the difficulties of path management across mutliple OSs in neovim.
 The plugin API is heavily inspired by Python's `pathlib.Path` with tweaks to fit neovim usage.
-It is mainly used in `neo-tree.nvim <https://github.com/nvim-neo-tree/neo-tree.nvim>`_
-but it is very simple and portable to be used in any plugin.
 
 Pathlib Module Reference
 ========================
