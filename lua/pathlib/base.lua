@@ -1186,10 +1186,11 @@ end
 function Path:tostring(sep)
   local nocache = sep and sep ~= self.sep_str
   if nocache or not self.__string_cache then
-    local s = table.concat(self._raw_paths, self.sep_str)
+    sep = sep or self.sep_str
+    local s = table.concat(self._raw_paths, sep)
     if self:is_absolute() then
       if #self._raw_paths == 1 then
-        s = self.sep_str
+        s = sep
       end
       if self._drive_name:len() > 0 then
         s = self._drive_name .. s
