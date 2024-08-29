@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/pysan3/pathlib.nvim/compare/v2.2.2...v2.2.3) (2024-08-29)
+
+
+### Bug Fixes
+
+* **base:** `Path:tostring` `sep` argument is not longer ignored ([0e98cef](https://github.com/pysan3/pathlib.nvim/commit/0e98cef8b722eb596a357f282127cc185932dd78))
+
 ## [2.2.2](https://github.com/pysan3/pathlib.nvim/compare/v2.2.1...v2.2.2) (2024-04-26)
 
 
