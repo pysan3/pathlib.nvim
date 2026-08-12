@@ -16,63 +16,63 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
 
     <script src="_static/documentation_options.js?v=85e56e6b"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="7. PathlibPath" href="doc/PathlibPath.html" />
     <link rel="prev" title="🐍 pathlib.nvim" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -80,7 +80,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -88,15 +87,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -170,29 +169,28 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
-`);
-</script></div>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -201,15 +199,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -228,7 +222,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -282,22 +277,33 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
-`);
-</script></div>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
@@ -307,9 +313,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -327,8 +338,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -337,7 +346,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">1. </span>🐍 <code class="docutils literal notranslate"><span class="pre">pathlib.nvim</span></code></span></li>
   </ul>
 </nav>
 </div>
@@ -388,42 +397,42 @@ document.write(`
 <h1><span class="section-number">2. </span>✨ Benefits<a class="headerlink" href="#benefits" title="Link to this heading">#</a></h1>
 <section id="intuitive-and-useful-methods">
 <h2><span class="section-number">2.1. </span>📦 Intuitive and Useful Methods<a class="headerlink" href="#intuitive-and-useful-methods" title="Link to this heading">#</a></h2>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">Path</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~/Documents&quot;</span><span class="p">)</span> <span class="c1">-- Same as `Path.home() / &quot;Documents&quot;`</span>
-<span class="kd">local</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">dir</span> <span class="o">/</span> <span class="s2">&quot;foo.txt&quot;</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;~/Documents&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Same as `Path.home() / &quot;Documents&quot;`</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">dir</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s2">&quot;foo.txt&quot;</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">basename</span><span class="p">(),</span> <span class="n">foo</span><span class="p">:</span><span class="n">stem</span><span class="p">(),</span> <span class="n">foo</span><span class="p">:</span><span class="n">suffix</span><span class="p">())</span> <span class="c1">-- foo.txt, foo, .txt</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">parent</span><span class="p">())</span> <span class="c1">-- &quot;/home/user/Documents&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">foo</span><span class="p">:</span><span class="nf">basename</span><span class="p">(),</span><span class="w"> </span><span class="nv">foo</span><span class="p">:</span><span class="nf">stem</span><span class="p">(),</span><span class="w"> </span><span class="nv">foo</span><span class="p">:</span><span class="nf">suffix</span><span class="p">())</span><span class="w"> </span><span class="c1">-- foo.txt, foo, .txt</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">foo</span><span class="p">:</span><span class="nf">parent</span><span class="p">())</span><span class="w"> </span><span class="c1">-- &quot;/home/user/Documents&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="git-integration">
 <h2><span class="section-number">2.2. </span>📋 Git Integration<a class="headerlink" href="#git-integration" title="Link to this heading">#</a></h2>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">git_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/git/workdir&quot;</span><span class="p">)</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">git_root</span><span class="p">:</span><span class="n">child</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">):</span><span class="n">exists</span><span class="p">(),</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;%s is not a git repo.&quot;</span><span class="p">,</span> <span class="n">git_root</span><span class="p">))</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">git_root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/git/workdir&quot;</span><span class="p">)</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">git_root</span><span class="p">:</span><span class="nf">child</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">):</span><span class="nf">exists</span><span class="p">(),</span><span class="w"> </span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;%s is not a git repo.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">git_root</span><span class="p">))</span>
 
-<span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib.git&quot;</span><span class="p">).</span><span class="n">fill_git_state</span><span class="p">({</span> <span class="n">file_a</span><span class="p">,</span> <span class="n">file_b</span><span class="p">,</span> <span class="p">...</span> <span class="p">})</span>
+<span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib.git&quot;</span><span class="p">).</span><span class="nf">fill_git_state</span><span class="p">({</span><span class="w"> </span><span class="nv">file_a</span><span class="p">,</span><span class="w"> </span><span class="nv">file_b</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">})</span>
 
-<span class="n">file_a</span><span class="p">.</span><span class="n">git_state</span><span class="p">.</span><span class="n">ignored</span>  <span class="c1">-- is git ignored</span>
-<span class="n">file_a</span><span class="p">.</span><span class="n">git_state</span><span class="p">.</span><span class="n">status</span>   <span class="c1">-- git status (modified, added, staged, ...)</span>
-<span class="n">file_a</span><span class="p">.</span><span class="n">git_state</span><span class="p">.</span><span class="n">git_root</span> <span class="c1">-- root directory of the repo</span>
+<span class="nv">file_a</span><span class="p">.</span><span class="py">git_state</span><span class="p">.</span><span class="py">ignored</span><span class="w">  </span><span class="c1">-- is git ignored</span>
+<span class="nv">file_a</span><span class="p">.</span><span class="py">git_state</span><span class="p">.</span><span class="py">status</span><span class="w">   </span><span class="c1">-- git status (modified, added, staged, ...)</span>
+<span class="nv">file_a</span><span class="p">.</span><span class="py">git_state</span><span class="p">.</span><span class="py">git_root</span><span class="w"> </span><span class="c1">-- root directory of the repo</span>
 </pre></div>
 </div>
 </section>
 <section id="sync-async-operations">
 <h2><span class="section-number">2.3. </span>⏱️ Sync / Async Operations<a class="headerlink" href="#sync-async-operations" title="Link to this heading">#</a></h2>
 <p>The API is designed so it is very easy to switch between sync and async operations. Call them inside a <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio async context</a> without any change, and the operations are converted to be async (does not block the main thread).</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~/Documents/foo.txt&quot;</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;~/Documents/foo.txt&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <span class="c1">-- # sync</span>
-<span class="kd">local</span> <span class="n">sync_bytes</span> <span class="o">=</span> <span class="n">foo</span><span class="p">:</span><span class="n">fs_write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">sync_bytes</span> <span class="o">==</span> <span class="n">content</span><span class="p">:</span><span class="n">len</span><span class="p">(),</span> <span class="n">foo</span><span class="p">.</span><span class="n">error_msg</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">sync_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">foo</span><span class="p">:</span><span class="nf">fs_write</span><span class="p">(</span><span class="nv">content</span><span class="p">)</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">sync_bytes</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">content</span><span class="p">:</span><span class="nf">len</span><span class="p">(),</span><span class="w"> </span><span class="nv">foo</span><span class="p">.</span><span class="py">error_msg</span><span class="p">)</span>
 
 <span class="c1">-- # async</span>
-<span class="nb">require</span><span class="p">(</span><span class="s2">&quot;nio&quot;</span><span class="p">).</span><span class="n">run</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-  <span class="kd">local</span> <span class="n">async_bytes</span> <span class="o">=</span> <span class="n">foo</span><span class="p">:</span><span class="n">fs_write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-  <span class="nb">assert</span><span class="p">(</span><span class="n">async_bytes</span> <span class="o">==</span> <span class="n">content</span><span class="p">:</span><span class="n">len</span><span class="p">(),</span> <span class="n">foo</span><span class="p">.</span><span class="n">error_msg</span><span class="p">)</span>
+<span class="nb">require</span><span class="p">(</span><span class="s2">&quot;nio&quot;</span><span class="p">).</span><span class="nf">run</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">async_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">foo</span><span class="p">:</span><span class="nf">fs_write</span><span class="p">(</span><span class="nv">content</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">assert</span><span class="p">(</span><span class="nv">async_bytes</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">content</span><span class="p">:</span><span class="nf">len</span><span class="p">(),</span><span class="w"> </span><span class="nv">foo</span><span class="p">.</span><span class="py">error_msg</span><span class="p">)</span>
 <span class="kr">end</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -433,24 +442,24 @@ document.write(`
 <h1><span class="section-number">3. </span>🚀 Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h1>
 <section id="create-path-object">
 <h2><span class="section-number">3.1. </span>Create Path Object<a class="headerlink" href="#create-path-object" title="Link to this heading">#</a></h2>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">Path</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">cwd</span>     <span class="o">=</span> <span class="n">Path</span><span class="p">.</span><span class="n">cwd</span><span class="p">()</span>
-<span class="n">vim</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s">[[cwd: %s]]</span><span class="p">,</span> <span class="n">cwd</span><span class="p">))</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">cwd</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nv">Path</span><span class="p">.</span><span class="nf">cwd</span><span class="p">()</span>
+<span class="nv">vim</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">([[</span><span class="nv">cwd</span><span class="p">:</span><span class="w"> </span><span class="err">%</span><span class="py">s</span><span class="p">]],</span><span class="w"> </span><span class="nv">cwd</span><span class="p">))</span>
 
 <span class="c1">-- Use __div to chain file tree!</span>
-<span class="kd">local</span> <span class="n">folder</span>  <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;folder&quot;</span>
-<span class="kd">local</span> <span class="n">foo</span>     <span class="o">=</span>              <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;foo.txt&quot;</span>
-<span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>          <span class="o">==</span> <span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">)</span> <span class="c1">-- $PWD/folder/foo.txt</span>
-<span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">parent</span><span class="p">())</span> <span class="o">==</span> <span class="s2">&quot;folder&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">folder</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s2">&quot;folder&quot;</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">foo</span><span class="w">     </span><span class="o">=</span><span class="w">              </span><span class="nv">folder</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="s2">&quot;foo.txt&quot;</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="nv">foo</span><span class="p">)</span><span class="w">          </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;folder/foo.txt&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- $PWD/folder/foo.txt</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="nv">foo</span><span class="p">:</span><span class="nf">parent</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;folder&quot;</span><span class="p">)</span>
 
 <span class="c1">-- Path object is comparable</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span>                    <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">))</span> <span class="c1">-- Path object can be created with arguments</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span>                    <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>  <span class="c1">-- Unpack any of them if you want!</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">foo</span><span class="w">                    </span><span class="o">==</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;./folder/foo.txt&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">-- Path object can be created with arguments</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">foo</span><span class="w">                    </span><span class="o">==</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="nv">folder</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span><span class="w">  </span><span class="c1">-- Unpack any of them if you want!</span>
 
 <span class="c1">-- Calculate relativily</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">)))</span>
-<span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">foo</span><span class="p">:</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./different folder&quot;</span><span class="p">)))</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span><span class="n">relative_to</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">foo</span><span class="p">:</span><span class="nf">is_relative_to</span><span class="p">(</span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;folder&quot;</span><span class="p">)))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="ow">not</span><span class="w"> </span><span class="nv">foo</span><span class="p">:</span><span class="nf">is_relative_to</span><span class="p">(</span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;./different folder&quot;</span><span class="p">)))</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">foo</span><span class="p">:</span><span class="nf">relative_to</span><span class="p">(</span><span class="nv">folder</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <section id="path-object-is-stored-with-string">
@@ -467,47 +476,47 @@ document.write(`
 <section id="nicely-integrated-with-vim-functions">
 <h3><span class="section-number">3.1.2. </span>Nicely integrated with vim functions.<a class="headerlink" href="#nicely-integrated-with-vim-functions" title="Link to this heading">#</a></h3>
 <p>There are wrappers around vim functions such as <code class="docutils literal notranslate"><span class="pre">fnamemodify</span></code>, <code class="docutils literal notranslate"><span class="pre">stdpath</span></code> and <code class="docutils literal notranslate"><span class="pre">getcwd</span></code>.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="p">:</span><span class="n">modify</span><span class="p">(</span><span class="s2">&quot;:p:t:r&quot;</span><span class="p">)</span>                <span class="c1">-- vim.fn.fnamemodify</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="nv">path</span><span class="p">:</span><span class="nf">modify</span><span class="p">(</span><span class="s2">&quot;:p:t:r&quot;</span><span class="p">)</span><span class="w">                </span><span class="c1">-- vim.fn.fnamemodify</span>
 
 <span class="c1">-- Define child directory of stdpaths</span>
-<span class="n">Path</span><span class="p">.</span><span class="n">stdpath</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;mason&quot;</span><span class="p">,</span> <span class="s2">&quot;bin&quot;</span><span class="p">)</span> <span class="c1">-- vim.fn.stdpath(&quot;data&quot;) .. &quot;/mason/bin&quot;</span>
+<span class="nv">Path</span><span class="p">.</span><span class="nf">stdpath</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;mason&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bin&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- vim.fn.stdpath(&quot;data&quot;) .. &quot;/mason/bin&quot;</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="create-and-manipulate-files-directories">
 <h2><span class="section-number">3.2. </span>Create and Manipulate Files / Directories<a class="headerlink" href="#create-and-manipulate-files-directories" title="Link to this heading">#</a></h2>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">luv</span> <span class="o">=</span> <span class="n">vim</span><span class="p">.</span><span class="n">loop</span>
-<span class="kd">local</span> <span class="n">Path</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">luv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">vim</span><span class="p">.</span><span class="py">loop</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;pathlib&quot;</span><span class="p">)</span>
 
 <span class="c1">-- Create new folder</span>
-<span class="kd">local</span> <span class="n">new_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;./new/folder/foo.txt&quot;</span><span class="p">)</span>
-<span class="n">new_file</span><span class="p">:</span><span class="n">parent_assert</span><span class="p">():</span><span class="n">mkdir</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">permission</span><span class="p">(</span><span class="s2">&quot;rwxr-xr-x&quot;</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span> <span class="c1">-- (permission, recursive)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">new_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Path</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">&quot;./new/folder/foo.txt&quot;</span><span class="p">)</span>
+<span class="nv">new_file</span><span class="p">:</span><span class="nf">parent_assert</span><span class="p">():</span><span class="nf">mkdir</span><span class="p">(</span><span class="nv">Path</span><span class="p">.</span><span class="nf">permission</span><span class="p">(</span><span class="s2">&quot;rwxr-xr-x&quot;</span><span class="p">),</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="c1">-- (permission, recursive)</span>
 
 <span class="c1">-- Create new file and write to it</span>
-<span class="kd">local</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">new_file</span><span class="p">:</span><span class="n">fs_open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">.</span><span class="n">permission</span><span class="p">(</span><span class="s2">&quot;rw-r--r--&quot;</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">fd</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">,</span> <span class="s2">&quot;File creation failed. &quot;</span> <span class="o">..</span> <span class="n">new_file</span><span class="p">.</span><span class="n">error_msg</span><span class="p">)</span>
-<span class="n">luv</span><span class="p">.</span><span class="n">fs_write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">luv</span><span class="p">.</span><span class="n">fs_close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">new_file</span><span class="p">:</span><span class="nf">fs_open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">Path</span><span class="p">.</span><span class="nf">permission</span><span class="p">(</span><span class="s2">&quot;rw-r--r--&quot;</span><span class="p">),</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">fd</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;File creation failed. &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">new_file</span><span class="p">.</span><span class="py">error_msg</span><span class="p">)</span>
+<span class="nv">luv</span><span class="p">.</span><span class="nf">fs_write</span><span class="p">(</span><span class="nv">fd</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nv">luv</span><span class="p">.</span><span class="nf">fs_close</span><span class="p">(</span><span class="nv">fd</span><span class="p">)</span>
 <span class="c1">-- HINT: new_file:fs_write(...) does this all at once.</span>
 
 <span class="c1">-- SHORTHAND: read file content with `io.read`</span>
-<span class="kd">local</span> <span class="n">content</span> <span class="o">=</span> <span class="n">new_file</span><span class="p">:</span><span class="n">io_read</span><span class="p">()</span>
-<span class="nb">assert</span><span class="p">(</span><span class="n">content</span> <span class="o">==</span> <span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">new_file</span><span class="p">:</span><span class="nf">io_read</span><span class="p">()</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">content</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1">-- SHORTHAND: write to file</span>
-<span class="n">new_file</span><span class="p">:</span><span class="n">io_write</span><span class="p">(</span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nv">new_file</span><span class="p">:</span><span class="nf">io_write</span><span class="p">(</span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">new_file</span><span class="p">:</span><span class="n">copy</span><span class="p">(</span><span class="n">new_file</span><span class="p">:</span><span class="n">with_basename</span><span class="p">(</span><span class="s2">&quot;bar.txt&quot;</span><span class="p">))</span> <span class="c1">-- copy `foo.txt` to `bar.txt`</span>
-<span class="n">new_file</span><span class="p">:</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">new_file</span><span class="p">:</span><span class="n">with_basename</span><span class="p">(</span><span class="s2">&quot;baz.txt&quot;</span><span class="p">))</span> <span class="c1">-- create symlink of `foo.txt` named `baz.txt`</span>
+<span class="nv">new_file</span><span class="p">:</span><span class="nf">copy</span><span class="p">(</span><span class="nv">new_file</span><span class="p">:</span><span class="nf">with_basename</span><span class="p">(</span><span class="s2">&quot;bar.txt&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">-- copy `foo.txt` to `bar.txt`</span>
+<span class="nv">new_file</span><span class="p">:</span><span class="nf">symlink_to</span><span class="p">(</span><span class="nv">new_file</span><span class="p">:</span><span class="nf">with_basename</span><span class="p">(</span><span class="s2">&quot;baz.txt&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">-- create symlink of `foo.txt` named `baz.txt`</span>
 </pre></div>
 </div>
 </section>
 <section id="scan-directories">
 <h2><span class="section-number">3.3. </span>Scan Directories<a class="headerlink" href="#scan-directories" title="Link to this heading">#</a></h2>
 <div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Continue from above</span>
-<span class="kr">for</span> <span class="n">path</span> <span class="kr">in</span> <span class="n">new_file</span><span class="p">:</span><span class="n">parent_assert</span><span class="p">():</span><span class="n">fs_iterdir</span><span class="p">()</span> <span class="kr">do</span>
-  <span class="c1">-- loop: [Path(&quot;./new/folder/foo.txt&quot;), Path(&quot;./new/folder/bar.txt&quot;), Path(&quot;./new/folder/baz.txt&quot;)]</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">new_file</span><span class="p">:</span><span class="nf">parent_assert</span><span class="p">():</span><span class="nf">fs_iterdir</span><span class="p">()</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="c1">-- loop: [Path(&quot;./new/folder/foo.txt&quot;), Path(&quot;./new/folder/bar.txt&quot;), Path(&quot;./new/folder/baz.txt&quot;)]</span>
 <span class="kr">end</span>
 </pre></div>
 </div>
@@ -515,24 +524,24 @@ document.write(`
 <section id="async-execution">
 <h2><span class="section-number">3.4. </span>Async Execution<a class="headerlink" href="#async-execution" title="Link to this heading">#</a></h2>
 <p>This library uses <a class="reference external" href="https://github.com/nvim-neotest/nvim-nio">nvim-nio</a> under the hood to run async calls. Supported methods will turn into async calls inside a <code class="docutils literal notranslate"><span class="pre">nio.run</span></code> async context and has the <strong>EXACT SAME INTERFACE</strong>.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">nio</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;nio&quot;</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">)</span>
-<span class="n">nio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span> <span class="c1">-- async run (does not block the main thread)</span>
-  <span class="n">vim</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">fs_stat</span><span class="p">())</span>       <span class="c1">-- coroutine (async)</span>
-  <span class="n">path</span><span class="p">:</span><span class="n">fs_write</span><span class="p">(</span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1">-- coroutine (async)</span>
-  <span class="n">vim</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">fs_read</span><span class="p">())</span>       <span class="c1">-- coroutine (async)</span>
-  <span class="n">vim</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;async done&quot;</span><span class="p">)</span>         <span class="c1">-- prints last</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kd">local</span><span class="w"> </span><span class="nv">nio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;nio&quot;</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;foo.txt&quot;</span><span class="p">)</span>
+<span class="nv">nio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="c1">-- async run (does not block the main thread)</span>
+<span class="w">  </span><span class="nv">vim</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span><span class="nf">fs_stat</span><span class="p">())</span><span class="w">       </span><span class="c1">-- coroutine (async)</span>
+<span class="w">  </span><span class="nv">path</span><span class="p">:</span><span class="nf">fs_write</span><span class="p">(</span><span class="s2">&quot;File Content</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- coroutine (async)</span>
+<span class="w">  </span><span class="nv">vim</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span><span class="nf">fs_read</span><span class="p">())</span><span class="w">       </span><span class="c1">-- coroutine (async)</span>
+<span class="w">  </span><span class="nv">vim</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="s2">&quot;async done&quot;</span><span class="p">)</span><span class="w">         </span><span class="c1">-- prints last</span>
 <span class="kr">end</span><span class="p">)</span>
 
-<span class="n">vim</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;sync here&quot;</span><span class="p">)</span> <span class="c1">-- prints first (maybe not if above functions end very fast)</span>
+<span class="nv">vim</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="s2">&quot;sync here&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- prints first (maybe not if above functions end very fast)</span>
 </pre></div>
 </div>
 <p>When execution fails, function will return <code class="docutils literal notranslate"><span class="pre">nil</span></code> and the error message is captured into <code class="docutils literal notranslate"><span class="pre">self.error_msg</span></code>. This property holds the error message of the latest async function call.</p>
-<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="n">nio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="kr">function</span> <span class="p">()</span>
-  <span class="kd">local</span> <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./does/not/exist.txt&quot;</span><span class="p">)</span>
-  <span class="kd">local</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">path</span><span class="p">:</span><span class="n">fs_open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
-  <span class="nb">assert</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;ERROR: &quot;</span> <span class="o">..</span> <span class="n">path</span><span class="p">.</span><span class="n">error_msg</span><span class="p">)</span>
-  <span class="c1">-- fd will be nil when `:fs_open` fails. Check `self.error_msg` for the error message.</span>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="nv">nio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="kr">function</span><span class="w"> </span><span class="p">()</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Path</span><span class="p">(</span><span class="s2">&quot;./does/not/exist.txt&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">path</span><span class="p">:</span><span class="nf">fs_open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">assert</span><span class="p">(</span><span class="nv">fd</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ERROR: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">path</span><span class="p">.</span><span class="py">error_msg</span><span class="p">)</span>
+<span class="w">  </span><span class="c1">-- fd will be nil when `:fs_open` fails. Check `self.error_msg` for the error message.</span>
 <span class="kr">end</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -567,7 +576,7 @@ document.write(`
 </section>
 <section id="contributions">
 <h1><span class="section-number">5. </span>Contributions<a class="headerlink" href="#contributions" title="Link to this heading">#</a></h1>
-<p>I’ll happily accept any <a class="reference external" href="https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&amp;amp;labels=feature&amp;amp;projects=&amp;amp;template=feature_request.yml">feature request</a> Feel free to ask for any functionality :)</p>
+<p>I’ll happily accept any <a class="reference external" href="https://github.com/pysan3/pathlib.nvim/issues/new?assignees=&amp;labels=feature&amp;projects=&amp;template=feature_request.yml">feature request</a> Feel free to ask for any functionality :)</p>
 </section>
 <section id="other-projects">
 <h1><span class="section-number">6. </span>Other Projects<a class="headerlink" href="#other-projects" title="Link to this heading">#</a></h1>
@@ -615,7 +624,8 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -624,16 +634,16 @@ document.write(`
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1. 🐍 <code class="docutils literal notranslate"><span class="pre">pathlib.nvim</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits">2. ✨ Benefits</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits">2. ✨ Benefits</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intuitive-and-useful-methods">2.1. 📦 Intuitive and Useful Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-integration">2.2. 📋 Git Integration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sync-async-operations">2.3. ⏱️ Sync / Async Operations</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example">3. 🚀 Usage Example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example">3. 🚀 Usage Example</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-path-object">3.1. Create Path Object</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#path-object-is-stored-with-string">3.1.1. Path object is stored with <code class="docutils literal notranslate"><span class="pre">string[]</span></code>.</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nicely-integrated-with-vim-functions">3.1.2. Nicely integrated with vim functions.</a></li>
@@ -673,8 +683,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -694,7 +704,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -707,7 +717,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.20.0.
 </p></div>
       
     </div>
