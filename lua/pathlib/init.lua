@@ -23,9 +23,9 @@
 local const = require("pathlib.const")
 
 if const.IS_WINDOWS then
-  return require("pathlib.windows")
+  return require("pathlib.windows") --- @as PathlibPath
 elseif true then
-  return require("pathlib.posix")
+  return require("pathlib.posix")  --- @as PathlibPath
 else
-  return require("pathlib.base") -- trick type annotations
+  return require("pathlib.base") --- @as PathlibPath -- trick type annotations
 end
